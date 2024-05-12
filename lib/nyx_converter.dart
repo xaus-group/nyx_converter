@@ -1,7 +1,3 @@
 library nyx_converter;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export './src/nyx_converter/nyx_converter.dart';
