@@ -25,7 +25,14 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    NyxConverter.convertTo('filePath', '');
+    NyxConverter.convertTo('filePath', 'outputPath',
+        container: NyxContainer.mp4,
+        videoCodec: NyxVideoCodec.h264,
+        audioCodec: NyxAudioCodec.flac,
+        size: NyxSize.w1280h720,
+        bitrate: NyxBitrate.k320,
+        frequency: NyxFrequency.hz48000,
+        channelLayout: NyxChannelLayout.stereo);
     return const Scaffold();
   }
 }
