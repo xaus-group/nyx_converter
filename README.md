@@ -1,6 +1,8 @@
-# Nyx Converter
+# Nyx Converter [![Github release](https://img.shields.io/github/v/release/xaus-group/nyx_converter)](https://github.com/xaus-group/nyx_converter) [![pub package](https://img.shields.io/pub/v/nyx_converter.svg)](https://pub.dev/packages/nyx_converter)
 
-The nyx_converter widget in Flutter empowers you to seamlessly convert media files between various formats, codecs, resolutions, bitrates, and audio properties. It utilizes the robust ffmpeg library under the hood, providing a convenient and efficient solution for your media processing needs within your Flutter applications.
+<img src="./screenshots/logo.png" width="240">
+
+The `nyx_converter` widget in Flutter empowers you to seamlessly convert media files between various formats, codecs, resolutions, bitrates, and audio properties. It utilizes the robust ffmpeg library under the hood, providing a convenient and efficient solution for your media processing needs within your Flutter applications.
 
 ## Key Features
 
