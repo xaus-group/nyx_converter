@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the convertTo method from the INyxConverter class, for the Dart programming language.">
+  <title>convertTo method - INyxConverter class - nyx_converter library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">nyx_converter</a></li>
+    <li><a href="../../nyx_converter/nyx_converter-library.html">nyx_converter</a></li>
+    <li><a href="../../nyx_converter/INyxConverter-class.html">INyxConverter</a></li>
+    <li class="self-crumb">convertTo abstract method</li>
+  </ol>
+  <div class="self-name">convertTo</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span class="material-symbols-outlined">
+        brightness_4
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">convertTo</span> abstract method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">NyxData</span>&gt;</span></span>
+<span class="name ">convertTo</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="convertTo-param-filePath"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span>, </span></li>
+<li><span class="parameter" id="convertTo-param-outputPath"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">outputPath</span>, </span></li>
+<li><span class="parameter" id="convertTo-param-container">{<span class="type-annotation"><a href="../../nyx_converter/NyxContainer.html">NyxContainer</a></span> <span class="parameter-name">container</span>, </span></li>
+<li><span class="parameter" id="convertTo-param-videoCodec"><span class="type-annotation"><a href="../../nyx_converter/NyxVideoCodec.html">NyxVideoCodec</a></span> <span class="parameter-name">videoCodec</span>, </span></li>
+<li><span class="parameter" id="convertTo-param-audioCodec"><span class="type-annotation"><a href="../../nyx_converter/NyxAudioCodec.html">NyxAudioCodec</a></span> <span class="parameter-name">audioCodec</span>, </span></li>
+<li><span class="parameter" id="convertTo-param-size"><span class="type-annotation"><a href="../../nyx_converter/NyxSize.html">NyxSize</a></span> <span class="parameter-name">size</span>, </span></li>
+<li><span class="parameter" id="convertTo-param-bitrate"><span class="type-annotation"><a href="../../nyx_converter/NyxBitrate.html">NyxBitrate</a></span> <span class="parameter-name">bitrate</span>, </span></li>
+<li><span class="parameter" id="convertTo-param-frequency"><span class="type-annotation"><a href="../../nyx_converter/NyxFrequency.html">NyxFrequency</a></span> <span class="parameter-name">frequency</span>, </span></li>
+<li><span class="parameter" id="convertTo-param-channelLayout"><span class="type-annotation"><a href="../../nyx_converter/NyxChannelLayout.html">NyxChannelLayout</a></span> <span class="parameter-name">channelLayout</span>}</span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>filePath</code> (String): The path to the input media file.</li>
+<li><code>outputPath</code> (String): The desired path for the converted output file.</li>
+<li><code>container</code> (NyxContainer, optional): The target format for the converted file (e.g., "mp4", "avi").</li>
+<li><code>videoCodec</code> (NyxVideoCodec, optional): The desired video codec for the converted file (e.g., "h264", "vp8").</li>
+<li><code>audioCodec</code> (NyxAudioCodec, optional): The desired audio codec for the converted file (e.g., "aac", "mp3").</li>
+<li><code>size</code> (NyxSize, optional): The target width and height of the converted video in pixels.</li>
+<li><code>bitrate</code> (NyxBitrate, optional): The desired bitrate of the converted file in kilobits per second (kbps).</li>
+<li><code>frequency</code> (NyxFrequency, optional): The target sampling frequency of the converted audio stream in Hertz (Hz).</li>
+<li><code>channelLayout</code> (NyxChannelLayout, optional): The desired number of audio channels (1 for mono, 2 for stereo) in the converted file.</li>
+</ul>
+<h3 id="return-type">Return Type:</h3>
+<ul>
+<li><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future&lt;NyxData&gt;</a>: The function returns a <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a> that resolves to a <code>NyxData</code> object</li>
+</ul>
+<h3 id="description">Description:</h3>
+<ul>
+<li>The <a href="../../nyx_converter/INyxConverter/convertTo.html">convertTo</a> function initiates the asynchronous process of converting a media file from the specified <code>filePath</code> to a new file at the provided <code>outputPath</code>. It offers various optional parameters to customize the output format, codecs, resolution, bitrate, and etc.</li>
+</ul>
+<h3 id="example">Example:</h3>
+<pre class="language-dart"><code class="language-dart">final filePath = 'path/to/my.mp4';
+final outputPath = 'converted_video.avi';
+
+NyxConverter.convertTo(filePath, outputPath,
+     container: NyxContainer.mp4,
+     videoCodec: NyxVideoCodec.h264,
+     audioCodec: NyxAudioCodec.flac,
+     size: NyxSize.w1280h720,
+     bitrate: NyxBitrate.k320,
+     frequency: NyxFrequency.hz48000,
+     channelLayout: NyxChannelLayout.stereo);
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Future&lt;NyxData&gt; convertTo(String filePath, String outputPath,
+    {NyxContainer container,
+    NyxVideoCodec videoCodec,
+    NyxAudioCodec audioCodec,
+    NyxSize size,
+    NyxBitrate bitrate,
+    NyxFrequency frequency,
+    NyxChannelLayout channelLayout});</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">nyx_converter</a></li>
+  <li><a href="../../nyx_converter/nyx_converter-library.html">nyx_converter</a></li>
+  <li><a href="../../nyx_converter/INyxConverter-class.html">INyxConverter</a></li>
+  <li class="self-crumb">convertTo abstract method</li>
+</ol>
+
+
+    <h5>INyxConverter class</h5>
+    <ol>
+
+        <li class="section-title"><a href="../../nyx_converter/INyxConverter-class.html#constructors">Constructors</a></li>
+          <li><a href="../../nyx_converter/INyxConverter/INyxConverter.html">INyxConverter</a></li>
+
+
+        <li class="section-title inherited">
+          <a href="../../nyx_converter/INyxConverter-class.html#instance-properties">Properties</a>
+        </li>
+          <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+          <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+
+        <li class="section-title"><a href="../../nyx_converter/INyxConverter-class.html#instance-methods">Methods</a></li>
+          <li><a href="../../nyx_converter/INyxConverter/convertTo.html">convertTo</a></li>
+          <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+          <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+
+        <li class="section-title inherited"><a href="../../nyx_converter/INyxConverter-class.html#operators">Operators</a></li>
+          <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    nyx_converter
+      0.0.1
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

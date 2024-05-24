@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the NyxAudioCodec enum from the nyx_converter library, for the Dart programming language.">
+  <title>NyxAudioCodec enum - nyx_converter library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">nyx_converter</a></li>
+    <li><a href="../nyx_converter/nyx_converter-library.html">nyx_converter</a></li>
+    <li class="self-crumb">NyxAudioCodec enum</li>
+  </ol>
+  <div class="self-name">NyxAudioCodec</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span class="material-symbols-outlined">
+        brightness_4
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+
+        <h1>
+          <span class="kind-enum">NyxAudioCodec</span>
+          enum 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+ 
+
+        </h1>
+      </div>
+
+    
+<section class="desc markdown">
+  <h3 id="description">Description:</h3>
+<p>An audio codec, short for coder-decoder, is like a <strong>miniaturization machine for sound</strong>. It shrinks digital audio files by removing unnecessary information, allowing you to store and share music and audio more efficiently. This compression comes with a trade-off, though. While some codecs (like MP3) prioritize smaller file sizes, they might sacrifice some sound quality. Others (like FLAC) preserve the original quality but result in larger files.</p>
+<p>Here's a quick breakdown:</p>
+<ul>
+<li><strong>Compresses audio:</strong> Reduces file size for easier storage and transfer.</li>
+<li><strong>Quality vs. Size:</strong> Lossy codecs (MP3, AAC) prioritize size with some quality loss. Lossless codecs (FLAC) maintain quality but have larger files.</li>
+<li><strong>Widely Used:</strong> AAC is a popular choice for its balance of size and quality, found in MP4s, YouTube videos, and most devices.
+Choosing the right audio codec depends on your needs. If you prioritize pristine sound, go lossless. For smaller files and broader compatibility, consider a lossy codec with adjustable quality settings.</li>
+</ul>
+<h3 id="example">Example:</h3>
+<pre class="language-dart"><code class="language-dart">final filePath = 'path/to/my.mp4';
+final outputPath = 'path/to/';
+
+NyxConverter.convertTo(filePath, outputPath, audioCodec: NyxAudioCodec.mp3);
+</code></pre>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+  <dt>Inheritance</dt>
+  <dd>
+    <ul class="gt-separated dark eNum-relationships">
+      <li><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></li>
+        <li><a href="https://api.flutter.dev/flutter/dart-core/Enum-class.html">Enum</a></li>
+      <li>NyxAudioCodec</li>
+    </ul>
+  </dd>
+
+        
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+
+    <dl class="constructor-summary-list">
+        <dt id="NyxAudioCodec" class="callable">
+          <span class="name"><a href="../nyx_converter/NyxAudioCodec/NyxAudioCodec.html">NyxAudioCodec</a></span><span class="signature">()</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">const</div>
+        </dd>
+    </dl>
+  </section>
+
+    <section class="summary offset-anchor" id="values">
+      <h2>Values</h2>
+
+      <dl class="properties">
+          <dt id="mp3" class="constant">
+    <span class="name ">mp3</span>
+  <span class="signature">&#8594; const <a href="../nyx_converter/NyxAudioCodec.html">NyxAudioCodec</a></span>
+  
+
+</dt>
+<dd>
+  <p>The most widely used audio codec, known for its good balance between file size and sound quality. It's a lossy codec, meaning it discards some audio information during compression.A widely used lossy codec known for its good balance of quality and file size. However, some audio information is sacrificed during compression.</p>
+  
+
+</dd>
+
+          <dt id="mp2" class="constant">
+    <span class="name ">mp2</span>
+  <span class="signature">&#8594; const <a href="../nyx_converter/NyxAudioCodec.html">NyxAudioCodec</a></span>
+  
+
+</dt>
+<dd>
+  <p>Predecessor to MP3, offering lower quality but slightly smaller file sizes. Less common nowadays.</p>
+  
+
+</dd>
+
+          <dt id="wma" class="constant">
+    <span class="name ">wma</span>
+  <span class="signature">&#8594; const <a href="../nyx_converter/NyxAudioCodec.html">NyxAudioCodec</a></span>
+  
+
+</dt>
+<dd>
+  <p>Developed by Microsoft, WMA offers similar quality to MP3 at comparable bitrates. However, its compatibility is not as universal as MP3.</p>
+  
+
+</dd>
+
+          <dt id="aac" class="constant">
+    <span class="name ">aac</span>
+  <span class="signature">&#8594; const <a href="../nyx_converter/NyxAudioCodec.html">NyxAudioCodec</a></span>
+  
+
+</dt>
+<dd>
+  <p>A modern and efficient lossy codec, generally considered to provide better audio quality than MP3 at similar bitrates. Widely used in MP4 files, YouTube videos, and most devices.</p>
+  
+
+</dd>
+
+          <dt id="oog" class="constant">
+    <span class="name ">oog</span>
+  <span class="signature">&#8594; const <a href="../nyx_converter/NyxAudioCodec.html">NyxAudioCodec</a></span>
+  
+
+</dt>
+<dd>
+  <p>A free and open-source lossy codec known for its good quality and efficient compression. Often used in web applications and free software.</p>
+  
+
+</dd>
+
+          <dt id="flac" class="constant">
+    <span class="name ">flac</span>
+  <span class="signature">&#8594; const <a href="../nyx_converter/NyxAudioCodec.html">NyxAudioCodec</a></span>
+  
+
+</dt>
+<dd>
+  <p>A popular lossless compression format that preserves the original audio quality without any information loss. FLAC files are typically larger than their lossy counterparts but ideal for archiving or high-fidelity audio.</p>
+  
+
+</dd>
+
+          <dt id="alac" class="constant">
+    <span class="name ">alac</span>
+  <span class="signature">&#8594; const <a href="../nyx_converter/NyxAudioCodec.html">NyxAudioCodec</a></span>
+  
+
+</dt>
+<dd>
+  <p>Similar to FLAC, ALAC offers lossless compression but is primarily used by Apple devices and iTunes.</p>
+  
+
+</dd>
+
+          <dt id="dsd" class="constant">
+    <span class="name ">dsd</span>
+  <span class="signature">&#8594; const <a href="../nyx_converter/NyxAudioCodec.html">NyxAudioCodec</a></span>
+  
+
+</dt>
+<dd>
+  <p>A high-resolution audio format that uses a different approach than traditional PCM (Pulse Code Modulation) codecs. DSD captures audio data in a more analog-like way, potentially offering very high fidelity, but requires specialized equipment for playback.</p>
+  
+
+</dd>
+
+      </dl>
+    </section>
+
+    <section
+        class="
+          summary
+          offset-anchorinherited"
+        id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">read-only</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="index" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Enum/index.html">index</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd class="inherited">
+  A numeric identifier for the enumerated value.
+  <div class="features"><span class="feature">read-only</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span> 
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">read-only</span><span class="feature">inherited</span></div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a non-existent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  <section class="summary offset-anchor" id="constants">
+    <h2>Constants</h2>
+
+    <dl class="properties">
+        <dt id="values" class="constant">
+    <span class="name "><a href="../nyx_converter/NyxAudioCodec/values-constant.html">values</a></span>
+  <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nyx_converter/NyxAudioCodec.html">NyxAudioCodec</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  A constant List of the values in this enum, in order of their declaration.
+  
+
+    <div>
+      <span class="signature"><code>[mp3, mp2, wma, aac, oog, flac, alac, dsd]</code></span>
+    </div>
+</dd>
+
+    </dl>
+  </section>
+  </div><!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../index.html">nyx_converter</a></li>
+  <li><a href="../nyx_converter/nyx_converter-library.html">nyx_converter</a></li>
+  <li class="self-crumb">NyxAudioCodec enum</li>
+</ol>
+
+
+    <h5>nyx_converter library</h5>
+    <ol>
+      <li class="section-title"><a href="../nyx_converter/nyx_converter-library.html#classes">Classes</a></li>
+        <li><a href="../nyx_converter/INyxConverter-class.html">INyxConverter</a></li>
+
+      <li class="section-title"><a href="../nyx_converter/nyx_converter-library.html#extensions">Extensions</a></li>
+        <li><a href="../nyx_converter/FFmakeFrequencyCommandExtension.html">FFmakeFrequencyCommandExtension</a></li>
+        <li><a href="../nyx_converter/NyxAudioCodecCommandExtension.html">NyxAudioCodecCommandExtension</a></li>
+        <li><a href="../nyx_converter/NyxAudioCodecNameExtension.html">NyxAudioCodecNameExtension</a></li>
+        <li><a href="../nyx_converter/NyxAudioCodecTitleExtension.html">NyxAudioCodecTitleExtension</a></li>
+        <li><a href="../nyx_converter/NyxBitrateCommandExtension.html">NyxBitrateCommandExtension</a></li>
+        <li><a href="../nyx_converter/NyxBitrateNameExtension.html">NyxBitrateNameExtension</a></li>
+        <li><a href="../nyx_converter/NyxChannelLayoutNameExtension.html">NyxChannelLayoutNameExtension</a></li>
+        <li><a href="../nyx_converter/NyxFormatCommandExtension.html">NyxFormatCommandExtension</a></li>
+        <li><a href="../nyx_converter/NyxFormatNameExtension.html">NyxFormatNameExtension</a></li>
+        <li><a href="../nyx_converter/NyxFrequencyNameExtension.html">NyxFrequencyNameExtension</a></li>
+        <li><a href="../nyx_converter/NyxSizeCommandExtension.html">NyxSizeCommandExtension</a></li>
+        <li><a href="../nyx_converter/NyxSizeNameExtension.html">NyxSizeNameExtension</a></li>
+        <li><a href="../nyx_converter/NyxVideoCodecCommandExtension.html">NyxVideoCodecCommandExtension</a></li>
+        <li><a href="../nyx_converter/NyxVideoCodecNameExtension.html">NyxVideoCodecNameExtension</a></li>
+        <li><a href="../nyx_converter/NyxVideoCodecTitleExtension.html">NyxVideoCodecTitleExtension</a></li>
+
+
+
+      <li class="section-title"><a href="../nyx_converter/nyx_converter-library.html#properties">Properties</a></li>
+        <li><a href="../nyx_converter/NyxConverter.html">NyxConverter</a></li>
+
+
+      <li class="section-title"><a href="../nyx_converter/nyx_converter-library.html#enums">Enums</a></li>
+        <li><a href="../nyx_converter/NyxAudioCodec.html">NyxAudioCodec</a></li>
+        <li><a href="../nyx_converter/NyxBitrate.html">NyxBitrate</a></li>
+        <li><a href="../nyx_converter/NyxChannelLayout.html">NyxChannelLayout</a></li>
+        <li><a href="../nyx_converter/NyxContainer.html">NyxContainer</a></li>
+        <li><a href="../nyx_converter/NyxFrequency.html">NyxFrequency</a></li>
+        <li><a href="../nyx_converter/NyxSize.html">NyxSize</a></li>
+        <li><a href="../nyx_converter/NyxVideoCodec.html">NyxVideoCodec</a></li>
+
+
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <ol>
+
+        <li class="section-title"><a href="../nyx_converter/NyxAudioCodec.html#constructors">Constructors</a></li>
+          <li><a href="../nyx_converter/NyxAudioCodec/NyxAudioCodec.html">NyxAudioCodec</a></li>
+
+        <li class="section-title"><a href="../nyx_converter/NyxAudioCodec.html#values">Values</a></li>
+          <li><a href="../nyx_converter/NyxAudioCodec.html#mp3">mp3</a></li>
+          <li><a href="../nyx_converter/NyxAudioCodec.html#mp2">mp2</a></li>
+          <li><a href="../nyx_converter/NyxAudioCodec.html#wma">wma</a></li>
+          <li><a href="../nyx_converter/NyxAudioCodec.html#aac">aac</a></li>
+          <li><a href="../nyx_converter/NyxAudioCodec.html#oog">oog</a></li>
+          <li><a href="../nyx_converter/NyxAudioCodec.html#flac">flac</a></li>
+          <li><a href="../nyx_converter/NyxAudioCodec.html#alac">alac</a></li>
+          <li><a href="../nyx_converter/NyxAudioCodec.html#dsd">dsd</a></li>
+
+        <li class="section-title inherited">
+          <a href="../nyx_converter/NyxAudioCodec.html#instance-properties">Properties</a>
+        </li>
+          <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+          <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Enum/index.html">index</a></li>
+          <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+
+        <li class="section-title inherited"><a href="../nyx_converter/NyxAudioCodec.html#instance-methods">Methods</a></li>
+          <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+          <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+
+        <li class="section-title inherited"><a href="../nyx_converter/NyxAudioCodec.html#operators">Operators</a></li>
+          <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+        <li class="section-title"><a href="../nyx_converter/NyxAudioCodec.html#constants">Constants</a></li>
+          <li><a href="../nyx_converter/NyxAudioCodec/values-constant.html">values</a></li>
+</ol>
+
+  </div><!-- /.sidebar-offcanvas -->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    nyx_converter
+      0.0.1
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+
