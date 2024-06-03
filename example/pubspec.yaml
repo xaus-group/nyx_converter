@@ -16,6 +16,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   nyx_converter:
     path: ../
+  permission_handler:
 
 dev_dependencies:
   flutter_test:

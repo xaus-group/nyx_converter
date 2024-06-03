@@ -43,28 +43,28 @@ enum NyxContainer {
   flac,
 }
 
-extension NyxFormatCommandExtension on NyxContainer {
+extension NyxContainerCommandExtension on NyxContainer {
   String get command {
     switch (this) {
       case NyxContainer.avi:
         return 'avi';
       case NyxContainer.mp4:
-        return 'avi';
+        return 'mp4';
       case NyxContainer.mkv:
-        return 'avi';
+        return 'mkv';
       case NyxContainer.mov:
-        return 'avi';
+        return 'mov';
       case NyxContainer.ogg:
         return 'ogg';
       case NyxContainer.wav:
-        return 'ogg';
+        return 'wav';
       case NyxContainer.flac:
-        return 'ogg';
+        return 'flac';
     }
   }
 }
 
-extension NyxFormatNameExtension on NyxContainer {
+extension NyxContainerNameExtension on NyxContainer {
   String get name {
     switch (this) {
       case NyxContainer.avi:

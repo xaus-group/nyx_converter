@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nyx_converter/nyx_converter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,14 +26,23 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    NyxConverter.convertTo('filePath', 'outputPath',
-        container: NyxContainer.mp4,
-        videoCodec: NyxVideoCodec.h264,
-        audioCodec: NyxAudioCodec.flac,
-        size: NyxSize.w1280h720,
-        bitrate: NyxBitrate.k320,
-        frequency: NyxFrequency.hz48000,
-        channelLayout: NyxChannelLayout.stereo);
+    _getPermission();
     return const Scaffold();
+  }
+
+  _getPermission() async {
+    var status = await Permission.storage.status;
+    if (status.isDenied) {
+      await Permission.storage.request();
+    } else {
+      NyxConverter.convertTo('/storage/emulated/0/Movies/freemake_app.mp4',
+          '/storage/emulated/0/Movies', NyxContainer.avi,
+          videoCodec: NyxVideoCodec.h264,
+          audioCodec: NyxAudioCodec.flac,
+          size: NyxSize.w1280h720,
+          bitrate: NyxBitrate.k320,
+          frequency: NyxFrequency.hz48000,
+          channelLayout: NyxChannelLayout.stereo);
+    }
   }
 }
