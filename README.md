@@ -16,8 +16,8 @@ The `nyx_converter` widget in Flutter empowers you to seamlessly convert media f
 download nyx_converter to path `./widgets/nyx_converter` then add as a dependency in your pubspec.yaml file:
 ```yaml
 dependencies:
-nyx_converter:
-  path: ./widgets/nyx_converter
+  nyx_converter:
+    path: ./widgets/nyx_converter
 ```
 
 ## Platform Support
@@ -45,7 +45,7 @@ The following table shows Android API level, iOS deployment target and macOS dep
 <details>
 <summary>Android</summary>
 Adding the <a href="https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE">READ_EXTERNAL_STORAGE</a> permission to the <code>AndroidManifest.xml</code> file grants your app the ability to access and read files stored on the external storage of an Android device.
-<code><xmp><uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/></xmp></code>
+<code><uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/></code>
 
 </details>
 <details>
@@ -73,6 +73,8 @@ NyxData? result =  NyxConverter.convertTo(
   filePath, // Specify the input file path
   outputPath, // Define the output file path
   NyxContainer.mp4, // Set the desired output format
+  debugMode: true, // Set true for get detailed logs
+  fileName: 'new_name', // Set output file name
   //TODO: videoCodec: NyxVideoCodec.h264, // Specify the video codec (optional)
   //TODO: audioCodec: NyxAudioCodec.flac, // Define the audio codec (optional)
   //TODO: size: NyxSize.w1280h720, // Set the width and height in pixels (optional)
