@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
 import 'package:ffmpeg_kit_flutter/log.dart';
@@ -11,6 +12,7 @@ import 'package:nyx_converter/src/helper/nyx_data.dart';
 import 'package:nyx_converter/src/helper/nyx_container.dart';
 import 'package:nyx_converter/src/helper/nyx_frequency.dart';
 import 'package:nyx_converter/src/helper/nyx_size.dart';
+import 'package:nyx_converter/src/helper/nyx_status.dart';
 import 'package:nyx_converter/src/helper/nyx_video_codec.dart';
 
 abstract class INyxConverter {
@@ -19,6 +21,8 @@ abstract class INyxConverter {
   /// - [filePath] (String): The path to the input media file.
   /// - [outputPath] (String): The desired path for the converted output file. (e.g., "/storage/emulated/0/Movies")
   /// - [container] (NyxContainer, optional): The target format for the converted file (e.g., "mp4", "avi").
+  /// - [debug] (bool, optional): By setting this item to true, you can get more detailed logs of nyx_converter processes.
+  /// - [fileName] (String, optional): change output file name.
   /// - [videoCodec] (NyxVideoCodec, optional): The desired video codec for the converted file (e.g., "h264", "vp8").
   /// - [audioCodec] (NyxAudioCodec, optional): The desired audio codec for the converted file (e.g., "aac", "mp3").
   /// - [size] (NyxSize, optional): The target width and height of the converted video in pixels.
@@ -39,6 +43,8 @@ abstract class INyxConverter {
   ///
   /// NyxConverter.convertTo(filePath, outputPath,
   ///      NyxContainer.mp4,
+  ///      debugMode: true,
+  ///      fileName: 'new_name',
   ///      videoCodec: NyxVideoCodec.h264,
   ///      audioCodec: NyxAudioCodec.flac,
   ///      size: NyxSize.w1280h720,
@@ -49,7 +55,9 @@ abstract class INyxConverter {
   ///
   Future<NyxData> convertTo(
       String filePath, String outputPath, NyxContainer container,
-      {NyxVideoCodec videoCodec,
+      {bool debugMode = false,
+      String? fileName,
+      NyxVideoCodec videoCodec,
       NyxAudioCodec audioCodec,
       NyxSize size,
       NyxBitrate bitrate,
@@ -68,75 +76,101 @@ class _NyxConverter extends INyxConverter {
 
   @override
   Future<NyxData> convertTo(filePath, outputPath, NyxContainer container,
-      {NyxVideoCodec? videoCodec,
+      {bool debugMode = false,
+      String? fileName,
+      NyxVideoCodec? videoCodec,
       NyxAudioCodec? audioCodec,
       NyxSize? size,
       NyxBitrate? bitrate,
       NyxFrequency? frequency,
-      NyxChannelLayout? channelLayout}) {
-    return FFmpegKit.executeAsync(
-            _getCommand(
-                filePath,
-                _getOutPutFilePath(
-                    outputPath, _getFileName(filePath), container),
-                container), (Session session) async {
-      final returnCode = await session.getReturnCode();
+      NyxChannelLayout? channelLayout}) async {
+    // Check input file name
+    if (fileName != null &&
+        (fileName.contains('.') || fileName.contains('/'))) {
+      log('[Error] [nyx_converter] The file name must not contain the character "." and be "/".');
+      return const NyxData('', NyxStatus.error,
+          message:
+              'The file name must not contain the character "." and be "/".');
+    }
+    // Check output file existance
+    else if (File(
+            '$outputPath/${fileName ?? _getFileName(filePath)}.${container.command}')
+        .existsSync()) {
+      log('[Error] [nyx_converter] The output file already exists please change the file name');
+      return const NyxData('', NyxStatus.error,
+          message: 'The output file already exists');
+    } else {
+      return FFmpegKit.executeAsync(
+          _getCommand(
+              filePath,
+              _getOutPutFilePath(
+                  outputPath, fileName ?? _getFileName(filePath), container),
+              container), (Session session) async {
+        final returnCode = await session.getReturnCode();
+        if (ReturnCode.isSuccess(returnCode) == true) {
+        } else if (ReturnCode.isSuccess(returnCode) == false) {
+          log("[Error] [nyx_converter] A problem has occurred");
+        } else {
+          log("[Error] [nyx_converter] A problem has occurred");
+        }
+      }, (Log ffmpegLog) {
+        // print log messages
+        debugMode ? log('[Log] [nyx_converter] ${ffmpegLog.getMessage()}') : '';
+      }).then((session) async {
+        // print log FailStackTrace
+        debugMode
+            ? log('[Log] [nyx_converter] ${await session.getFailStackTrace()}')
+            : '';
+        // print all logs
+        debugMode
+            ? log('[Log] [nyx_converter] ${await session.getAllLogsAsString()}')
+            : '';
 
-      if (ReturnCode.isSuccess(returnCode) == true) {
-        //TODO Success
-      } else if (ReturnCode.isSuccess(returnCode) == false) {
-        //TODO Cancel
-      } else {
-        //TODO Error
-      }
-    }, (Log log) {})
-        .then((session) async {
-      // Console output generated for this execution
-      // final output = await session.getOutput();
-      // The stack trace if FFmpegKit fails to run a command
-      // final failStackTrace = await session.getFailStackTrace();
-      // await session.getAllLogsAsString()
-      final returnCode = await session.getReturnCode();
+        final returnCode = await session.getReturnCode();
 
-      if (ReturnCode.isSuccess(returnCode)) {
-        return NyxData(
-            _getOutPutFilePath(outputPath, _getFileName(filePath), container));
-      } else if (ReturnCode.isCancel(returnCode)) {
-        //TODO: Cancel
-        return NyxData('');
-      } else {
-        //TODO: Error
-        return NyxData('');
-      }
-    }).onError((error, stackTrace) {
-      log("[Error] [nyx_converter] $error");
-      return const NyxData('');
-    });
+        if (ReturnCode.isSuccess(returnCode)) {
+          return NyxData(
+              _getOutPutFilePath(
+                  outputPath, fileName ?? _getFileName(filePath), container),
+              NyxStatus.success);
+        } else if (ReturnCode.isCancel(returnCode)) {
+          return const NyxData('', NyxStatus.cancel,
+              message: 'Processes have been cancelled');
+        } else {
+          return const NyxData('', NyxStatus.error,
+              message: 'A problem has occurred');
+        }
+      }).onError((error, stackTrace) {
+        log("[Error] [nyx_converter] $error");
+        return NyxData('', NyxStatus.error, message: error.toString());
+      });
+    }
   }
 
   String _getCommand(
     String filePath,
     String outputFilePath,
     NyxContainer container,
-    //TODO: {
-    // NyxVideoCodec? videoCodec,
+    //TODO: {NyxVideoCodec? videoCodec,
     // NyxAudioCodec? audioCodec,
     // NyxSize? size,
     // NyxBitrate? bitrate,
     // NyxFrequency? frequency,
-    // NyxChannelLayout? channelLayout
-    // }
+    // NyxChannelLayout? channelLayout}
   ) {
     String command = "";
     command += "-i '$filePath' -vcodec copy -acodec copy ";
 
-    //TODO:
-    //if (videoCodec != null) {
+    //TODO if (videoCodec != null) {
     //   command += "-c:v ${videoCodec.command} ";
+    // } else {
+    //   command += '-vcodec copy';
     // }
     // if (audioCodec != null) {
     //   // sets the audio codec (MP3=>libmp3lame, AAC=>libfdk_aac, ...)
     //   command += "-c:a ${audioCodec.command} ";
+    // } else {
+    //   command += '-acodec copy';
     // }
     // if (frequency != null) {
     //   // sets the audio sample rate to 48000Hz,...
@@ -165,9 +199,11 @@ class _NyxConverter extends INyxConverter {
     return command;
   }
 
+  // return => 123name
   String _getFileName(String filePath) =>
       filePath.split('/').last.split('.').first;
 
+  // return => /storage/emulated/0/Movies/name123.mp4
   String _getOutPutFilePath(String outputPath, String fileName,
           NyxContainer container) => // outputPath: /storage/emulated/0/Movies,
       // fileName: name123
