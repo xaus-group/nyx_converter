@@ -45,7 +45,7 @@ The following table shows Android API level, iOS deployment target and macOS dep
 <details>
 <summary>Android</summary>
 Adding the <a href="https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE">READ_EXTERNAL_STORAGE</a> permission to the <code>AndroidManifest.xml</code> file grants your app the ability to access and read files stored on the external storage of an Android device.
-<code><uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/></code>
+<xmp><uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/></xmp>
 
 </details>
 <details>
@@ -65,16 +65,66 @@ TODO
 import 'package:nyx_converter/nyx_converter.dart';
 ```
 
-**Widget Usage:** Utilize the `NyxConverter` widget to initiate the conversion process:
+**Widget Usage:** Initiate the media file path and desired output file path to save converted media file.
 ```dart
 final filePath = 'path/to/my.mp4';
 final outputPath = 'path/to/';
 NyxData? result =  NyxConverter.convertTo(
   filePath, // Specify the input file path
   outputPath, // Define the output file path
-  NyxContainer.mp4, // Set the desired output format
-  debugMode: true, // Set true for get detailed logs
-  fileName: 'new_name', // Set output file name
+```
+**Container:** Choose the desired container for your output media file.
+
+<table>
+<thead>
+<tr>
+<th align="center">Video</th>
+<th align="center">Audio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">AVI</td>
+<td align="center">WAV</td>
+</tr>
+<tr>
+<td align="center">MP4</td>
+<td align="center">FLAC</td>
+</tr>
+<tr>
+<td align="center">MKV</td>
+<td align="center">OGG</td>
+</tr>
+<tr>
+<td align="center">MOV</td>
+<td align="center">AAC</td>
+</tr>
+<tr>
+<td align="center">WebM</td>
+<td align="center">MP3</td>
+</tr>
+</tbody>
+</table>
+
+```dart
+  container: NyxContainer.mp4,
+```
+**Debug Mode:** Set true for get detailed logs
+```dart
+  debugMode: true,
+```
+**Output file name:** Set output file name
+```dart
+  fileName: 'new_name',
+);
+```
+
+## TODO
+
+```dart
+final filePath = 'path/to/my.mp4';
+final outputPath = 'path/to/';
+NyxData? result =  NyxConverter.convertTo(
   //TODO: videoCodec: NyxVideoCodec.h264, // Specify the video codec (optional)
   //TODO: audioCodec: NyxAudioCodec.flac, // Define the audio codec (optional)
   //TODO: size: NyxSize.w1280h720, // Set the width and height in pixels (optional)
@@ -82,11 +132,7 @@ NyxData? result =  NyxConverter.convertTo(
   //TODO: frequency: NyxFrequency.hz48000, // Specify the sampling frequency in Hz (optional)
   //TODO: channelLayout: NyxChannelLayout.stereo // Define the number of channels (optional)
 );
-```
 
-## TODO
-
-```dart
 NyxCoverter.convertTo$.subscribe((int percent, int time, bool isDone) {
       printDebug('percent on complition $percent');
       printDebug('time of file process $time');
