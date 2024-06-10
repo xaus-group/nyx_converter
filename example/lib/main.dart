@@ -35,16 +35,19 @@ class MyHomePage extends StatelessWidget {
     if (status.isDenied) {
       await Permission.storage.request();
     } else {
-      NyxConverter.convertTo('/storage/emulated/0/Movies/freemake_app.mp4',
-          '/storage/emulated/0/Movies', NyxContainer.wav,
-          debugMode: true,
-          fileName: 'oggcontainer',
-          videoCodec: NyxVideoCodec.h264,
-          audioCodec: NyxAudioCodec.flac,
-          size: NyxSize.w1280h720,
-          bitrate: NyxBitrate.k320,
-          frequency: NyxFrequency.hz48000,
-          channelLayout: NyxChannelLayout.stereo);
+      NyxConverter.convertTo(
+        '/storage/emulated/0/Movies/VID.avi.mp4',
+        '/storage/emulated/0/Movies',
+        container: NyxContainer.avi,
+        videoCodec: NyxVideoCodec.h264,
+        audioCodec: NyxAudioCodec.flac,
+        size: NyxSize.w1280h720,
+        bitrate: NyxBitrate.k320,
+        frequency: NyxFrequency.hz48000,
+        channelLayout: NyxChannelLayout.stereo,
+        debugMode: true,
+        fileName: 'vidcontainer',
+      );
     }
   }
 }

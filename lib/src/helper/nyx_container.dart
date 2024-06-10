@@ -32,15 +32,25 @@ enum NyxContainer {
   /// Primarily used by Apple for their devices and software. Similar to MP4 in terms of holding different codecs, but might not play as smoothly on non-Apple products.
   mov,
 
+  // Open and royalty-free optimized for web use, efficient compression.
+  webM,
+
+  // ****audio****
+
   /// Often linked to the Vorbis audio codec, but OGG itself is the container. Think of it as a box designed for open-source software, sometimes used for web applications.
   ogg,
-  // ****audio****
 
   /// Stores audio with the highest quality, like an exact replica, but results in large file sizes.
   wav,
 
   /// FLAC is a popular open-source container format designed specifically for lossless audio compression. It efficiently reduces file size without any loss of audio quality
   flac,
+
+  /// High compatibility, efficient compression, widely supported across devices and platforms.
+  mp3,
+
+  /// Better compression and quality than mp3 at similar bit rates, widely supported.
+  aac
 }
 
 extension NyxContainerCommandExtension on NyxContainer {
@@ -54,12 +64,18 @@ extension NyxContainerCommandExtension on NyxContainer {
         return 'mkv';
       case NyxContainer.mov:
         return 'mov';
+      case NyxContainer.webM:
+        return 'webm';
       case NyxContainer.ogg:
         return 'ogg';
       case NyxContainer.wav:
         return 'wav';
       case NyxContainer.flac:
         return 'flac';
+      case NyxContainer.mp3:
+        return 'mp3';
+      case NyxContainer.aac:
+        return 'aac';
     }
   }
 }
@@ -75,12 +91,18 @@ extension NyxContainerNameExtension on NyxContainer {
         return 'MKV (Matroska Video)';
       case NyxContainer.mov:
         return 'QuickTime / MOV';
+      case NyxContainer.webM:
+        return 'WebM';
       case NyxContainer.ogg:
         return 'Ogg';
       case NyxContainer.wav:
         return 'WAV / WAVE (Waveform Audio)';
       case NyxContainer.flac:
         return 'raw FLAC';
+      case NyxContainer.mp3:
+        return 'MP3 (MPEG-1 Audio Layer III)';
+      case NyxContainer.aac:
+        return 'AAC (Advanced Audio Coding)';
     }
   }
 }

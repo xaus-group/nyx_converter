@@ -14,6 +14,7 @@ import 'package:nyx_converter/src/helper/nyx_frequency.dart';
 import 'package:nyx_converter/src/helper/nyx_size.dart';
 import 'package:nyx_converter/src/helper/nyx_status.dart';
 import 'package:nyx_converter/src/helper/nyx_video_codec.dart';
+import 'package:path/path.dart';
 
 abstract class INyxConverter {
   ///
@@ -53,16 +54,16 @@ abstract class INyxConverter {
   ///      channelLayout: NyxChannelLayout.stereo);
   /// ```
   ///
-  Future<NyxData> convertTo(
-      String filePath, String outputPath, NyxContainer container,
+  Future<NyxData> convertTo(String filePath, String outputPath,
       {bool debugMode = false,
       String? fileName,
-      NyxVideoCodec videoCodec,
-      NyxAudioCodec audioCodec,
-      NyxSize size,
-      NyxBitrate bitrate,
-      NyxFrequency frequency,
-      NyxChannelLayout channelLayout});
+      NyxContainer? container,
+      NyxVideoCodec? videoCodec,
+      NyxAudioCodec? audioCodec,
+      NyxSize? size,
+      NyxBitrate? bitrate,
+      NyxFrequency? frequency,
+      NyxChannelLayout? channelLayout});
 }
 
 class _NyxConverter extends INyxConverter {
@@ -75,82 +76,96 @@ class _NyxConverter extends INyxConverter {
   factory _NyxConverter() => _ins ?? _NyxConverter._internal();
 
   @override
-  Future<NyxData> convertTo(filePath, outputPath, NyxContainer container,
+  Future<NyxData> convertTo(filePath, outputPath,
       {bool debugMode = false,
       String? fileName,
+      NyxContainer? container,
       NyxVideoCodec? videoCodec,
       NyxAudioCodec? audioCodec,
       NyxSize? size,
       NyxBitrate? bitrate,
       NyxFrequency? frequency,
       NyxChannelLayout? channelLayout}) async {
-    // Check input file name
-    if (fileName != null &&
-        (fileName.contains('.') || fileName.contains('/'))) {
-      log('[Error] [nyx_converter] The file name must not contain the character "." and be "/".');
-      return const NyxData('', NyxStatus.error,
-          message:
-              'The file name must not contain the character "." and be "/".');
+    _verifyData(outputPath, filePath, fileName,
+        container?.command ?? _getFileContainer(filePath));
+
+    return FFmpegKit.executeAsync(
+        _getCommand(
+            filePath,
+            _getOutPutFilePath(
+                outputPath,
+                fileName ?? _getFileBaseName(filePath),
+                container?.command ?? _getFileContainer(filePath))),
+        (Session session) async {
+      final returnCode = await session.getReturnCode();
+      if (ReturnCode.isSuccess(returnCode) == true) {
+      } else if (ReturnCode.isSuccess(returnCode) == false) {
+        log("[Error] [nyx_converter] A problem has occurred");
+      } else {
+        log("[Error] [nyx_converter] A problem has occurred");
+      }
+    }, (Log ffmpegLog) {
+      // print log messages
+      debugMode ? log('[Log] [nyx_converter] ${ffmpegLog.getMessage()}') : '';
+    }).then((session) async {
+      // print log FailStackTrace
+      debugMode
+          ? log('[Log] [nyx_converter] ${await session.getFailStackTrace()}')
+          : '';
+      // print all logs
+      debugMode
+          ? log('[Log] [nyx_converter] ${await session.getAllLogsAsString()}')
+          : '';
+
+      final returnCode = await session.getReturnCode();
+
+      if (ReturnCode.isSuccess(returnCode)) {
+        return NyxData(
+            _getOutPutFilePath(
+                outputPath,
+                fileName ?? _getFileBaseName(filePath),
+                container?.command ?? _getFileContainer(filePath)),
+            NyxStatus.success);
+      } else if (ReturnCode.isCancel(returnCode)) {
+        return const NyxData('', NyxStatus.cancel,
+            message: 'Processes have been cancelled');
+      } else {
+        return const NyxData('', NyxStatus.error,
+            message: 'A problem has occurred');
+      }
+    }).onError((error, stackTrace) {
+      throw Exception("[nyx_converter] $error");
+    });
+  }
+
+  // check all input data
+  _verifyData(
+      String outputPath, String filePath, String? fileName, String cntinr) {
+    // Check input file existance
+    if (File(outputPath).existsSync()) {
+      throw Exception('[nyx_converter] The imported file does not exist.');
+    }
+    // Check output directory existance
+    else if (Directory(filePath).existsSync()) {
+      throw Exception('[nyx_converter] The directory entered does not exist.');
     }
     // Check output file existance
     else if (File(
-            '$outputPath/${fileName ?? _getFileName(filePath)}.${container.command}')
+            '$outputPath/${fileName ?? _getFileBaseName(filePath)}.$cntinr')
         .existsSync()) {
-      log('[Error] [nyx_converter] The output file already exists please change the file name');
-      return const NyxData('', NyxStatus.error,
-          message: 'The output file already exists');
-    } else {
-      return FFmpegKit.executeAsync(
-          _getCommand(
-              filePath,
-              _getOutPutFilePath(
-                  outputPath, fileName ?? _getFileName(filePath), container),
-              container), (Session session) async {
-        final returnCode = await session.getReturnCode();
-        if (ReturnCode.isSuccess(returnCode) == true) {
-        } else if (ReturnCode.isSuccess(returnCode) == false) {
-          log("[Error] [nyx_converter] A problem has occurred");
-        } else {
-          log("[Error] [nyx_converter] A problem has occurred");
-        }
-      }, (Log ffmpegLog) {
-        // print log messages
-        debugMode ? log('[Log] [nyx_converter] ${ffmpegLog.getMessage()}') : '';
-      }).then((session) async {
-        // print log FailStackTrace
-        debugMode
-            ? log('[Log] [nyx_converter] ${await session.getFailStackTrace()}')
-            : '';
-        // print all logs
-        debugMode
-            ? log('[Log] [nyx_converter] ${await session.getAllLogsAsString()}')
-            : '';
-
-        final returnCode = await session.getReturnCode();
-
-        if (ReturnCode.isSuccess(returnCode)) {
-          return NyxData(
-              _getOutPutFilePath(
-                  outputPath, fileName ?? _getFileName(filePath), container),
-              NyxStatus.success);
-        } else if (ReturnCode.isCancel(returnCode)) {
-          return const NyxData('', NyxStatus.cancel,
-              message: 'Processes have been cancelled');
-        } else {
-          return const NyxData('', NyxStatus.error,
-              message: 'A problem has occurred');
-        }
-      }).onError((error, stackTrace) {
-        log("[Error] [nyx_converter] $error");
-        return NyxData('', NyxStatus.error, message: error.toString());
-      });
+      throw Exception(
+          '[nyx_converter] The output file already exists please change the file name');
+    }
+    // verify input file name
+    else if (fileName != null && !_verifyFileName(fileName)) {
+      throw Exception(
+          '[nyx_converter] The file name must not contain the character "/".');
     }
   }
 
   String _getCommand(
     String filePath,
-    String outputFilePath,
-    NyxContainer container,
+    String outputFilePath, // storage/emulated/0/Movies/name123.mp4
     //TODO: {NyxVideoCodec? videoCodec,
     // NyxAudioCodec? audioCodec,
     // NyxSize? size,
@@ -160,7 +175,6 @@ class _NyxConverter extends INyxConverter {
   ) {
     String command = "";
     command += "-i '$filePath' -vcodec copy -acodec copy ";
-
     //TODO if (videoCodec != null) {
     //   command += "-c:v ${videoCodec.command} ";
     // } else {
@@ -200,16 +214,20 @@ class _NyxConverter extends INyxConverter {
   }
 
   // return => 123name
-  String _getFileName(String filePath) =>
-      filePath.split('/').last.split('.').first;
+  String _getFileBaseName(String filePath) =>
+      basenameWithoutExtension(filePath);
 
   // return => /storage/emulated/0/Movies/name123.mp4
   String _getOutPutFilePath(String outputPath, String fileName,
-          NyxContainer container) => // outputPath: /storage/emulated/0/Movies,
+          String container) => // outputPath: /storage/emulated/0/Movies,
       // fileName: name123
       // container: mp4
       // => /storage/emulated/0/Movies/name123.mp4
-      "$outputPath/$fileName.${container.command}";
+      "$outputPath/$fileName.$container";
+
+  String _getFileContainer(String filePath) => extension(filePath);
+
+  bool _verifyFileName(String fileName) => !(fileName.contains('/'));
 }
 
 /// Nyx Converter.
