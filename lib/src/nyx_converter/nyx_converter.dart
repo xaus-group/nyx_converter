@@ -159,7 +159,7 @@ class _NyxConverter extends INyxConverter {
     // verify input file name
     else if (fileName != null && !_verifyFileName(fileName)) {
       throw Exception(
-          '[nyx_converter] The file name must not contain the character "/".');
+          '[nyx_converter] The file name must not contain the character "|\\?*<\":>+[]/\'".');
     }
   }
 
@@ -227,7 +227,10 @@ class _NyxConverter extends INyxConverter {
 
   String _getFileContainer(String filePath) => extension(filePath);
 
-  bool _verifyFileName(String fileName) => !(fileName.contains('/'));
+  bool _verifyFileName(String fileName) {
+    final unwantedCharsRegex = RegExp(r'[|\?\<\":\+\[\]\/]');
+    return unwantedCharsRegex.hasMatch(fileName);
+  }
 }
 
 /// Nyx Converter.

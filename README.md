@@ -45,7 +45,7 @@ The following table shows Android API level, iOS deployment target and macOS dep
 <details>
 <summary>Android</summary>
 Adding the <a href="https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE">READ_EXTERNAL_STORAGE</a> permission to the <code>AndroidManifest.xml</code> file grants your app the ability to access and read files stored on the external storage of an Android device.
-<xmp><uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/></xmp>
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
 </details>
 <details>
