@@ -42,10 +42,10 @@ The following table shows Android API level, iOS deployment target and macOS dep
 </table>
 
 ## Configuration
-<details>
-<summary>Android</summary>
-Adding the <a href="https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE">READ_EXTERNAL_STORAGE</a> permission to the <code>AndroidManifest.xml</code> file grants your app the ability to access and read files stored on the external storage of an Android device.
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+**Android**
+- **[READ_EXTERNAL_STORAGE](https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE)**: This permission allows the app to access and read media files (videos, audio) stored on the device's external storage (SD card or internal storage). This is typically needed to read the input files for processing with `nyx_converter`.
+
+- **[WRITE_EXTERNAL_STORAGE](https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE)**: This permission allows the app to write processed media files (edited videos, converted audio formats) to the device's external storage. This is needed if you want to save the output of `nyx_converter` operations.
 
 </details>
 <details>
