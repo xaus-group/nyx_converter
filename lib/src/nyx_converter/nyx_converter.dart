@@ -86,7 +86,7 @@ class _NyxConverter extends INyxConverter {
       NyxBitrate? bitrate,
       NyxFrequency? frequency,
       NyxChannelLayout? channelLayout}) async {
-    _verifyData(outputPath, filePath, fileName,
+    _verifyData(filePath, outputPath, fileName,
         container?.command ?? _getFileContainer(filePath));
 
     return FFmpegKit.executeAsync(
@@ -140,16 +140,16 @@ class _NyxConverter extends INyxConverter {
 
   // check all input data
   _verifyData(
-      String outputPath, String filePath, String? fileName, String cntinr) {
-    // Check input file existance
-    if (File(filePath).existsSync()) {
+      String filePath, String outputPath, String? fileName, String cntinr) {
+    // Check input file
+    if (!File(filePath).existsSync()) {
       throw Exception('[nyx_converter] The imported file does not exist.');
     }
     // Check output directory existance
-    else if (Directory(outputPath).existsSync()) {
+    else if (!Directory('/storage/emulated/0/Movies').existsSync()) {
       throw Exception('[nyx_converter] The directory entered does not exist.');
     }
-    // Check output file existance
+    // // Check output file existance
     else if (File(
             '$outputPath/${fileName ?? _getFileBaseName(filePath)}.$cntinr')
         .existsSync()) {

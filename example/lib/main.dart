@@ -36,7 +36,7 @@ class MyHomePage extends StatelessWidget {
       await Permission.storage.request();
     } else {
       NyxConverter.convertTo(
-        '/storage/emulated/0/Movies/VID',
+        '/storage/emulated/0/Movies/freemake_app.mp4',
         '/storage/emulated/0/Movies',
         container: NyxContainer.avi,
         videoCodec: NyxVideoCodec.h264,
