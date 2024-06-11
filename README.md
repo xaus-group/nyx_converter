@@ -43,9 +43,13 @@ The following table shows Android API level, iOS deployment target and macOS dep
 
 ## Configuration
 **Android**
-- **[READ_EXTERNAL_STORAGE](https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE)**: This permission allows the app to access and read media files (videos, audio) stored on the device's external storage (SD card or internal storage). This is typically needed to read the input files for processing with `nyx_converter`.
+- **[READ_EXTERNAL_STORAGE](https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE) (API level 29 and below)**: This permission allows the app to access and read media files (videos, audio) stored on the device's external storage (SD card or internal storage). This is typically needed to read the input files for processing with `nyx_converter`.
 
-- **[WRITE_EXTERNAL_STORAGE](https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE)**: This permission allows the app to write processed media files (edited videos, converted audio formats) to the device's external storage. This is needed if you want to save the output of `nyx_converter` operations.
+- **[WRITE_EXTERNAL_STORAGE](https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE) (API level 29 and below)**: This permission allows the app to write processed media files (edited videos, converted audio formats) to the device's external storage. This is needed if you want to save the output of `nyx_converter` operations.
+
+- **READ_MEDIA_ Permissions (API level 30 and Above)**: These are a group of permissions introduced with Scoped Storage. They provide a more granular approach to accessing media files on the device.
+  - [READ_MEDIA_VIDEO](https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_VIDEO): Allows reading video files.
+  - [READ_MEDIA_AUDIO](https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_AUDIO): Allows reading audio files.
 
 </details>
 <details>
@@ -65,7 +69,7 @@ TODO
 import 'package:nyx_converter/nyx_converter.dart';
 ```
 
-**Widget Usage:** Initiate the media file path and desired output file path to save converted media file.
+**Widget Usage:** Use [`.convertTo`](https://xaus-group.github.io/nyx_converter/nyx_converter/INyxConverter/convertTo.html) method for initiate the media file path and desired output file path to save converted media file.
 ```dart
 final filePath = 'path/to/my.mp4';
 final outputPath = 'path/to/';
@@ -73,7 +77,7 @@ NyxData? result =  NyxConverter.convertTo(
   filePath, // Specify the input file path
   outputPath, // Define the output file path
 ```
-**Container:** Choose the desired container for your output media file.
+**[Container](https://xaus-group.github.io/nyx_converter/nyx_converter/NyxContainer.html):** Choose the desired container for your output media file.
 
 <table>
 <thead>

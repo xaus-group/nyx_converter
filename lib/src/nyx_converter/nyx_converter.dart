@@ -142,11 +142,11 @@ class _NyxConverter extends INyxConverter {
   _verifyData(
       String outputPath, String filePath, String? fileName, String cntinr) {
     // Check input file existance
-    if (File(outputPath).existsSync()) {
+    if (File(filePath).existsSync()) {
       throw Exception('[nyx_converter] The imported file does not exist.');
     }
     // Check output directory existance
-    else if (Directory(filePath).existsSync()) {
+    else if (Directory(outputPath).existsSync()) {
       throw Exception('[nyx_converter] The directory entered does not exist.');
     }
     // Check output file existance
@@ -156,8 +156,13 @@ class _NyxConverter extends INyxConverter {
       throw Exception(
           '[nyx_converter] The output file already exists please change the file name');
     }
+    // check input file have container or not
+    else if (extension(filePath).isEmpty) {
+      throw Exception(
+          '[nyx_converter] The imported file does not have the specified container');
+    }
     // verify input file name
-    else if (fileName != null && !_verifyFileName(fileName)) {
+    else if (fileName != null && _verifyFileName(fileName)) {
       throw Exception(
           '[nyx_converter] The file name must not contain the character "|\\?*<\":>+[]/\'".');
     }

@@ -36,7 +36,7 @@ class MyHomePage extends StatelessWidget {
       await Permission.storage.request();
     } else {
       NyxConverter.convertTo(
-        '/storage/emulated/0/Movies/VID.avi.mp4',
+        '/storage/emulated/0/Movies/VID',
         '/storage/emulated/0/Movies',
         container: NyxContainer.avi,
         videoCodec: NyxVideoCodec.h264,
@@ -46,7 +46,7 @@ class MyHomePage extends StatelessWidget {
         frequency: NyxFrequency.hz48000,
         channelLayout: NyxChannelLayout.stereo,
         debugMode: true,
-        fileName: 'vidcontainer',
+        fileName: 'emptycon<tianer',
       );
     }
   }
