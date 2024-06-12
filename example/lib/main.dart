@@ -36,17 +36,11 @@ class MyHomePage extends StatelessWidget {
       await Permission.storage.request();
     } else {
       NyxConverter.convertTo(
-        '/storage/emulated/0/Movies/freemake_app.mp4',
-        '/storage/emulated/0/Movies',
+        '/storage/emulated/0/Movies/selin.mp4',
+        '/storage/emulated/0/Music',
         container: NyxContainer.mp3,
-        videoCodec: NyxVideoCodec.h264,
-        audioCodec: NyxAudioCodec.flac,
-        size: NyxSize.w1280h720,
-        bitrate: NyxBitrate.k320,
-        frequency: NyxFrequency.hz48000,
-        channelLayout: NyxChannelLayout.stereo,
         debugMode: true,
-        fileName: 'audiocontainers',
+        fileName: 'selinaudio',
       );
     }
   }

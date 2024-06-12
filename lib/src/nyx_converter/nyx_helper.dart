@@ -19,7 +19,7 @@ class NyxHelper {
       throw Exception('[nyx_converter] The imported file does not exist.');
     }
     // Check output directory existance
-    else if (!Directory('/storage/emulated/0/Movies').existsSync()) {
+    else if (!Directory(outputPath).existsSync()) {
       throw Exception('[nyx_converter] The directory entered does not exist.');
     }
     // // Check output file existance
@@ -52,17 +52,13 @@ class NyxHelper {
     // NyxChannelLayout? channelLayout}
   ) {
     String command = "";
-    command += "-i '$filePath' -vcodec copy -acodec copy ";
+    command += "-i '$filePath' ";
     //TODO if (videoCodec != null) {
     //   command += "-c:v ${videoCodec.command} ";
-    // } else {
-    //   command += '-vcodec copy';
     // }
     // if (audioCodec != null) {
     //   // sets the audio codec (MP3=>libmp3lame, AAC=>libfdk_aac, ...)
     //   command += "-c:a ${audioCodec.command} ";
-    // } else {
-    //   command += '-acodec copy';
     // }
     // if (frequency != null) {
     //   // sets the audio sample rate to 48000Hz,...
@@ -87,6 +83,7 @@ class NyxHelper {
     // }
 
     command += "'$outputFilePath'";
+
     return command;
   }
 

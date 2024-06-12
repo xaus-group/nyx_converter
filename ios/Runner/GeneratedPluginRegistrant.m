@@ -6,10 +6,10 @@
 
 #import "GeneratedPluginRegistrant.h"
 
-#if __has_include(<ffmpeg_kit_flutter/FFmpegKitFlutterPlugin.h>)
-#import <ffmpeg_kit_flutter/FFmpegKitFlutterPlugin.h>
+#if __has_include(<ffmpeg_kit_flutter_full_gpl/FFmpegKitFlutterPlugin.h>)
+#import <ffmpeg_kit_flutter_full_gpl/FFmpegKitFlutterPlugin.h>
 #else
-@import ffmpeg_kit_flutter;
+@import ffmpeg_kit_flutter_full_gpl;
 #endif
 
 @implementation GeneratedPluginRegistrant
