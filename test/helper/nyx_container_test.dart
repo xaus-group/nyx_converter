@@ -27,5 +27,17 @@ void main() {
 
       expect(actual, true);
     });
+
+    test('Containers should not be empty string', () {
+      bool actual = false;
+
+      for (var container in NyxContainer.values) {
+        if (container.name.isNotEmpty) {
+          actual = true;
+        }
+      }
+
+      expect(actual, true);
+    });
   });
 }
