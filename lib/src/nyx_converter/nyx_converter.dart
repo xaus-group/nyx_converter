@@ -30,8 +30,9 @@ class _NyxConverter extends INyxConverter {
       NyxBitrate? bitrate,
       NyxFrequency? frequency,
       NyxChannelLayout? channelLayout}) async {
-    NyxHelper().verifyData(filePath, outputPath, fileName,
-        container?.command ?? NyxHelper().getFileContainer(filePath));
+    NyxHelper().verifyData(filePath, outputPath,
+        container?.command ?? NyxHelper().getFileContainer(filePath),
+        fileName: fileName);
     return NyxFFConverter().execute(
         NyxHelper().getCommand(
             filePath,

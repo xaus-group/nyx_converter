@@ -13,7 +13,11 @@ class NyxHelper {
 
   // check all input data
   verifyData(
-      String filePath, String outputPath, String? fileName, String cntinr) {
+    String filePath,
+    String outputPath,
+    String cntinr, {
+    String? fileName,
+  }) {
     // Check input file
     if (!File(filePath).existsSync()) {
       throw Exception('[nyx_converter] The imported file does not exist.');
@@ -30,12 +34,12 @@ class NyxHelper {
           '[nyx_converter] The output file already exists please change the file name');
     }
     // check input file have container or not
-    else if (extension(filePath).isEmpty) {
+    else if (getFileContainer(filePath).isEmpty) {
       throw Exception(
           '[nyx_converter] The imported file does not have the specified container');
     }
     // verify input file name
-    else if (fileName != null && verifyFileName(fileName)) {
+    else if (fileName != null && !verifyFileName(fileName)) {
       throw Exception(
           '[nyx_converter] The file name must not contain the character "|\\?*<\":>+[]/\'".');
     }
@@ -101,7 +105,7 @@ class NyxHelper {
   String getFileContainer(String filePath) => extension(filePath);
 
   bool verifyFileName(String fileName) {
-    final unwantedCharsRegex = RegExp(r'[|\?\<\":\+\[\]\/]');
-    return unwantedCharsRegex.hasMatch(fileName);
+    final unwantedCharsRegex = RegExp(r'[|\\?\<\":\+\[\]\/]');
+    return !unwantedCharsRegex.hasMatch(fileName);
   }
 }
