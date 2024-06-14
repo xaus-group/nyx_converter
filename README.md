@@ -69,7 +69,7 @@ TODO
 import 'package:nyx_converter/nyx_converter.dart';
 ```
 
-**Widget Usage:** Use [`.convertTo`](https://xaus-group.github.io/nyx_converter/nyx_converter/INyxConverter/convertTo.html) method for initiate the media file path and desired output file path to save converted media file.
+**Widget Usage:** Use `.convertTo` method for initiate the media file path and desired output file path to save converted media file.
 ```dart
 final filePath = 'path/to/my.mp4';
 final outputPath = 'path/to/';

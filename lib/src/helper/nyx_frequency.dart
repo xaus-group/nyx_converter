@@ -28,7 +28,7 @@ enum NyxFrequency {
   hz22050,
 }
 
-extension FFmakeFrequencyCommandExtension on NyxFrequency {
+extension NyxFrequencyCommandExtension on NyxFrequency {
   String get command {
     switch (this) {
       case NyxFrequency.hz48000:

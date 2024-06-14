@@ -5,7 +5,7 @@ steps:
     uses: subosito/flutter-action@v2
     with:
       channel: stable
-      flutter-version: flutter-version-file: ../../pubspec.yaml
+      flutter-version-file: ../../pubspec.yaml
   - run: flutter --version
 jobs:
   main:
