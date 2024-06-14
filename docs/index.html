@@ -49,7 +49,7 @@
   <div id="dartdoc-main-content" class="main-content">
       
 <section class="desc markdown">
-  <h1 id="nyx-converter-github-releasehttpsimgshieldsiogithubvreleasexaus-groupnyx_converterhttpsgithubcomxaus-groupnyx_converter-pub-packagehttpsimgshieldsiopubvnyx_convertersvghttpspubdevpackagesnyx_converter">Nyx Converter <a href="https://github.com/xaus-group/nyx_converter"><img src="https://img.shields.io/github/v/release/xaus-group/nyx_converter" alt="Github release"></a> <a href="https://pub.dev/packages/nyx_converter"><img src="https://img.shields.io/pub/v/nyx_converter.svg" alt="pub package"></a></h1><img src="./screenshots/logo.png" width="240">
+  <h1 id="nyx-converter-github-releasehttpsimgshieldsiogithubvreleasexaus-groupnyx_converterhttpsgithubcomxaus-groupnyx_converter-pub-packagehttpsimgshieldsiopubvnyx_convertersvghttpspubdevpackagesnyx_converter-licensehttpsimgshieldsiogithublicensexaus-groupnyx_converterhttpswwwgnuorglicenseslgpl-30enhtml-github-starshttpsimgshieldsiogithubstarsxaus-groupnyx_converterhttpsgithubcomxaus-groupnyx_converter-issueshttpsimgshieldsiogithubissuesxaus-groupnyx_converterhttpsgithubcomxaus-groupnyx_converterissues">Nyx Converter <a href="https://github.com/xaus-group/nyx_converter"><img src="https://img.shields.io/github/v/release/xaus-group/nyx_converter" alt="Github release"></a> <a href="https://pub.dev/packages/nyx_converter"><img src="https://img.shields.io/pub/v/nyx_converter.svg" alt="pub package"></a> <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html"><img src="https://img.shields.io/github/license/xaus-group/nyx_converter" alt="License"></a> <a href="https://github.com/xaus-group/nyx_converter"><img src="https://img.shields.io/github/stars/xaus-group/nyx_converter" alt="Github Stars"></a> <a href="https://github.com/xaus-group/nyx_converter/issues"><img src="https://img.shields.io/github/issues/xaus-group/nyx_converter" alt="Issues"></a></h1><p align="center"><img src="https://raw.githubusercontent.com/xaus-group/nyx_converter/master/screenshots/logo.png" alt="nyx_converter logo" width="240"></p>
 <p>The <code>nyx_converter</code> widget in Flutter empowers you to seamlessly convert media files between various formats, codecs, resolutions, bitrates, and audio properties. It utilizes the robust ffmpeg library under the hood, providing a convenient and efficient solution for your media processing needs within your Flutter applications.</p>
 <h2 id="key-features">Key Features</h2>
 <ul>
@@ -59,32 +59,117 @@
 <li><strong>Bitrate Optimization:</strong> Set the bitrate (in kbps) to strike a balance between quality and file size, catering to different bandwidth requirements or storage constraints.</li>
 <li><strong>Audio Fine-Tuning:</strong> Specify the sampling frequency (in Hz) and number of channels (mono or stereo) for the audio stream within the converted media file, allowing for customized audio output.</li>
 </ul>
-<h2 id="usage">Usage</h2>
-<p><strong>Installation:</strong> download nyx_converter to path <code>./widgets/nyx_converter</code> then add as a dependency in your pubspec.yaml file:</p>
+<h2 id="installation">Installation</h2>
+<p>download nyx_converter to path <code>./widgets/nyx_converter</code> then add as a dependency in your pubspec.yaml file:</p>
 <pre class="language-yaml"><code class="language-yaml">dependencies:
-nyx_converter:
-  path: ./widgets/nyx_converter
+  nyx_converter:
+    path: ./widgets/nyx_converter
 </code></pre>
+<h2 id="platform-support">Platform Support</h2>
+<p>The following table shows Android API level, iOS deployment target and macOS deployment target requirements in <code>nyx_converter</code> releases.</p><table>
+<thead>
+<tr>
+<th align="center">Android<br>API Level</th>
+<th align="center">iOS Minimum<br>Deployment Target</th>
+<th align="center">macOS Minimum<br>Deployment Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">24</td>
+<td align="center">12.1</td>
+<td align="center">10.15</td>
+</tr>
+</tbody>
+</table>
+<h2 id="configuration">Configuration</h2>
+<p><strong>Android</strong></p>
+<ul>
+<li>
+<p><strong><a href="https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE">READ_EXTERNAL_STORAGE</a> (API level 29 and below)</strong>: This permission allows the app to access and read media files (videos, audio) stored on the device's external storage (SD card or internal storage). This is typically needed to read the input files for processing with <code>nyx_converter</code>.</p>
+</li>
+<li>
+<p><strong><a href="https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE">WRITE_EXTERNAL_STORAGE</a> (API level 29 and below)</strong>: This permission allows the app to write processed media files (edited videos, converted audio formats) to the device's external storage. This is needed if you want to save the output of <code>nyx_converter</code> operations.</p>
+</li>
+<li>
+<p><strong>READ_MEDIA_ Permissions (API level 30 and Above)</strong>: These are a group of permissions introduced with Scoped Storage. They provide a more granular approach to accessing media files on the device.</p>
+<ul>
+<li><a href="https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_VIDEO">READ_MEDIA_VIDEO</a>: Allows reading video files.</li>
+<li><a href="https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_AUDIO">READ_MEDIA_AUDIO</a>: Allows reading audio files.</li>
+</ul>
+</li>
+</ul>
+<details>
+<summary>iOS</summary>
+TODO
+</details>
+<details>
+<summary>macOS</summary>
+TODO
+</details>
+<h2 id="using">Using</h2>
 <p><strong>Import:</strong> Import the package in your Dart code:</p>
 <pre class="language-dart"><code class="language-dart">import 'package:nyx_converter/nyx_converter.dart';
 </code></pre>
-<p><strong>Widget Usage:</strong> Utilize the <code>NyxConverter</code> widget to initiate the conversion process:</p>
+<p><strong>Widget Usage:</strong> Use <a href="https://xaus-group.github.io/nyx_converter/nyx_converter/INyxConverter/convertTo.html"><code>.convertTo</code></a> method for initiate the media file path and desired output file path to save converted media file.</p>
 <pre class="language-dart"><code class="language-dart">final filePath = 'path/to/my.mp4';
 final outputPath = 'path/to/';
 NyxData? result =  NyxConverter.convertTo(
   filePath, // Specify the input file path
   outputPath, // Define the output file path
-  container: NyxContainer.mp4, // Set the desired output format (optional)
-  videoCodec: NyxVideoCodec.h264, // Specify the video codec (optional)
-  audioCodec: NyxAudioCodec.flac, // Define the audio codec (optional)
-  size: NyxSize.w1280h720, // Set the width and height in pixels (optional)
-  bitrate: NyxBitrate.k320, // Set the bitrate in kbps (optional)
-  frequency: NyxFrequency.hz48000, // Specify the sampling frequency in Hz (optional)
-  channelLayout: NyxChannelLayout.stereo // Define the number of channels (optional)
+</code></pre>
+<p><strong><a href="https://xaus-group.github.io/nyx_converter/nyx_converter/NyxContainer.html">Container</a>:</strong> Choose the desired container for your output media file.</p><table>
+<thead>
+<tr>
+<th align="center">Video</th>
+<th align="center">Audio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">AVI</td>
+<td align="center">WAV</td>
+</tr>
+<tr>
+<td align="center">MP4</td>
+<td align="center">FLAC</td>
+</tr>
+<tr>
+<td align="center">MKV</td>
+<td align="center">OGG</td>
+</tr>
+<tr>
+<td align="center">MOV</td>
+<td align="center">AAC</td>
+</tr>
+<tr>
+<td align="center">WebM</td>
+<td align="center">MP3</td>
+</tr>
+</tbody>
+</table>
+<pre class="language-dart"><code class="language-dart">  container: NyxContainer.mp4,
+</code></pre>
+<p><strong>Debug Mode:</strong> Set true for get detailed logs</p>
+<pre class="language-dart"><code class="language-dart">  debugMode: true,
+</code></pre>
+<p><strong>Output file name:</strong> Set output file name</p>
+<pre class="language-dart"><code class="language-dart">  fileName: 'new_name',
 );
 </code></pre>
 <h2 id="todo">TODO</h2>
-<pre class="language-dart"><code class="language-dart">NyxCoverter.convertTo$.subscribe((int percent, int time, bool isDone) {
+<pre class="language-dart"><code class="language-dart">final filePath = 'path/to/my.mp4';
+final outputPath = 'path/to/';
+NyxData? result =  NyxConverter.convertTo(
+  //TODO: videoCodec: NyxVideoCodec.h264, // Specify the video codec (optional)
+  //TODO: audioCodec: NyxAudioCodec.flac, // Define the audio codec (optional)
+  //TODO: size: NyxSize.w1280h720, // Set the width and height in pixels (optional)
+  //TODO: bitrate: NyxBitrate.k320, // Set the bitrate in kbps (optional)
+  //TODO: frequency: NyxFrequency.hz48000, // Specify the sampling frequency in Hz (optional)
+  //TODO: channelLayout: NyxChannelLayout.stereo // Define the number of channels (optional)
+);
+
+NyxCoverter.convertTo$.subscribe((int percent, int time, bool isDone) {
       printDebug('percent on complition $percent');
       printDebug('time of file process $time');
       printDebug('process is done $isDone');

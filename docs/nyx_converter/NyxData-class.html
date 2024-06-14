@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the INyxConverter class from the nyx_converter library, for the Dart programming language.">
-  <title>INyxConverter class - nyx_converter library - Dart API</title>
+  <meta name="description" content="API docs for the NyxData class from the nyx_converter library, for the Dart programming language.">
+  <title>NyxData class - nyx_converter library - Dart API</title>
 
 
   
@@ -30,9 +30,9 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">nyx_converter</a></li>
     <li><a href="../nyx_converter/nyx_converter-library.html">nyx_converter</a></li>
-    <li class="self-crumb">INyxConverter abstract class</li>
+    <li class="self-crumb">NyxData class</li>
   </ol>
-  <div class="self-name">INyxConverter</div>
+  <div class="self-name">NyxData</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -49,7 +49,7 @@
 
   <div id="dartdoc-main-content" class="main-content">
       <div>
-<h1><span class="kind-class">INyxConverter</span> class 
+<h1><span class="kind-class">NyxData</span> class 
     <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
  
 </h1></div>
@@ -63,16 +63,17 @@
     <h2>Constructors</h2>
 
     <dl class="constructor-summary-list">
-        <dt id="INyxConverter" class="callable">
-          <span class="name"><a href="../nyx_converter/INyxConverter/INyxConverter.html">INyxConverter</a></span><span class="signature">()</span>
+        <dt id="NyxData" class="callable">
+          <span class="name"><a href="../nyx_converter/NyxData/NyxData.html">NyxData</a></span><span class="signature">(<span class="parameter" id="-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="-param-status"><span class="type-annotation">NyxStatus</span> <span class="parameter-name">status</span>, </span><span class="parameter" id="-param-message">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">message</span>}</span>)</span>
         </dt>
         <dd>
           
+            <div class="constructor-modifier features">const</div>
         </dd>
     </dl>
   </section>
 
-    <section class="summary offset-anchor inherited" id="instance-properties">
+    <section class="summary offset-anchor" id="instance-properties">
       <h2>Properties</h2>
 
       <dl class="properties">
@@ -87,6 +88,28 @@
 
 </dd>
 
+        <dt id="message" class="property">
+  <span class="name"><a href="../nyx_converter/NyxData/message.html">message</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> 
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="path" class="property">
+  <span class="name"><a href="../nyx_converter/NyxData/path.html">path</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> 
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
         <dt id="runtimeType" class="property inherited">
   <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
   <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span> 
@@ -98,28 +121,26 @@
 
 </dd>
 
+        <dt id="status" class="property">
+  <span class="name"><a href="../nyx_converter/NyxData/status.html">status</a></span>
+  <span class="signature">&#8594; NyxStatus</span> 
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
       </dl>
     </section>
 
     
   <section
-      class="summary offset-anchor"
+      class="summary offset-anchor inherited"
       id="instance-methods">
     <h2>Methods</h2>
     <dl class="callables">
-        <dt id="convertTo" class="callable">
-  <span class="name"><a href="../nyx_converter/INyxConverter/convertTo.html">convertTo</a></span><span class="signature">(<wbr><span class="parameter" id="convertTo-param-filePath"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span>, </span><span class="parameter" id="convertTo-param-outputPath"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">outputPath</span>, </span><span class="parameter" id="convertTo-param-container">{<span class="type-annotation"><a href="../nyx_converter/NyxContainer.html">NyxContainer</a></span> <span class="parameter-name">container</span>, </span><span class="parameter" id="convertTo-param-videoCodec"><span class="type-annotation"><a href="../nyx_converter/NyxVideoCodec.html">NyxVideoCodec</a></span> <span class="parameter-name">videoCodec</span>, </span><span class="parameter" id="convertTo-param-audioCodec"><span class="type-annotation"><a href="../nyx_converter/NyxAudioCodec.html">NyxAudioCodec</a></span> <span class="parameter-name">audioCodec</span>, </span><span class="parameter" id="convertTo-param-size"><span class="type-annotation"><a href="../nyx_converter/NyxSize.html">NyxSize</a></span> <span class="parameter-name">size</span>, </span><span class="parameter" id="convertTo-param-bitrate"><span class="type-annotation"><a href="../nyx_converter/NyxBitrate.html">NyxBitrate</a></span> <span class="parameter-name">bitrate</span>, </span><span class="parameter" id="convertTo-param-frequency"><span class="type-annotation"><a href="../nyx_converter/NyxFrequency.html">NyxFrequency</a></span> <span class="parameter-name">frequency</span>, </span><span class="parameter" id="convertTo-param-channelLayout"><span class="type-annotation"><a href="../nyx_converter/NyxChannelLayout.html">NyxChannelLayout</a></span> <span class="parameter-name">channelLayout</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">NyxData</span>&gt;</span></span>
-  </span>
-  
-
-</dt>
-<dd>
-  Parameters:
-  
-
-</dd>
-
         <dt id="noSuchMethod" class="callable inherited">
   <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
     <span class="returntype parameter">&#8594; dynamic</span>
@@ -128,7 +149,7 @@
 
 </dt>
 <dd class="inherited">
-  Invoked when a non-existent method or property is accessed.
+  Invoked when a nonexistent method or property is accessed.
   <div class="features"><span class="feature">inherited</span></div>
 
 </dd>
@@ -186,14 +207,14 @@
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
   <li><a href="../index.html">nyx_converter</a></li>
   <li><a href="../nyx_converter/nyx_converter-library.html">nyx_converter</a></li>
-  <li class="self-crumb">INyxConverter abstract class</li>
+  <li class="self-crumb">NyxData class</li>
 </ol>
 
 
     <h5>nyx_converter library</h5>
     <ol>
       <li class="section-title"><a href="../nyx_converter/nyx_converter-library.html#classes">Classes</a></li>
-        <li><a href="../nyx_converter/INyxConverter-class.html">INyxConverter</a></li>
+        <li><a href="../nyx_converter/NyxData-class.html">NyxData</a></li>
 
       <li class="section-title"><a href="../nyx_converter/nyx_converter-library.html#extensions">Extensions</a></li>
         <li><a href="../nyx_converter/FFmakeFrequencyCommandExtension.html">FFmakeFrequencyCommandExtension</a></li>
@@ -203,8 +224,8 @@
         <li><a href="../nyx_converter/NyxBitrateCommandExtension.html">NyxBitrateCommandExtension</a></li>
         <li><a href="../nyx_converter/NyxBitrateNameExtension.html">NyxBitrateNameExtension</a></li>
         <li><a href="../nyx_converter/NyxChannelLayoutNameExtension.html">NyxChannelLayoutNameExtension</a></li>
-        <li><a href="../nyx_converter/NyxFormatCommandExtension.html">NyxFormatCommandExtension</a></li>
-        <li><a href="../nyx_converter/NyxFormatNameExtension.html">NyxFormatNameExtension</a></li>
+        <li><a href="../nyx_converter/NyxContainerCommandExtension.html">NyxContainerCommandExtension</a></li>
+        <li><a href="../nyx_converter/NyxContainerNameExtension.html">NyxContainerNameExtension</a></li>
         <li><a href="../nyx_converter/NyxFrequencyNameExtension.html">NyxFrequencyNameExtension</a></li>
         <li><a href="../nyx_converter/NyxSizeCommandExtension.html">NyxSizeCommandExtension</a></li>
         <li><a href="../nyx_converter/NyxSizeNameExtension.html">NyxSizeNameExtension</a></li>
@@ -235,22 +256,24 @@
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
     <ol>
 
-        <li class="section-title"><a href="../nyx_converter/INyxConverter-class.html#constructors">Constructors</a></li>
-          <li><a href="../nyx_converter/INyxConverter/INyxConverter.html">INyxConverter</a></li>
+        <li class="section-title"><a href="../nyx_converter/NyxData-class.html#constructors">Constructors</a></li>
+          <li><a href="../nyx_converter/NyxData/NyxData.html">NyxData</a></li>
 
 
-        <li class="section-title inherited">
-          <a href="../nyx_converter/INyxConverter-class.html#instance-properties">Properties</a>
+        <li class="section-title">
+          <a href="../nyx_converter/NyxData-class.html#instance-properties">Properties</a>
         </li>
           <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+          <li><a href="../nyx_converter/NyxData/message.html">message</a></li>
+          <li><a href="../nyx_converter/NyxData/path.html">path</a></li>
           <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+          <li><a href="../nyx_converter/NyxData/status.html">status</a></li>
 
-        <li class="section-title"><a href="../nyx_converter/INyxConverter-class.html#instance-methods">Methods</a></li>
-          <li><a href="../nyx_converter/INyxConverter/convertTo.html">convertTo</a></li>
+        <li class="section-title inherited"><a href="../nyx_converter/NyxData-class.html#instance-methods">Methods</a></li>
           <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
           <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
 
-        <li class="section-title inherited"><a href="../nyx_converter/INyxConverter-class.html#operators">Operators</a></li>
+        <li class="section-title inherited"><a href="../nyx_converter/NyxData-class.html#operators">Operators</a></li>
           <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
 
 
