@@ -6,9 +6,13 @@ permissions:
   actions: read
   checks: write
 jobs:
-  build-test:
-    name: Build & Test
+  main:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Test
+        uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
       - run: flutter test

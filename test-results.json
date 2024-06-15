@@ -1,0 +1,42 @@
+{"protocolVersion":"0.1.1","runnerVersion":null,"pid":19477,"type":"start","time":0}
+{"suite":{"id":0,"platform":"vm","path":"/home/husen/Documents/nyx_converter/test/helper/nyx_status_test.dart"},"type":"suite","time":0}
+{"test":{"id":1,"name":"loading /home/husen/Documents/nyx_converter/test/helper/nyx_status_test.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":2}
+{"suite":{"id":2,"platform":"vm","path":"/home/husen/Documents/nyx_converter/test/helper/nyx_container_test.dart"},"type":"suite","time":9}
+{"test":{"id":3,"name":"loading /home/husen/Documents/nyx_converter/test/helper/nyx_container_test.dart","suiteID":2,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":9}
+{"suite":{"id":4,"platform":"vm","path":"/home/husen/Documents/nyx_converter/test/nyx_converter/nyx_helper_test.dart"},"type":"suite","time":11}
+{"test":{"id":5,"name":"loading /home/husen/Documents/nyx_converter/test/nyx_converter/nyx_helper_test.dart","suiteID":4,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":11}
+{"count":3,"time":11,"type":"allSuites"}
+
+[{"event":"test.startedProcess","params":{"vmServiceUri":null,"observatoryUri":null}}]
+
+[{"event":"test.startedProcess","params":{"vmServiceUri":null,"observatoryUri":null}}]
+{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":17088}
+{"group":{"id":6,"suiteID":0,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":1,"line":null,"column":null,"url":null},"type":"group","time":17094}
+{"group":{"id":7,"suiteID":0,"parentID":6,"name":"Nyx Status","metadata":{"skip":false,"skipReason":null},"testCount":1,"line":5,"column":3,"url":"file:///home/husen/Documents/nyx_converter/test/helper/nyx_status_test.dart"},"type":"group","time":17096}
+{"test":{"id":8,"name":"Nyx Status Status title should be String type","suiteID":0,"groupIDs":[6,7],"metadata":{"skip":false,"skipReason":null},"line":6,"column":5,"url":"file:///home/husen/Documents/nyx_converter/test/helper/nyx_status_test.dart"},"type":"testStart","time":17096}
+
+[{"event":"test.startedProcess","params":{"vmServiceUri":null,"observatoryUri":null}}]
+{"testID":8,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17133}
+{"testID":3,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":17413}
+{"group":{"id":9,"suiteID":2,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":3,"line":null,"column":null,"url":null},"type":"group","time":17413}
+{"group":{"id":10,"suiteID":2,"parentID":9,"name":"Nyx Container","metadata":{"skip":false,"skipReason":null},"testCount":3,"line":5,"column":3,"url":"file:///home/husen/Documents/nyx_converter/test/helper/nyx_container_test.dart"},"type":"group","time":17414}
+{"test":{"id":11,"name":"Nyx Container Containers command should be String type","suiteID":2,"groupIDs":[9,10],"metadata":{"skip":false,"skipReason":null},"line":6,"column":5,"url":"file:///home/husen/Documents/nyx_converter/test/helper/nyx_container_test.dart"},"type":"testStart","time":17414}
+{"testID":11,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17448}
+{"test":{"id":12,"name":"Nyx Container Containers command should not contain space","suiteID":2,"groupIDs":[9,10],"metadata":{"skip":false,"skipReason":null},"line":19,"column":5,"url":"file:///home/husen/Documents/nyx_converter/test/helper/nyx_container_test.dart"},"type":"testStart","time":17449}
+{"testID":12,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17453}
+{"test":{"id":13,"name":"Nyx Container Containers name should not be empty string","suiteID":2,"groupIDs":[9,10],"metadata":{"skip":false,"skipReason":null},"line":31,"column":5,"url":"file:///home/husen/Documents/nyx_converter/test/helper/nyx_container_test.dart"},"type":"testStart","time":17453}
+{"testID":13,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17458}
+{"testID":5,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":17751}
+{"group":{"id":14,"suiteID":4,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":5,"line":null,"column":null,"url":null},"type":"group","time":17751}
+{"group":{"id":15,"suiteID":4,"parentID":14,"name":"Nyx Helper","metadata":{"skip":false,"skipReason":null},"testCount":5,"line":6,"column":3,"url":"file:///home/husen/Documents/nyx_converter/test/nyx_converter/nyx_helper_test.dart"},"type":"group","time":17752}
+{"test":{"id":16,"name":"Nyx Helper verifyData method should not cause an exception error.","suiteID":4,"groupIDs":[14,15],"metadata":{"skip":false,"skipReason":null},"line":7,"column":5,"url":"file:///home/husen/Documents/nyx_converter/test/nyx_converter/nyx_helper_test.dart"},"type":"testStart","time":17752}
+{"testID":16,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17792}
+{"test":{"id":17,"name":"Nyx Helper ffmpeg command should start with '.i'.","suiteID":4,"groupIDs":[14,15],"metadata":{"skip":false,"skipReason":null},"line":20,"column":5,"url":"file:///home/husen/Documents/nyx_converter/test/nyx_converter/nyx_helper_test.dart"},"type":"testStart","time":17793}
+{"testID":17,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17797}
+{"test":{"id":18,"name":"Nyx Helper The file name should not be an empty string.","suiteID":4,"groupIDs":[14,15],"metadata":{"skip":false,"skipReason":null},"line":31,"column":5,"url":"file:///home/husen/Documents/nyx_converter/test/nyx_converter/nyx_helper_test.dart"},"type":"testStart","time":17798}
+{"testID":18,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17803}
+{"test":{"id":19,"name":"Nyx Helper The file container should not be an empty string.","suiteID":4,"groupIDs":[14,15],"metadata":{"skip":false,"skipReason":null},"line":42,"column":5,"url":"file:///home/husen/Documents/nyx_converter/test/nyx_converter/nyx_helper_test.dart"},"type":"testStart","time":17804}
+{"testID":19,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17807}
+{"test":{"id":20,"name":"Nyx Helper Filename should not contain these characters [|\\?<\":+[]/]","suiteID":4,"groupIDs":[14,15],"metadata":{"skip":false,"skipReason":null},"line":53,"column":5,"url":"file:///home/husen/Documents/nyx_converter/test/nyx_converter/nyx_helper_test.dart"},"type":"testStart","time":17808}
+{"testID":20,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17811}
+{"success":true,"type":"done","time":17829}
