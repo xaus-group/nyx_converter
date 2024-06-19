@@ -41,27 +41,6 @@ The following table shows Android API level, iOS deployment target and macOS dep
 </tbody>
 </table>
 
-## Configuration
-**Android**
-- **[READ_EXTERNAL_STORAGE](https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE) (API level 29 and below)**: This permission allows the app to access and read media files (videos, audio) stored on the device's external storage (SD card or internal storage). This is typically needed to read the input files for processing with `nyx_converter`.
-
-- **[WRITE_EXTERNAL_STORAGE](https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE) (API level 29 and below)**: This permission allows the app to write processed media files (edited videos, converted audio formats) to the device's external storage. This is needed if you want to save the output of `nyx_converter` operations.
-
-- **READ_MEDIA_ Permissions (API level 30 and Above)**: These are a group of permissions introduced with Scoped Storage. They provide a more granular approach to accessing media files on the device.
-  - [READ_MEDIA_VIDEO](https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_VIDEO): Allows reading video files.
-  - [READ_MEDIA_AUDIO](https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_AUDIO): Allows reading audio files.
-
-</details>
-<details>
-<summary>iOS</summary>
-TODO
-</details>
-
-<details>
-<summary>macOS</summary>
-TODO
-</details>
-
 ## Using
 **Import:** Import the package in your Dart code:
 
@@ -113,13 +92,22 @@ NyxData? result =  NyxConverter.convertTo(
 ```dart
   container: NyxContainer.mp4,
 ```
+
 **Debug Mode:** Set true for get detailed logs
 ```dart
   debugMode: true,
 ```
+
 **Output file name:** Set output file name
 ```dart
   fileName: 'new_name',
+```
+
+**Execution:** `execution` callback provides the path of the converted file and the status and messages of the conversion process.
+```dart
+  execution: (String? path, NyxStatus status, {String? errorMessage}) {
+    //TODO: codes
+  }
 );
 ```
 
