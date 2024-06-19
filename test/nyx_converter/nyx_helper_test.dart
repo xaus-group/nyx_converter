@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nyx_converter/nyx_converter.dart';
+import 'package:nyx_converter/src/helper/verify_data.dart';
 import 'package:nyx_converter/src/nyx_converter/nyx_helper.dart';
 
 void main() {
@@ -7,17 +8,19 @@ void main() {
     test("verifyData method should not cause an exception error.", () {
       bool actual = false;
 
-      if (NyxHelper().verifyData('assets/videos/test_video.avi.mp4',
-              'assets/videos/', NyxContainer.mp4.command,
-              fileName: 'abc') ==
-          null) {
+      VerifyData verifyData = NyxHelper().verifyData(
+          'assets/videos/test_video.avi.mp4',
+          'assets/videos/',
+          NyxContainer.mp4.command,
+          fileName: 'abc');
+      if (verifyData.status == NyxStatus.success) {
         actual = true;
       }
 
       expect(actual, true);
     });
 
-    test("ffmpeg command should start with '.i'.", () {
+    test("ffmpeg command should start with '-i'.", () {
       bool actual = true;
       String command = NyxHelper()
           .getCommand('assets/videos/test_video.avi.mp4', 'assets/videos/');
