@@ -82,36 +82,11 @@
 </tr>
 </tbody>
 </table>
-<h2 id="configuration">Configuration</h2>
-<p><strong>Android</strong></p>
-<ul>
-<li>
-<p><strong><a href="https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE">READ_EXTERNAL_STORAGE</a> (API level 29 and below)</strong>: This permission allows the app to access and read media files (videos, audio) stored on the device's external storage (SD card or internal storage). This is typically needed to read the input files for processing with <code>nyx_converter</code>.</p>
-</li>
-<li>
-<p><strong><a href="https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE">WRITE_EXTERNAL_STORAGE</a> (API level 29 and below)</strong>: This permission allows the app to write processed media files (edited videos, converted audio formats) to the device's external storage. This is needed if you want to save the output of <code>nyx_converter</code> operations.</p>
-</li>
-<li>
-<p><strong>READ_MEDIA_ Permissions (API level 30 and Above)</strong>: These are a group of permissions introduced with Scoped Storage. They provide a more granular approach to accessing media files on the device.</p>
-<ul>
-<li><a href="https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_VIDEO">READ_MEDIA_VIDEO</a>: Allows reading video files.</li>
-<li><a href="https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_AUDIO">READ_MEDIA_AUDIO</a>: Allows reading audio files.</li>
-</ul>
-</li>
-</ul>
-<details>
-<summary>iOS</summary>
-TODO
-</details>
-<details>
-<summary>macOS</summary>
-TODO
-</details>
 <h2 id="using">Using</h2>
 <p><strong>Import:</strong> Import the package in your Dart code:</p>
 <pre class="language-dart"><code class="language-dart">import 'package:nyx_converter/nyx_converter.dart';
 </code></pre>
-<p><strong>Widget Usage:</strong> Use <a href="https://xaus-group.github.io/nyx_converter/nyx_converter/INyxConverter/convertTo.html"><code>.convertTo</code></a> method for initiate the media file path and desired output file path to save converted media file.</p>
+<p><strong>Widget Usage:</strong> Use <code>.convertTo</code> method for initiate the media file path and desired output file path to save converted media file.</p>
 <pre class="language-dart"><code class="language-dart">final filePath = 'path/to/my.mp4';
 final outputPath = 'path/to/';
 NyxData? result =  NyxConverter.convertTo(
@@ -155,6 +130,11 @@ NyxData? result =  NyxConverter.convertTo(
 </code></pre>
 <p><strong>Output file name:</strong> Set output file name</p>
 <pre class="language-dart"><code class="language-dart">  fileName: 'new_name',
+</code></pre>
+<p><strong>Execution:</strong> <code>execution</code> callback provides the path of the converted file and the status and messages of the conversion process.</p>
+<pre class="language-dart"><code class="language-dart">  execution: (String? path, NyxStatus status, {String? errorMessage}) {
+    //TODO: codes
+  }
 );
 </code></pre>
 <h2 id="todo">TODO</h2>
