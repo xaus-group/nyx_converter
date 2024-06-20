@@ -1,5 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:nyx_converter/nyx_converter.dart';
+import 'package:nyx_converter/src/helper/verify_data.dart';
 import 'package:path/path.dart';
 
 class NyxHelper {
@@ -12,7 +15,7 @@ class NyxHelper {
   factory NyxHelper() => _ins ?? NyxHelper._internal();
 
   // check all input data
-  verifyData(
+  VerifyData verifyData(
     String filePath,
     String outputPath,
     String cntinr, {
@@ -20,28 +23,41 @@ class NyxHelper {
   }) {
     // Check input file
     if (!File(filePath).existsSync()) {
-      throw Exception('[nyx_converter] The imported file does not exist.');
+      log('[Error] [nyx_converter] The imported file does not exist.');
+      return VerifyData(NyxStatus.failed,
+          message: 'The imported file does not exist.');
     }
     // Check output directory existance
     else if (!Directory(outputPath).existsSync()) {
-      throw Exception('[nyx_converter] The directory entered does not exist.');
+      log('[Error] [nyx_converter] The directory entered does not exist.');
+      return VerifyData(NyxStatus.failed,
+          message: 'The directory entered does not exist.');
     }
     // // Check output file existance
     else if (File(
             '$outputPath/${fileName ?? getFileBaseName(filePath)}.$cntinr')
         .existsSync()) {
-      throw Exception(
-          '[nyx_converter] The output file already exists please change the file name');
+      log('[Error] [nyx_converter] The output file already exists please change the file name');
+      return VerifyData(NyxStatus.failed,
+          message:
+              'The output file already exists please change the file name');
     }
     // check input file have container or not
     else if (getFileContainer(filePath).isEmpty) {
-      throw Exception(
-          '[nyx_converter] The imported file does not have the specified container');
+      log('[Error] [nyx_converter] The imported file does not have the specified container');
+      return VerifyData(NyxStatus.failed,
+          message: 'The imported file does not have the specified container');
     }
     // verify input file name
     else if (fileName != null && !verifyFileName(fileName)) {
-      throw Exception(
-          '[nyx_converter] The file name must not contain the character "|\\?*<\":>+[]/\'".');
+      log('[Error] [nyx_converter] The file name must not contain the character "|\\?*<\":>+[]/\'".');
+      return VerifyData(NyxStatus.failed,
+          message:
+              'The file name must not contain the character "|\\?*<\":>+[]/\'".');
+    } else {
+      return VerifyData(
+        NyxStatus.success,
+      );
     }
   }
 
