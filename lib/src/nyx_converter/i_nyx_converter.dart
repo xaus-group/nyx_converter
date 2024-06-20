@@ -17,10 +17,16 @@ abstract class INyxConverter {
   //
   // ### Return Type:
   // - [Future<NyxData>]: The function returns a [Future] that resolves to a [NyxData] object
-  //
-  /// - [debugMode] (bool, optional): By setting this item to true, you can get more detailed logs of nyx_converter processes.
   ///
   /// - [fileName] (String, optional): change output file name.
+  ///
+  /// - [debugMode] (bool, optional): By setting this item to true, you can get more detailed logs of nyx_converter processes.
+  ///
+  /// - [execution]  (Function, required): A callback function that will be called during the conversion process. The callback receives three arguments:
+  ///
+  ///   - [path] (String): The temporary path to the converted file during processing (might be null).
+  ///   - [status] (NyxStatus): The current status of the conversion process.
+  ///   - [errorMessage] (String, optional): An optional message related to conversion process errors.
   ///
   // ### Description:
   // - The [convertTo] function initiates the asynchronous process of converting a media file from the specified [filePath] to a new file at the provided [outputPath]. It offers various optional parameters to customize the output format, codecs, resolution, bitrate, and etc.
@@ -34,14 +40,13 @@ abstract class INyxConverter {
   ///      NyxContainer.mp4,
   ///      debugMode: true,
   ///      fileName: 'new_name',
+  ///      execution: (String? path, NyxStatus status, {String? errorMessage}) {}
   /// );
   /// ```
   ///
-  Future<NyxData> convertTo(
+  convertTo(
     String filePath,
     String outputPath, {
-    bool debugMode = false,
-    String? fileName,
     NyxContainer? container,
     // NyxVideoCodec? videoCodec,
     // NyxAudioCodec? audioCodec,
@@ -49,5 +54,8 @@ abstract class INyxConverter {
     // NyxBitrate? bitrate,
     // NyxFrequency? frequency,
     // NyxChannelLayout? channelLayout
+    bool debugMode = false,
+    String? fileName,
+    Function(String? path, NyxStatus status, {String? errorMessage}) execution,
   });
 }

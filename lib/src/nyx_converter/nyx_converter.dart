@@ -1,11 +1,5 @@
-import 'package:nyx_converter/src/helper/nyx_audio_codec.dart';
-import 'package:nyx_converter/src/helper/nyx_bitrate.dart';
-import 'package:nyx_converter/src/helper/nyx_channel.dart';
-import 'package:nyx_converter/src/helper/nyx_data.dart';
-import 'package:nyx_converter/src/helper/nyx_container.dart';
-import 'package:nyx_converter/src/helper/nyx_frequency.dart';
-import 'package:nyx_converter/src/helper/nyx_size.dart';
-import 'package:nyx_converter/src/helper/nyx_video_codec.dart';
+import 'package:nyx_converter/nyx_converter.dart';
+import 'package:nyx_converter/src/helper/verify_data.dart';
 import 'package:nyx_converter/src/nyx_converter/i_nyx_converter.dart';
 import 'package:nyx_converter/src/nyx_converter/nyx_ff_converter.dart';
 import 'package:nyx_converter/src/nyx_converter/nyx_helper.dart';
@@ -20,7 +14,7 @@ class _NyxConverter extends INyxConverter {
   factory _NyxConverter() => _ins ?? _NyxConverter._internal();
 
   @override
-  Future<NyxData> convertTo(filePath, outputPath,
+  convertTo(filePath, outputPath,
       {bool debugMode = false,
       String? fileName,
       NyxContainer? container,
@@ -29,11 +23,15 @@ class _NyxConverter extends INyxConverter {
       NyxSize? size,
       NyxBitrate? bitrate,
       NyxFrequency? frequency,
-      NyxChannelLayout? channelLayout}) async {
-    NyxHelper().verifyData(filePath, outputPath,
+      NyxChannelLayout? channelLayout,
+      Function(String? path, NyxStatus status, {String? errorMessage})?
+          execution}) async {
+    VerifyData verifyData = NyxHelper().verifyData(filePath, outputPath,
         container?.command ?? NyxHelper().getFileContainer(filePath),
         fileName: fileName);
-    return NyxFFConverter().execute(
+
+    if (verifyData.status == NyxStatus.success) {
+      NyxFFConverter().execute(
         NyxHelper().getCommand(
             filePath,
             NyxHelper().getOutPutFilePath(
@@ -44,7 +42,12 @@ class _NyxConverter extends INyxConverter {
         NyxHelper().getOutPutFilePath(
             outputPath,
             fileName ?? NyxHelper().getFileBaseName(filePath),
-            container?.command ?? NyxHelper().getFileContainer(filePath)));
+            container?.command ?? NyxHelper().getFileContainer(filePath)),
+        execution!,
+      );
+    } else {
+      execution!(null, verifyData.status, errorMessage: verifyData.message);
+    }
   }
 }
 

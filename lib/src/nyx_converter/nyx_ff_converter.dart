@@ -4,8 +4,8 @@ import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/log.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/return_code.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/session.dart';
+import 'package:ffmpeg_kit_flutter_full_gpl/session_state.dart';
 import 'package:nyx_converter/nyx_converter.dart';
-import 'package:nyx_converter/src/helper/nyx_status.dart';
 
 class NyxFFConverter {
   static NyxFFConverter? _ins;
@@ -16,15 +16,38 @@ class NyxFFConverter {
 
   factory NyxFFConverter() => _ins ?? NyxFFConverter._internal();
 
-  Future<NyxData> execute(
-      String command, bool debugMode, String outputFilePath) {
+  execute(
+      String command,
+      bool debugMode,
+      String outputFilePath,
+      Function(String? path, NyxStatus status, {String? errorMessage})
+          execution) {
     return FFmpegKit.executeAsync(command, (Session session) async {
       final returnCode = await session.getReturnCode();
-      if (ReturnCode.isSuccess(returnCode) == true) {
-      } else if (ReturnCode.isSuccess(returnCode) == false) {
-        throw Exception("[nyx_converter] A problem has occurred");
+
+      // check completion of process
+      if (ReturnCode.isCancel(returnCode)) {
+        execution(null, NyxStatus.cancel);
       } else {
-        throw Exception("[nyx_converter] A problem has occurred");
+        SessionState state = await session.getState();
+
+        switch (state) {
+          case SessionState.running:
+            execution(null, NyxStatus.running);
+
+            break;
+          case SessionState.failed:
+            execution(null, NyxStatus.failed,
+                errorMessage: 'A problem has occurred');
+            break;
+          case SessionState.completed:
+            execution(outputFilePath, NyxStatus.completed);
+
+            break;
+          default:
+            execution(null, NyxStatus.failed,
+                errorMessage: 'A problem has occurred');
+        }
       }
     }, (Log ffmpegLog) {
       // print log messages
@@ -41,17 +64,32 @@ class NyxFFConverter {
 
       final returnCode = await session.getReturnCode();
 
-      if (ReturnCode.isSuccess(returnCode)) {
-        return NyxData(outputFilePath, NyxStatus.success);
-      } else if (ReturnCode.isCancel(returnCode)) {
-        return const NyxData('', NyxStatus.cancel,
-            message: 'Processes have been cancelled');
+      // check completion of process
+      if (ReturnCode.isCancel(returnCode)) {
+        execution(null, NyxStatus.cancel);
       } else {
-        return const NyxData('', NyxStatus.error,
-            message: 'A problem has occurred');
+        SessionState state = await session.getState();
+
+        switch (state) {
+          case SessionState.running:
+            execution(null, NyxStatus.running);
+
+            break;
+          case SessionState.failed:
+            execution(null, NyxStatus.failed,
+                errorMessage: 'A problem has occurred');
+            break;
+          case SessionState.completed:
+            execution(outputFilePath, NyxStatus.completed);
+
+            break;
+          default:
+            execution(null, NyxStatus.failed,
+                errorMessage: 'A problem has occurred');
+        }
       }
     }).onError((error, stackTrace) {
-      throw Exception("[nyx_converter] $error");
+      throw Exception("$error");
     });
   }
 }
