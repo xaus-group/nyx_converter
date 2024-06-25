@@ -52,7 +52,7 @@ import 'package:nyx_converter/nyx_converter.dart';
 ```dart
 final filePath = 'path/to/my.mp4';
 final outputPath = 'path/to/';
-NyxData? result =  NyxConverter.convertTo(
+result =  NyxConverter.convertTo(
   filePath, // Specify the input file path
   outputPath, // Define the output file path
 ```
@@ -116,7 +116,7 @@ NyxData? result =  NyxConverter.convertTo(
 ```dart
 final filePath = 'path/to/my.mp4';
 final outputPath = 'path/to/';
-NyxData? result =  NyxConverter.convertTo(
+result =  NyxConverter.convertTo(
   //TODO: videoCodec: NyxVideoCodec.h264, // Specify the video codec (optional)
   //TODO: audioCodec: NyxAudioCodec.flac, // Define the audio codec (optional)
   //TODO: size: NyxSize.w1280h720, // Set the width and height in pixels (optional)
