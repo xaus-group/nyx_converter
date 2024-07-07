@@ -2,7 +2,7 @@
 
 <p align="center"><img src="https://raw.githubusercontent.com/xaus-group/nyx_converter/master/screenshots/logo.png" alt="nyx_converter logo" width="240" ></p>
 
-The `nyx_converter` widget in Flutter empowers you to seamlessly convert media files between various formats, codecs, resolutions, bitrates, and audio properties. It utilizes the robust ffmpeg library under the hood, providing a convenient and efficient solution for your media processing needs within your Flutter applications.
+The `nyx_converter` package in Flutter empowers you to seamlessly convert media files between various formats, codecs, resolutions, bitrates, and audio properties. It utilizes the robust ffmpeg library under the hood, providing a convenient and efficient solution for your media processing needs within your Flutter applications.
 
 ## Key Features
 
@@ -13,11 +13,12 @@ The `nyx_converter` widget in Flutter empowers you to seamlessly convert media f
 - **Audio Fine-Tuning:** Specify the sampling frequency (in Hz) and number of channels (mono or stereo) for the audio stream within the converted media file, allowing for customized audio output.
 
 ## Installation
-download nyx_converter to path `./widgets/nyx_converter` then add as a dependency in your pubspec.yaml file:
+
+To use this package, add `nyx_converter` as a dependency in your pubspec.yaml file.
+
 ```yaml
 dependencies:
-  nyx_converter:
-    path: ./widgets/nyx_converter
+  nyx_converter: ^0.1.0
 ```
 
 ## Platform Support
