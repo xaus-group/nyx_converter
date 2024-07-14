@@ -112,6 +112,8 @@ result =  NyxConverter.convertTo(
 );
 ```
 
+---
+
 **Stop process:** Use `.kill` method to kill all `nyx_converter` processes.
 ```dart
 NyxConverter.kill();
