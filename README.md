@@ -18,7 +18,7 @@ To use this package, add `nyx_converter` as a dependency in your pubspec.yaml fi
 
 ```yaml
 dependencies:
-  nyx_converter: ^0.1.0
+  nyx_converter: <latest-version>
 ```
 
 ## Platform Support
