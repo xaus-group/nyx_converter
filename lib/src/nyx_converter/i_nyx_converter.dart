@@ -28,8 +28,8 @@ abstract class INyxConverter {
   ///   - [status] (NyxStatus): The current status of the conversion process.
   ///   - [errorMessage] (String, optional): An optional message related to conversion process errors.
   ///
-  // ### Description:
-  // - The [convertTo] function initiates the asynchronous process of converting a media file from the specified [filePath] to a new file at the provided [outputPath]. It offers various optional parameters to customize the output format, codecs, resolution, bitrate, and etc.
+  /// ### Description:
+  /// - The [convertTo] function initiates the asynchronous process of converting a media file from the specified [filePath] to a new file at the provided [outputPath]. It offers various optional parameters to customize the output format, codecs, resolution, bitrate, and etc.
   ///
   /// ### Example:
   /// ```dart
@@ -58,4 +58,13 @@ abstract class INyxConverter {
     String? fileName,
     Function(String? path, NyxStatus status, {String? errorMessage}) execution,
   });
+
+  /// ### Description:
+  /// - The [kill] function terminates all `nyx_converter` process.
+  ///
+  /// ### Example:
+  /// ```dart
+  /// NyxConverter.kill();
+  /// ```
+  kill();
 }

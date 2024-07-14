@@ -1,3 +1,4 @@
+import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
 import 'package:nyx_converter/nyx_converter.dart';
 import 'package:nyx_converter/src/helper/verify_data.dart';
 import 'package:nyx_converter/src/nyx_converter/i_nyx_converter.dart';
@@ -12,6 +13,8 @@ class _NyxConverter extends INyxConverter {
   }
 
   factory _NyxConverter() => _ins ?? _NyxConverter._internal();
+
+  final List<int?> sessionIds = [];
 
   @override
   convertTo(filePath, outputPath,
@@ -32,6 +35,11 @@ class _NyxConverter extends INyxConverter {
 
     if (verifyData.status == NyxStatus.success) {
       NyxFFConverter().execute(
+        (sessionId) {
+          if (!sessionIds.contains(sessionId)) {
+            sessionIds.add(sessionId);
+          }
+        },
         NyxHelper().getCommand(
             filePath,
             NyxHelper().getOutPutFilePath(
@@ -47,6 +55,13 @@ class _NyxConverter extends INyxConverter {
       );
     } else {
       execution!(null, verifyData.status, errorMessage: verifyData.message);
+    }
+  }
+
+  @override
+  kill() {
+    for (var sessionId in sessionIds) {
+      FFmpegKit.cancel(sessionId!);
     }
   }
 }

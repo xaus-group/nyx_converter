@@ -17,6 +17,7 @@ class NyxFFConverter {
   factory NyxFFConverter() => _ins ?? NyxFFConverter._internal();
 
   execute(
+      Function(int? sId) sessionId,
       String command,
       bool debugMode,
       String outputFilePath,
@@ -53,6 +54,8 @@ class NyxFFConverter {
       // print log messages
       debugMode ? log('[nyx_converter] ${ffmpegLog.getMessage()}') : '';
     }).then((session) async {
+      sessionId(session.getSessionId());
+
       // print log FailStackTrace
       debugMode
           ? log('[nyx_converter] ${await session.getFailStackTrace()}')

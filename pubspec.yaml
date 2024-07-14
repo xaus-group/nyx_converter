@@ -1,11 +1,11 @@
 name: nyx_converter
-version: 0.1.0
+version: 0.1.1
 description: >-
   A Flutter package that makes it easier to convert formats, codecs, etc. of media files.
 repository: https://github.com/xaus-group/nyx_converter
 issue_tracker: https://github.com/xaus-group/nyx_converter/issues
 # homepage:
-# documentation:
+documentation: https://pub.dev/documentation/nyx_converter/latest
 topics: [video, audio, converter, ffmpeg]
 
 environment:

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:example/widgets/container_dp.dart';
 import 'package:example/widgets/convert_btn.dart';
+import 'package:example/widgets/kill_btn.dart';
 import 'package:example/widgets/save_to.dart';
 import 'package:example/widgets/select_file_btn.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   NyxContainer? container;
   bool isLoading = false;
   bool isDone = false;
+  bool isCanceled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +88,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 isLoading,
                 () => _startConvert(inputFilePath, outputPath, container),
               ),
+              // kill btn
+              KillBtn(
+                () => NyxConverter.kill(),
+              ),
               // is done text
               isDone == true
                   ? const Padding(
@@ -93,7 +99,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           horizontal: 20.0, vertical: 10.0),
                       child: Text('Done'),
                     )
-                  : Container(),
+                  : isCanceled == true
+                      ? const Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 10.0),
+                          child: Text('Canceled'),
+                        )
+                      : Container(),
             ],
           ),
         ));
@@ -150,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
           fileName: Random().nextInt(1000).toString(),
           debugMode: true,
           execution: (String? path, NyxStatus status, {String? errorMessage}) {
-        if (status == NyxStatus.failed || status == NyxStatus.cancel) {
+        if (status == NyxStatus.failed) {
           setState(() {
             isLoading = false;
           });
@@ -164,6 +176,12 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             isLoading = true;
             isDone = false;
+          });
+        } else if (status == NyxStatus.cancel) {
+          setState(() {
+            isLoading = false;
+            isDone = false;
+            isCanceled = true;
           });
         } else {
           setState(() {
