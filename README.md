@@ -118,3 +118,6 @@ result =  NyxConverter.convertTo(
 ```dart
 NyxConverter.kill();
 ```
+
+## Contributing
+There is not much to contribute since the package serves its purpose, however, in chance of needing to bump or adjust some version, or any other suggestion for that matter, please read [CONTRIBUTING](https://github.com/xaus-group/nyx_converter/blob/master/CONTRIBUTING.md).
