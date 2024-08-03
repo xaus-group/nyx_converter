@@ -155,12 +155,10 @@ class _MyHomePageState extends State<MyHomePage> {
         isLoading = false;
       });
     }
-
+    String rfilename = Random().nextInt(1000).toString();
     if (outputPath != null && inputFilePath != null) {
       await NyxConverter.convertTo(filePath!, output!.path,
-          container: container,
-          fileName: Random().nextInt(1000).toString(),
-          debugMode: true,
+          container: container, fileName: rfilename, debugMode: true,
           execution: (String? path, NyxStatus status, {String? errorMessage}) {
         if (status == NyxStatus.failed) {
           setState(() {
@@ -168,6 +166,10 @@ class _MyHomePageState extends State<MyHomePage> {
           });
           _showDialog(errorMessage ?? 'Something went wrong');
         } else if (status == NyxStatus.completed) {
+          String psthn = output.path + "/" + rfilename + ".avi";
+
+          print('*************$psthn');
+          print('*************${File(psthn).existsSync()}');
           setState(() {
             isLoading = false;
             isDone = true;
