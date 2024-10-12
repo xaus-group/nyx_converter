@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0
+- Added video codecs
+- Added audio codecs
+- bug fix
+
 ## 0.1.1
 - kill all process method
 
