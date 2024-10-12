@@ -16,7 +16,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   nyx_converter:
     path: ../
-  permission_handler: ^11.0.1
+  permission_handler: ^11.3.1
   file_picker: ^7.0.2
   path_provider: ^2.1.3
 
