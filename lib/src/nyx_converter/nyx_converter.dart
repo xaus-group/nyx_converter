@@ -33,6 +33,7 @@ class _NyxConverter extends INyxConverter {
         container?.command ?? NyxHelper().getFileContainer(filePath),
         fileName: fileName);
 
+    // if filePath, outputPath, fileName are verified or not
     if (verifyData.status == NyxStatus.success) {
       NyxFFConverter().execute(
         (sessionId) {
@@ -45,7 +46,9 @@ class _NyxConverter extends INyxConverter {
             NyxHelper().getOutPutFilePath(
                 outputPath,
                 fileName ?? NyxHelper().getFileBaseName(filePath),
-                container?.command ?? NyxHelper().getFileContainer(filePath))),
+                container?.command ?? NyxHelper().getFileContainer(filePath)),
+            videoCodec: videoCodec,
+            audioCodec: audioCodec),
         debugMode,
         NyxHelper().getOutPutFilePath(
             outputPath,

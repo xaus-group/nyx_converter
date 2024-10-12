@@ -6,10 +6,11 @@ abstract class INyxConverter {
   /// - [filePath] (String): The path to the input media file.
   /// - [outputPath] (String): The desired path for the converted output file. (e.g., "/storage/emulated/0/Movies") (imp: Do not save video media files in the corresponding audio directories and vice versa)
   /// - [container] (NyxContainer, optional): The target format for the converted file (e.g., "mp4", "avi").
-  // - [debug] (bool, optional): By setting this item to true, you can get more detailed logs of nyx_converter processes.
-  // - [fileName] (String, optional): change output file name.
-  // - [videoCodec] (NyxVideoCodec, optional): The desired video codec for the converted file (e.g., "h264", "vp8").
-  // - [audioCodec] (NyxAudioCodec, optional): The desired audio codec for the converted file (e.g., "aac", "mp3").
+  /// - [videoCodec] (NyxVideoCodec, optional): The desired video codec for the converted file (e.g., "h264", "vp8").
+  /// - [audioCodec] (NyxAudioCodec, optional): The desired audio codec for the converted file (e.g., "aac", "mp3").
+  /// - [fileName] (String, optional): change output file name.
+  ///
+  /// - [debugMode] (bool, optional): By setting this item to true, you can get more detailed logs of nyx_converter processes.
   // - [size] (NyxSize, optional): The target width and height of the converted video in pixels.
   // - [bitrate] (NyxBitrate, optional): The desired bitrate of the converted file in kilobits per second (kbps).
   // - [frequency] (NyxFrequency, optional): The target sampling frequency of the converted audio stream in Hertz (Hz).
@@ -17,10 +18,6 @@ abstract class INyxConverter {
   //
   // ### Return Type:
   // - [Future<NyxData>]: The function returns a [Future] that resolves to a [NyxData] object
-  ///
-  /// - [fileName] (String, optional): change output file name.
-  ///
-  /// - [debugMode] (bool, optional): By setting this item to true, you can get more detailed logs of nyx_converter processes.
   ///
   /// - [execution]  (Function, required): A callback function that will be called during the conversion process. The callback receives three arguments:
   ///
@@ -37,7 +34,9 @@ abstract class INyxConverter {
   /// final outputPath = 'converted_video.avi';
   ///
   /// NyxConverter.convertTo(filePath, outputPath,
-  ///      NyxContainer.mp4,
+  ///      container: NyxContainer.mp4,
+  ///      videoCodec: NyxVideoCodec.h264
+  ///      audioCodec: NyxAudioCodec.aac
   ///      debugMode: true,
   ///      fileName: 'new_name',
   ///      execution: (String? path, NyxStatus status, {String? errorMessage}) {}
@@ -48,8 +47,8 @@ abstract class INyxConverter {
     String filePath,
     String outputPath, {
     NyxContainer? container,
-    // NyxVideoCodec? videoCodec,
-    // NyxAudioCodec? audioCodec,
+    NyxVideoCodec? videoCodec,
+    NyxAudioCodec? audioCodec,
     // NyxSize? size,
     // NyxBitrate? bitrate,
     // NyxFrequency? frequency,

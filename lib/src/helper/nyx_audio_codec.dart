@@ -32,7 +32,7 @@ enum NyxAudioCodec {
   aac,
 
   /// A free and open-source lossy codec known for its good quality and efficient compression. Often used in web applications and free software.
-  oog,
+  ogg,
 
   /// A popular lossless compression format that preserves the original audio quality without any information loss. FLAC files are typically larger than their lossy counterparts but ideal for archiving or high-fidelity audio.
   flac,
@@ -55,7 +55,7 @@ extension NyxAudioCodecCommandExtension on NyxAudioCodec {
         return 'wmav2';
       case NyxAudioCodec.aac:
         return 'aac';
-      case NyxAudioCodec.oog:
+      case NyxAudioCodec.ogg:
         return 'libvorbis';
       case NyxAudioCodec.flac:
         return 'flac';
@@ -78,7 +78,7 @@ extension NyxAudioCodecTitleExtension on NyxAudioCodec {
         return 'Windows Media Audio';
       case NyxAudioCodec.aac:
         return 'Advanced Audio Coding';
-      case NyxAudioCodec.oog:
+      case NyxAudioCodec.ogg:
         return 'Ogg Vorbis';
       case NyxAudioCodec.flac:
         return 'Free Lossless Audio Codec';
@@ -101,7 +101,7 @@ extension NyxAudioCodecNameExtension on NyxAudioCodec {
         return 'WMA';
       case NyxAudioCodec.aac:
         return 'AAC';
-      case NyxAudioCodec.oog:
+      case NyxAudioCodec.ogg:
         return 'OGG';
       case NyxAudioCodec.flac:
         return 'FLAC';

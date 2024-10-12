@@ -64,22 +64,25 @@ class NyxHelper {
   String getCommand(
     String filePath,
     String outputFilePath, // storage/emulated/0/Movies/name123.mp4
-    //TODO: {NyxVideoCodec? videoCodec,
-    // NyxAudioCodec? audioCodec,
+    {
+    NyxVideoCodec? videoCodec,
+    NyxAudioCodec? audioCodec,
     // NyxSize? size,
     // NyxBitrate? bitrate,
     // NyxFrequency? frequency,
-    // NyxChannelLayout? channelLayout}
-  ) {
+    // NyxChannelLayout? channelLayout
+  }) {
     String command = "";
     command += "-i '$filePath' ";
-    //TODO if (videoCodec != null) {
-    //   command += "-c:v ${videoCodec.command} ";
-    // }
-    // if (audioCodec != null) {
-    //   // sets the audio codec (MP3=>libmp3lame, AAC=>libfdk_aac, ...)
-    //   command += "-c:a ${audioCodec.command} ";
-    // }
+
+    if (videoCodec != null) {
+      command += "-c:v ${videoCodec.command} ";
+    }
+
+    if (audioCodec != null) {
+      command += "-c:a ${audioCodec.command} ";
+    }
+
     // if (frequency != null) {
     //   // sets the audio sample rate to 48000Hz,...
     //   command += "-ar ${frequency.command} ";
