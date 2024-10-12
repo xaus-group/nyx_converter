@@ -1,18 +1,10 @@
-enum NyxStatus { success, running, completed, cancel, failed }
+enum NyxStatus {
+  success(title: 'Success'),
+  running(title: 'Running'),
+  completed(title: 'Completed'),
+  cancel(title: 'Cancel'),
+  failed(title: 'Failed');
 
-extension NyxStatusCommandExtension on NyxStatus {
-  String get title {
-    switch (this) {
-      case NyxStatus.success:
-        return 'Success';
-      case NyxStatus.running:
-        return 'Running';
-      case NyxStatus.completed:
-        return 'Completed';
-      case NyxStatus.cancel:
-        return 'Cancel';
-      case NyxStatus.failed:
-        return 'Failed';
-    }
-  }
+  final String title;
+  const NyxStatus({required this.title});
 }
