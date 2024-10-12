@@ -57,41 +57,20 @@ result =  NyxConverter.convertTo(
   filePath, // Specify the input file path
   outputPath, // Define the output file path
 ```
-**[Container](https://pub.dev/documentation/nyx_converter/latest/nyx_converter/NyxContainer.html):** Choose the desired container for your output media file.
-
-<table>
-<thead>
-<tr>
-<th align="center">Video</th>
-<th align="center">Audio</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center">AVI</td>
-<td align="center">WAV</td>
-</tr>
-<tr>
-<td align="center">MP4</td>
-<td align="center">FLAC</td>
-</tr>
-<tr>
-<td align="center">MKV</td>
-<td align="center">OGG</td>
-</tr>
-<tr>
-<td align="center">MOV</td>
-<td align="center">AAC</td>
-</tr>
-<tr>
-<td align="center">WebM</td>
-<td align="center">MP3</td>
-</tr>
-</tbody>
-</table>
+**[Container](https://pub.dev/documentation/nyx_converter/latest/nyx_converter/NyxContainer.html):** Choose the desired container for your output media file. [supported containers](https://github.com/xaus-group/nyx_converter/wiki/Container)
 
 ```dart
   container: NyxContainer.mp4,
+```
+
+**[Video Codec](https://pub.dev/documentation/nyx_converter/latest/nyx_converter/NyxVideoCodec.html):** Select the appropriate video codec for your media file. [supported video codecs](https://github.com/xaus-group/nyx_converter/wiki/Video-codec)
+```dart
+  videoCodec: NyxVideoCodec.h264
+```
+
+**[Audio Codec](https://pub.dev/documentation/nyx_converter/latest/nyx_converter/NyxAudioCodec.html):** Select the appropriate audio codec for your media file. [supported audio codecs](https://github.com/xaus-group/nyx_converter/wiki/Audio-codec)
+```dart
+  audioCodec: NyxAudioCodec.aac
 ```
 
 **Debug Mode:** Set true for get detailed logs
