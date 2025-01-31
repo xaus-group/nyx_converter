@@ -12,7 +12,7 @@ abstract class INyxConverter {
   ///
   /// - [debugMode] (bool, optional): By setting this item to true, you can get more detailed logs of nyx_converter processes.
   // - [size] (NyxSize, optional): The target width and height of the converted video in pixels.
-  // - [bitrate] (NyxBitrate, optional): The desired bitrate of the converted file in kilobits per second (kbps).
+  /// - [bitrate] (int, optional): The desired bitrate of the converted file in kilobits per second (kbps). (common bitrates: 128 kbps, 192 kbps, 320 kbps)
   // - [frequency] (NyxFrequency, optional): The target sampling frequency of the converted audio stream in Hertz (Hz).
   // - [channelLayout] (NyxChannelLayout, optional): The desired number of audio channels (1 for mono, 2 for stereo) in the converted file.
   //
@@ -37,6 +37,7 @@ abstract class INyxConverter {
   ///      container: NyxContainer.mp4,
   ///      videoCodec: NyxVideoCodec.h264
   ///      audioCodec: NyxAudioCodec.aac
+  ///      bitrate: 320
   ///      debugMode: true,
   ///      fileName: 'new_name',
   ///      execution: (String? path, NyxStatus status, {String? errorMessage}) {}
@@ -50,7 +51,7 @@ abstract class INyxConverter {
     NyxVideoCodec? videoCodec,
     NyxAudioCodec? audioCodec,
     // NyxSize? size,
-    // NyxBitrate? bitrate,
+    int? bitrate,
     // NyxFrequency? frequency,
     // NyxChannelLayout? channelLayout
     bool debugMode = false,

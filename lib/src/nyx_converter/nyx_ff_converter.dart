@@ -17,12 +17,12 @@ class NyxFFConverter {
   factory NyxFFConverter() => _ins ?? NyxFFConverter._internal();
 
   execute(
-      Function(int? sId) sessionId,
-      String command,
-      bool debugMode,
-      String outputFilePath,
-      Function(String? path, NyxStatus status, {String? errorMessage})
-          execution) {
+      {required Function(int? sId) sessionId,
+      required String command,
+      required bool debugMode,
+      required String outputFilePath,
+      required Function(String? path, NyxStatus status, {String? errorMessage})
+          execution}) {
     return FFmpegKit.executeAsync(command, (Session session) async {
       final returnCode = await session.getReturnCode();
 

@@ -24,7 +24,7 @@ class _NyxConverter extends INyxConverter {
       NyxVideoCodec? videoCodec,
       NyxAudioCodec? audioCodec,
       NyxSize? size,
-      NyxBitrate? bitrate,
+      int? bitrate,
       NyxFrequency? frequency,
       NyxChannelLayout? channelLayout,
       Function(String? path, NyxStatus status, {String? errorMessage})?
@@ -36,25 +36,26 @@ class _NyxConverter extends INyxConverter {
     // if filePath, outputPath, fileName are verified or not
     if (verifyData.status == NyxStatus.success) {
       NyxFFConverter().execute(
-        (sessionId) {
+        sessionId: (sessionId) {
           if (!sessionIds.contains(sessionId)) {
             sessionIds.add(sessionId);
           }
         },
-        NyxHelper().getCommand(
+        command: NyxHelper().getCommand(
             filePath,
             NyxHelper().getOutPutFilePath(
                 outputPath,
                 fileName ?? NyxHelper().getFileBaseName(filePath),
                 container?.command ?? NyxHelper().getFileContainer(filePath)),
             videoCodec: videoCodec,
-            audioCodec: audioCodec),
-        debugMode,
-        NyxHelper().getOutPutFilePath(
+            audioCodec: audioCodec,
+            bitrate: bitrate),
+        debugMode: debugMode,
+        outputFilePath: NyxHelper().getOutPutFilePath(
             outputPath,
             fileName ?? NyxHelper().getFileBaseName(filePath),
             container?.command ?? NyxHelper().getFileContainer(filePath)),
-        execution!,
+        execution: execution!,
       );
     } else {
       execution!(null, verifyData.status, errorMessage: verifyData.message);

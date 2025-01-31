@@ -46,6 +46,22 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isDone = false;
   bool isCanceled = false;
 
+  final TextEditingController _bitrateController = TextEditingController();
+  String _errorMessage = '';
+  void _parseBitrate() {
+    setState(() {
+      _errorMessage = '';
+    });
+
+    try {
+      int bitrate = int.parse(_bitrateController.text);
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Please enter a valid integer for bitrate.';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _getPermission();
@@ -95,12 +111,30 @@ class _MyHomePageState extends State<MyHomePage> {
               ACodecDp((codec) {
                 audioCodec = codec;
               }),
-              // convert to btn
-              ConvertBtn(
-                isLoading,
-                () => _startConvert(inputFilePath, outputPath, container,
-                    videoCodec, audioCodec),
+              // bitrate text field
+              TextField(
+                controller: _bitrateController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Enter Bitrate',
+                  errorText: _errorMessage.isNotEmpty ? _errorMessage : null,
+                ),
               ),
+              // convert to btn
+              ConvertBtn(isLoading, () {
+                // check bitrate validation
+                _parseBitrate();
+
+                if (_errorMessage.isNotEmpty) {
+                  _startConvert(
+                      inputFilePath,
+                      outputPath,
+                      container,
+                      videoCodec,
+                      audioCodec,
+                      int.parse(_bitrateController.text));
+                }
+              }),
               // kill btn
               KillBtn(
                 () => NyxConverter.kill(),
@@ -158,7 +192,8 @@ class _MyHomePageState extends State<MyHomePage> {
       Directory? outputPath,
       NyxContainer? container,
       NyxVideoCodec? vCodec,
-      NyxAudioCodec? aCodec) async {
+      NyxAudioCodec? aCodec,
+      int? bitrate) async {
     setState(() {
       isLoading = true;
     });
@@ -178,6 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
           container: container,
           videoCodec: vCodec,
           audioCodec: aCodec,
+          bitrate: bitrate,
           fileName: rfilename,
           debugMode: true,
           execution: (String? path, NyxStatus status, {String? errorMessage}) {
