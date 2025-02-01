@@ -46,18 +46,28 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isDone = false;
   bool isCanceled = false;
 
-  final TextEditingController _bitrateController = TextEditingController();
-  String _errorMessage = '';
+  final TextEditingController _audioBitrateController = TextEditingController();
+  final TextEditingController _videoBitrateController = TextEditingController();
+  String _audioErrorMessage = '';
+  String _videoErrorMessage = '';
   void _parseBitrate() {
     setState(() {
-      _errorMessage = '';
+      _audioErrorMessage = '';
+      _videoErrorMessage = '';
     });
 
     try {
-      int bitrate = int.parse(_bitrateController.text);
+      int.parse(_audioBitrateController.text);
     } catch (e) {
       setState(() {
-        _errorMessage = 'Please enter a valid integer for bitrate.';
+        _audioErrorMessage = 'Please enter a valid integer for bitrate.';
+      });
+    }
+    try {
+      int.parse(_videoBitrateController.text);
+    } catch (e) {
+      setState(() {
+        _videoErrorMessage = 'Please enter a valid integer for bitrate.';
       });
     }
   }
@@ -113,11 +123,21 @@ class _MyHomePageState extends State<MyHomePage> {
               }),
               // bitrate text field
               TextField(
-                controller: _bitrateController,
+                controller: _audioBitrateController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: 'Enter Bitrate',
-                  errorText: _errorMessage.isNotEmpty ? _errorMessage : null,
+                  labelText: 'Enter Audio Bitrate',
+                  errorText:
+                      _audioErrorMessage.isNotEmpty ? _audioErrorMessage : null,
+                ),
+              ),
+              TextField(
+                controller: _videoBitrateController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Enter Video Bitrate',
+                  errorText:
+                      _videoErrorMessage.isNotEmpty ? _audioErrorMessage : null,
                 ),
               ),
               // convert to btn
@@ -125,14 +145,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 // check bitrate validation
                 _parseBitrate();
 
-                if (_errorMessage.isNotEmpty) {
+                if (_audioErrorMessage.isEmpty && _videoErrorMessage.isEmpty) {
                   _startConvert(
-                      inputFilePath,
-                      outputPath,
-                      container,
-                      videoCodec,
-                      audioCodec,
-                      int.parse(_bitrateController.text));
+                    inputFilePath,
+                    outputPath,
+                    container,
+                    videoCodec,
+                    audioCodec,
+                    int.parse(_audioBitrateController.text),
+                    int.parse(_videoBitrateController.text),
+                  );
                 }
               }),
               // kill btn
@@ -188,12 +210,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _startConvert(
-      String? filePath,
-      Directory? outputPath,
-      NyxContainer? container,
-      NyxVideoCodec? vCodec,
-      NyxAudioCodec? aCodec,
-      int? bitrate) async {
+    String? filePath,
+    Directory? outputPath,
+    NyxContainer? container,
+    NyxVideoCodec? vCodec,
+    NyxAudioCodec? aCodec,
+    int? audioBitrate,
+    int? videoBitrate,
+  ) async {
     setState(() {
       isLoading = true;
     });
@@ -213,7 +237,8 @@ class _MyHomePageState extends State<MyHomePage> {
           container: container,
           videoCodec: vCodec,
           audioCodec: aCodec,
-          bitrate: bitrate,
+          audioBitrate: audioBitrate,
+          videoBitrate: videoBitrate,
           fileName: rfilename,
           debugMode: true,
           execution: (String? path, NyxStatus status, {String? errorMessage}) {
