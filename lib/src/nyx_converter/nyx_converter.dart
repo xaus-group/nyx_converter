@@ -24,7 +24,8 @@ class _NyxConverter extends INyxConverter {
       NyxVideoCodec? videoCodec,
       NyxAudioCodec? audioCodec,
       NyxSize? size,
-      int? bitrate,
+      int? audioBitrate,
+      int? videoBitrate,
       NyxFrequency? frequency,
       NyxChannelLayout? channelLayout,
       Function(String? path, NyxStatus status, {String? errorMessage})?
@@ -49,7 +50,8 @@ class _NyxConverter extends INyxConverter {
                 container?.command ?? NyxHelper().getFileContainer(filePath)),
             videoCodec: videoCodec,
             audioCodec: audioCodec,
-            bitrate: bitrate),
+            audioBitrate: audioBitrate,
+            videoBitrate: videoBitrate),
         debugMode: debugMode,
         outputFilePath: NyxHelper().getOutPutFilePath(
             outputPath,
