@@ -33,7 +33,7 @@ class NyxHelper {
       return VerifyData(NyxStatus.failed,
           message: 'The directory entered does not exist.');
     }
-    // // Check output file existance
+    // Check output file existance
     else if (File(
             '$outputPath/${fileName ?? getFileBaseName(filePath)}.$cntinr')
         .existsSync()) {
@@ -68,7 +68,8 @@ class NyxHelper {
     NyxVideoCodec? videoCodec,
     NyxAudioCodec? audioCodec,
     // NyxSize? size,
-    // NyxBitrate? bitrate,
+    int? audioBitrate,
+    int? videoBitrate,
     // NyxFrequency? frequency,
     // NyxChannelLayout? channelLayout
   }) {
@@ -79,17 +80,23 @@ class NyxHelper {
       command += "-c:v ${videoCodec.command} ";
     }
 
+    if (videoBitrate != null) {
+      // sets the video bitrate to 5Mbps, 10Mbps, ...
+      command += "-b:a ${videoBitrate}M ";
+    }
+
     if (audioCodec != null) {
       command += "-c:a ${audioCodec.command} ";
+    }
+
+    if (audioBitrate != null) {
+      // sets the audio bitrate to 320kbps, 256kbps, ...
+      command += "-b:a ${audioBitrate}k ";
     }
 
     // if (frequency != null) {
     //   // sets the audio sample rate to 48000Hz,...
     //   command += "-ar ${frequency.command} ";
-    // }
-    // if (bitrate != null) {
-    //   // sets the audio bitrate to 320kbps, 256kbps, ...
-    //   command += "-b:a ${bitrate.command} ";
     // }
     // if (channelLayout != null) {
     //   if (channelLayout.title == 'Stereo') {
