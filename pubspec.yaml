@@ -10,7 +10,7 @@ topics: [video, audio, converter, ffmpeg]
 
 environment:
   sdk: '>=3.4.1 <4.0.0'
-  flutter: 3.27.3
+  flutter: '>=3.27.3'
 
 dependencies:
   flutter:
