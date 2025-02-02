@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+- Added audio bitrate
+- Added video bitrate
+
 ## 0.2.0
 - Added video codecs
 - Added audio codecs
