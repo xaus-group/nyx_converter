@@ -1,98 +1,85 @@
 import 'dart:developer';
+import 'dart:io';
 
-import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
-import 'package:ffmpeg_kit_flutter_full_gpl/log.dart';
-import 'package:ffmpeg_kit_flutter_full_gpl/return_code.dart';
-import 'package:ffmpeg_kit_flutter_full_gpl/session.dart';
-import 'package:ffmpeg_kit_flutter_full_gpl/session_state.dart';
+import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter_new/log.dart';
+import 'package:ffmpeg_kit_flutter_new/return_code.dart';
+import 'package:ffmpeg_kit_flutter_new/session.dart';
+import 'package:ffmpeg_kit_flutter_new/session_state.dart';
 import 'package:nyx_converter/nyx_converter.dart';
+import 'package:nyx_converter/src/nyx_converter/nyx_helper.dart';
 
 class NyxFFConverter {
   static NyxFFConverter? _ins;
-
   NyxFFConverter._internal() {
     _ins = this;
   }
-
   factory NyxFFConverter() => _ins ?? NyxFFConverter._internal();
 
-  execute(
-      {required Function(int? sId) sessionId,
-      required String command,
-      required bool debugMode,
-      required String outputFilePath,
-      required Function(String? path, NyxStatus status, {String? errorMessage})
-          execution}) {
-    return FFmpegKit.executeAsync(command, (Session session) async {
-      final returnCode = await session.getReturnCode();
+  execute({
+    required String inputPath,
+    required String command,
+    required bool debugMode,
+    required String outputFilePath,
+    required Function(int id) sessionId,
+    required Function(
+      NyxStatus status, {
+      double? progress,
+      double? fps,
+      double? speed,
+      String? errorMessage,
+    }) execution,
+  }) async {
+    final totalDuration = await NyxHelper().getVideoDuration(inputPath);
 
-      // check completion of process
-      if (ReturnCode.isCancel(returnCode)) {
-        execution(null, NyxStatus.cancel);
-      } else {
-        SessionState state = await session.getState();
+    return FFmpegKit.executeAsync(
+      command,
 
-        switch (state) {
-          case SessionState.running:
-            execution(null, NyxStatus.running);
+      /// Final callback
+      (Session session) async {
+        final returnCode = await session.getReturnCode();
 
-            break;
-          case SessionState.failed:
-            execution(null, NyxStatus.failed,
-                errorMessage: 'A problem has occurred');
-            break;
-          case SessionState.completed:
-            execution(outputFilePath, NyxStatus.completed);
-
-            break;
-          default:
-            execution(null, NyxStatus.failed,
-                errorMessage: 'A problem has occurred');
+        if (ReturnCode.isCancel(returnCode)) {
+          execution(NyxStatus.cancel);
+          return;
         }
-      }
-    }, (Log ffmpegLog) {
-      // print log messages
-      debugMode ? log('[nyx_converter] ${ffmpegLog.getMessage()}') : '';
-    }).then((session) async {
-      sessionId(session.getSessionId());
 
-      // print log FailStackTrace
-      debugMode
-          ? log('[nyx_converter] ${await session.getFailStackTrace()}')
-          : '';
-      // print all logs
-      debugMode
-          ? log('[nyx_converter] ${await session.getAllLogsAsString()}')
-          : '';
+        final state = await session.getState();
 
-      final returnCode = await session.getReturnCode();
-
-      // check completion of process
-      if (ReturnCode.isCancel(returnCode)) {
-        execution(null, NyxStatus.cancel);
-      } else {
-        SessionState state = await session.getState();
-
-        switch (state) {
-          case SessionState.running:
-            execution(null, NyxStatus.running);
-
-            break;
-          case SessionState.failed:
-            execution(null, NyxStatus.failed,
-                errorMessage: 'A problem has occurred');
-            break;
-          case SessionState.completed:
-            execution(outputFilePath, NyxStatus.completed);
-
-            break;
-          default:
-            execution(null, NyxStatus.failed,
-                errorMessage: 'A problem has occurred');
+        if (state == SessionState.completed) {
+          if (!File(outputFilePath).existsSync()) {
+            execution(NyxStatus.failed, errorMessage: 'Unexpected Error!');
+          } else {
+            execution(NyxStatus.completed, progress: 100);
+          }
+        } else {
+          execution(NyxStatus.failed, errorMessage: "A problem has occurred");
         }
-      }
-    }).onError((error, stackTrace) {
-      throw Exception("$error");
+      },
+
+      /// LOG CALLBACK — fires during running
+      (Log logLine) {
+        final msg = logLine.getMessage();
+        if (debugMode) log("[nyx_converter] $msg");
+
+        final percent = NyxHelper().getPercent(msg, totalDuration);
+        final fps = NyxHelper().getFps(msg);
+        final speed = NyxHelper().getSpeed(msg);
+
+        // If nothing readable yet — skip
+        if (percent == null && fps == null && speed == null) return;
+
+        execution(
+          NyxStatus.running,
+          progress: percent,
+          fps: fps,
+          speed: speed,
+        );
+      },
+    ).then((session) {
+      sessionId(session.getSessionId() ?? 0);
+    }).onError((e, s) {
+      execution(NyxStatus.failed, errorMessage: e.toString());
     });
   }
 }

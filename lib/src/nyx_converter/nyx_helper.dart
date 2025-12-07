@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:ffmpeg_kit_flutter_new/ffprobe_kit.dart';
 import 'package:nyx_converter/nyx_converter.dart';
 import 'package:nyx_converter/src/helper/verify_data.dart';
 import 'package:path/path.dart';
@@ -74,7 +75,7 @@ class NyxHelper {
     // NyxChannelLayout? channelLayout
   }) {
     String command = "";
-    command += "-i '$filePath' ";
+    command += """-i "$filePath" """;
 
     if (videoCodec != null) {
       command += "-c:v ${videoCodec.command} ";
@@ -82,7 +83,7 @@ class NyxHelper {
 
     if (videoBitrate != null) {
       // sets the video bitrate to 5Mbps, 10Mbps, ...
-      command += "-b:a ${videoBitrate}M ";
+      command += "-b:v ${videoBitrate}M ";
     }
 
     if (audioCodec != null) {
@@ -133,5 +134,63 @@ class NyxHelper {
   bool verifyFileName(String fileName) {
     final unwantedCharsRegex = RegExp(r'[|\\?\<\":\+\[\]\/]');
     return !unwantedCharsRegex.hasMatch(fileName);
+  }
+
+  Future<double?> getVideoDuration(String path) async {
+    final session = await FFprobeKit.getMediaInformation(path);
+    final info = session.getMediaInformation();
+    if (info == null) return null;
+
+    final duration = info.getDuration();
+    return double.tryParse(duration ?? "");
+  }
+
+  /// Parses HH:MM:SS.xx or MM:SS.xx or SS.xx
+  double _parseTime(String t) {
+    final parts = t.split(':');
+    if (parts.length == 3) {
+      return Duration(
+            hours: int.parse(parts[0]),
+            minutes: int.parse(parts[1]),
+            seconds: double.parse(parts[2]).floor(),
+          ).inSeconds.toDouble() +
+          (double.parse(parts[2]) % 1);
+    }
+    if (parts.length == 2) {
+      return Duration(
+        minutes: int.parse(parts[0]),
+        seconds: int.parse(parts[1].split('.').first),
+      ).inSeconds.toDouble();
+    }
+    return double.tryParse(t) ?? 0;
+  }
+
+  /// EXTRACT PERCENT FROM LOG
+  double? getPercent(String msg, double? totalDuration) {
+    if (totalDuration == null) return null;
+
+    final match = RegExp(r'time=([\d\.:]+)').firstMatch(msg);
+    if (match == null) return null;
+
+    final timeString = match.group(1)!;
+    final seconds = _parseTime(timeString);
+
+    return (seconds / totalDuration * 100).clamp(0, 100);
+  }
+
+  /// EXTRACT FPS FROM LOG
+  double? getFps(String msg) {
+    final match = RegExp(r'fps=\s*([\d\.]+)').firstMatch(msg);
+    if (match == null) return null;
+
+    return double.tryParse(match.group(1)!);
+  }
+
+  /// EXTRACT SPEED FROM LOG
+  double? getSpeed(String msg) {
+    final match = RegExp(r'speed=\s*([\d\.]+)x').firstMatch(msg);
+    if (match == null) return null;
+
+    return double.tryParse(match.group(1)!);
   }
 }

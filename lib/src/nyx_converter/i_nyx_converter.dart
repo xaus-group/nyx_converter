@@ -20,11 +20,18 @@ abstract class INyxConverter {
   // ### Return Type:
   // - [Future<NyxData>]: The function returns a [Future] that resolves to a [NyxData] object
   ///
-  /// - [execution]  (Function, required): A callback function that will be called during the conversion process. The callback receives three arguments:
+  /// - [execution]  (Function, required): A callback function that will be called during the conversion process. The callback receives these arguments:
   ///
-  ///   - [path] (String): The temporary path to the converted file during processing (might be null).
-  ///   - [status] (NyxStatus): The current status of the conversion process.
-  ///   - [errorMessage] (String, optional): An optional message related to conversion process errors.
+  ///   - [status] (NyxStatus, required): The current status of the conversion process.
+  ///     Possible values:
+  ///       - `NyxStatus.running`
+  ///       - `NyxStatus.completed`
+  ///       - `NyxStatus.cancel`
+  ///       - `NyxStatus.failed`
+  ///   - [progress] (double?, optional): Represents the conversion progress percentage (0–100%).
+  ///   - [fps] (double?, optional): Real-time processing speed in frames per second.
+  ///   - [speed] (double?, optional): Real-time conversion speed.
+  ///   - [errorMessage] (String, optional): Contains failure details when `NyxStatus.failed` is triggered.
   ///
   /// ### Description:
   /// - The [convertTo] function initiates the asynchronous process of converting a media file from the specified [filePath] to a new file at the provided [outputPath]. It offers various optional parameters to customize the output format, codecs, resolution, bitrate, and etc.
@@ -36,13 +43,19 @@ abstract class INyxConverter {
   ///
   /// NyxConverter.convertTo(filePath, outputPath,
   ///      container: NyxContainer.mp4,
-  ///      videoCodec: NyxVideoCodec.h264
-  ///      audioCodec: NyxAudioCodec.aac
-  ///      audioBitrate: 320
-  ///      videoBitrate: 5
+  ///      videoCodec: NyxVideoCodec.h264,
+  ///      audioCodec: NyxAudioCodec.aac,
+  ///      audioBitrate: 320, // kbps
+  ///      videoBitrate: 5, // Mbps
   ///      debugMode: true,
   ///      fileName: 'new_name',
-  ///      execution: (String? path, NyxStatus status, {String? errorMessage}) {}
+  ///      execution: (
+  ///       NyxStatus status, {
+  ///       String? errorMessage,
+  ///       double? progress,
+  ///       double? fps,
+  ///       double? speed
+  ///       }) {}
   /// );
   /// ```
   ///
@@ -59,7 +72,13 @@ abstract class INyxConverter {
     // NyxChannelLayout? channelLayout
     bool debugMode = false,
     String? fileName,
-    Function(String? path, NyxStatus status, {String? errorMessage}) execution,
+    Function(
+      NyxStatus status, {
+      String? errorMessage,
+      double? progress,
+      double? fps,
+      double? speed,
+    }) execution,
   });
 
   /// ### Description:

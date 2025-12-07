@@ -1,4 +1,4 @@
-import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
 import 'package:nyx_converter/nyx_converter.dart';
 import 'package:nyx_converter/src/helper/verify_data.dart';
 import 'package:nyx_converter/src/nyx_converter/i_nyx_converter.dart';
@@ -28,7 +28,11 @@ class _NyxConverter extends INyxConverter {
       int? videoBitrate,
       NyxFrequency? frequency,
       NyxChannelLayout? channelLayout,
-      Function(String? path, NyxStatus status, {String? errorMessage})?
+      Function(NyxStatus status,
+              {double? progress,
+              double? fps,
+              double? speed,
+              String? errorMessage})?
           execution}) async {
     VerifyData verifyData = NyxHelper().verifyData(filePath, outputPath,
         container?.command ?? NyxHelper().getFileContainer(filePath),
@@ -37,6 +41,7 @@ class _NyxConverter extends INyxConverter {
     // if filePath, outputPath, fileName are verified or not
     if (verifyData.status == NyxStatus.success) {
       NyxFFConverter().execute(
+        inputPath: filePath,
         sessionId: (sessionId) {
           if (!sessionIds.contains(sessionId)) {
             sessionIds.add(sessionId);
@@ -57,10 +62,18 @@ class _NyxConverter extends INyxConverter {
             outputPath,
             fileName ?? NyxHelper().getFileBaseName(filePath),
             container?.command ?? NyxHelper().getFileContainer(filePath)),
-        execution: execution!,
+        execution: (NyxStatus status, {errorMessage, fps, progress, speed}) {
+          execution!(
+            status,
+            errorMessage: errorMessage,
+            progress: progress,
+            fps: fps,
+            speed: speed,
+          );
+        },
       );
     } else {
-      execution!(null, verifyData.status, errorMessage: verifyData.message);
+      execution!(verifyData.status, errorMessage: verifyData.message);
     }
   }
 
