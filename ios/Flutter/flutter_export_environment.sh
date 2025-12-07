@@ -1,6 +1,6 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/home/husen/fvm/versions/3.27.3"
+export "FLUTTER_ROOT=/home/husen/fvm/versions/3.35.5"
 export "FLUTTER_APPLICATION_PATH=/home/husen/Documents/nyx_converter"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"

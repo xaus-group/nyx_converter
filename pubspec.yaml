@@ -9,13 +9,13 @@ documentation: https://pub.dev/documentation/nyx_converter/latest
 topics: [video, audio, converter, ffmpeg]
 
 environment:
-  sdk: '>=3.4.1 <4.0.0'
-  flutter: '>=3.27.3'
+  sdk: ">=3.4.1 <4.0.0"
+  flutter: ">=3.27.3"
 
 dependencies:
   flutter:
     sdk: flutter
-  ffmpeg_kit_flutter_full_gpl: ^6.0.3
+  ffmpeg_kit_flutter_new: ^4.1.0
   path: ^1.8.2
 
 dev_dependencies:
