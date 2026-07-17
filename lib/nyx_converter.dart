@@ -1,4 +1,4 @@
-library nyx_converter;
+library;
 
 export './src/nyx_converter/nyx_converter.dart';
 

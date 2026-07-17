@@ -1,23 +1,57 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nyx_converter/nyx_converter.dart';
-import 'package:nyx_converter/src/helper/verify_data.dart';
+import 'package:nyx_converter/src/helper/nyx_verify_error.dart';
 import 'package:nyx_converter/src/nyx_converter/nyx_helper.dart';
 
 void main() {
   group('Nyx Helper', () {
-    test("verifyData method should not cause an exception error.", () {
-      bool actual = false;
+    group('NyxHelper.verifyData', () {
+      test(
+        'returns outputDirectoryNotFound when output directory does not exist',
+        () async {
+          final result = await NyxHelper().validate(
+            inputPath: 'assets/videos/test_video.mp4',
+            outputFilePath: 'unknown/output.mp4',
+          );
 
-      VerifyData verifyData = NyxHelper().verifyData(
-          'assets/videos/test_video.avi.mp4',
-          'assets/videos/',
-          NyxContainer.mp4.command,
-          fileName: 'abc');
-      if (verifyData.status == NyxStatus.success) {
-        actual = true;
-      }
+          expect(result.isSuccess, false);
+          expect(
+            result.error,
+            NyxVerifyError.outputDirectoryNotFound,
+          );
+        },
+      );
 
-      expect(actual, true);
+      test(
+        'returns outputFileAlreadyExists when output file already exists',
+        () async {
+          final result = await NyxHelper().validate(
+            inputPath: 'assets/videos/test_video.mp4',
+            outputFilePath: 'assets/videos/test_video.mp4',
+          );
+
+          expect(result.isSuccess, false);
+          expect(
+            result.error,
+            NyxVerifyError.outputFileAlreadyExists,
+          );
+        },
+      );
+
+      test(
+        'returns inputFileNotFound when input file does not exist',
+        () async {
+          final result = await NyxHelper().validate(
+            inputPath: 'assets/videos/not_found.mp4',
+            outputFilePath: 'assets/videos/output.mp4',
+          );
+
+          expect(result.isSuccess, false);
+          expect(
+            result.error,
+            NyxVerifyError.inputFileNotFound,
+          );
+        },
+      );
     });
 
     test("ffmpeg command should start with '-i'.", () {
