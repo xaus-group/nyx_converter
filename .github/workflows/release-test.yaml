@@ -1,9 +1,8 @@
-name: Release Tests
+name: Integration Tests
 
 on:
   push:
-    tags:
-      - "v*"
+  pull_request:
   workflow_dispatch:
 
 permissions:
