@@ -7,7 +7,6 @@
 /// - **Compresses audio:** Reduces file size for easier storage and transfer.
 /// - **Quality vs. Size:** Lossy codecs (MP3, AAC) prioritize size with some quality loss. Lossless codecs (FLAC) maintain quality but have larger files.
 /// - **Widely Used:** AAC is a popular choice for its balance of size and quality, found in MP4s, YouTube videos, and most devices.
-
 /// Choosing the right audio codec depends on your needs. If you prioritize pristine sound, go lossless. For smaller files and broader compatibility, consider a lossy codec with adjustable quality settings.
 ///
 /// ### Example:
@@ -44,7 +43,15 @@ enum NyxAudioCodec {
   dsd
 }
 
+/// Provides the FFmpeg encoder name for this audio codec.
+///
+/// Example:
+/// ```dart
+/// final encoder = NyxAudioCodec.aac.command;
+/// // returns "aac"
+/// ```
 extension NyxAudioCodecCommandExtension on NyxAudioCodec {
+  /// FFmpeg encoder name used internally during conversion.
   String get command {
     switch (this) {
       case NyxAudioCodec.mp3:
@@ -67,7 +74,15 @@ extension NyxAudioCodecCommandExtension on NyxAudioCodec {
   }
 }
 
+/// Provides the full technical name of an audio codec.
+///
+/// Example:
+/// ```dart
+/// final title = NyxAudioCodec.aac.title;
+/// // Advanced Audio Coding
+/// ```
 extension NyxAudioCodecTitleExtension on NyxAudioCodec {
+  /// Full technical codec name.
   String get title {
     switch (this) {
       case NyxAudioCodec.mp3:
@@ -90,7 +105,15 @@ extension NyxAudioCodecTitleExtension on NyxAudioCodec {
   }
 }
 
+/// Provides a human-readable display name for the codec.
 extension NyxAudioCodecNameExtension on NyxAudioCodec {
+  /// Short codec name.
+  ///
+  /// Example:
+  /// ```dart
+  /// print(NyxAudioCodec.aac.name);
+  /// // AAC
+  /// ```
   String get name {
     switch (this) {
       case NyxAudioCodec.mp3:

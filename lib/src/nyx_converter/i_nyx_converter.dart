@@ -1,65 +1,67 @@
 import 'package:nyx_converter/nyx_converter.dart';
 
 abstract class INyxConverter {
+  /// Converts a media file to a new format.
   ///
-  /// ### Parameters:
-  /// - [filePath] (String): The path to the input media file.
-  /// - [outputPath] (String): The desired path for the converted output file. (e.g., "/storage/emulated/0/Movies") (imp: Do not save video media files in the corresponding audio directories and vice versa)
-  /// - [container] (NyxContainer, optional): The target format for the converted file (e.g., "mp4", "avi").
-  /// - [videoCodec] (NyxVideoCodec, optional): The desired video codec for the converted file (e.g., "h264", "vp8").
-  /// - [audioCodec] (NyxAudioCodec, optional): The desired audio codec for the converted file (e.g., "aac", "mp3").
-  /// - [fileName] (String, optional): change output file name.
+  /// The conversion runs asynchronously. Progress and status updates can be
+  /// received through the optional [execution] callback.
   ///
-  /// - [debugMode] (bool, optional): By setting this item to true, you can get more detailed logs of nyx_converter processes.
-  // - [size] (NyxSize, optional): The target width and height of the converted video in pixels.
-  /// - [audioBitrate] (int, optional): The desired bitrate of the converted file in kilobits per second (kbps). (common bitrates: 128 kbps, 192 kbps, 320 kbps)
-  /// - [videoBitrate] (int, optional): The desired bitrate of the converted file in megabits per second (Mbps). (common bitrates: 1 Mbps, 2.5 Mbps, 5 Mbps, 10 Mbps)
-  // - [frequency] (NyxFrequency, optional): The target sampling frequency of the converted audio stream in Hertz (Hz).
-  // - [channelLayout] (NyxChannelLayout, optional): The desired number of audio channels (1 for mono, 2 for stereo) in the converted file.
-  //
-  // ### Return Type:
-  // - [Future<NyxData>]: The function returns a [Future] that resolves to a [NyxData] object
+  /// The output file is validated before the conversion starts. If validation
+  /// fails (for example, the input file does not exist or the output file already
+  /// exists), the conversion is aborted and [execution] is invoked with
+  /// [NyxStatus.failed].
   ///
-  /// - [execution]  (Function, required): A callback function that will be called during the conversion process. The callback receives these arguments:
+  /// Parameters:
+  /// - [filePath]: Path to the source media file.
+  /// - [outputPath]: Directory where the converted file will be saved.
+  /// - [container]: Target container format. Defaults to the source container.
+  /// - [videoCodec]: Target video codec.
+  /// - [audioCodec]: Target audio codec.
+  /// - [fileName]: Output file name without the extension.
+  /// - [audioBitrate]: Audio bitrate in kbps.
+  /// - [videoBitrate]: Video bitrate in Mbps.
+  /// - [debugMode]: Enables FFmpeg log output.
+  /// - [execution]: Optional callback that receives conversion status updates.
   ///
-  ///   - [status] (NyxStatus, required): The current status of the conversion process.
-  ///     Possible values:
-  ///       - `NyxStatus.running`
-  ///       - `NyxStatus.completed`
-  ///       - `NyxStatus.cancel`
-  ///       - `NyxStatus.failed`
-  ///   - [progress] (double?, optional): Represents the conversion progress percentage (0–100%).
-  ///   - [fps] (double?, optional): Real-time processing speed in frames per second.
-  ///   - [speed] (double?, optional): Real-time conversion speed.
-  ///   - [errorMessage] (String, optional): Contains failure details when `NyxStatus.failed` is triggered.
-  ///
-  /// ### Description:
-  /// - The [convertTo] function initiates the asynchronous process of converting a media file from the specified [filePath] to a new file at the provided [outputPath]. It offers various optional parameters to customize the output format, codecs, resolution, bitrate, and etc.
-  ///
-  /// ### Example:
+  /// Example:
   /// ```dart
-  /// final filePath = 'path/to/my.mp4';
-  /// final outputPath = 'converted_video.avi';
+  /// await NyxConverter.convertTo(
+  ///   '/storage/input.mp4',
+  ///   '/storage/output',
+  ///   container: NyxContainer.mkv,
+  ///   videoCodec: NyxVideoCodec.h264,
+  ///   audioCodec: NyxAudioCodec.aac,
+  ///   videoBitrate: 5,
+  ///   audioBitrate: 320,
+  ///   fileName: 'holiday',
+  ///   execution: (
+  ///     status, {
+  ///     progress,
+  ///     fps,
+  ///     speed,
+  ///     errorMessage,
+  ///   }) {
+  ///     switch (status) {
+  ///       case NyxStatus.running:
+  ///         print(progress);
+  ///         break;
   ///
-  /// NyxConverter.convertTo(filePath, outputPath,
-  ///      container: NyxContainer.mp4,
-  ///      videoCodec: NyxVideoCodec.h264,
-  ///      audioCodec: NyxAudioCodec.aac,
-  ///      audioBitrate: 320, // kbps
-  ///      videoBitrate: 5, // Mbps
-  ///      debugMode: true,
-  ///      fileName: 'new_name',
-  ///      execution: (
-  ///       NyxStatus status, {
-  ///       String? errorMessage,
-  ///       double? progress,
-  ///       double? fps,
-  ///       double? speed
-  ///       }) {}
+  ///       case NyxStatus.completed:
+  ///         print('Done!');
+  ///         break;
+  ///
+  ///       case NyxStatus.failed:
+  ///         print(errorMessage);
+  ///         break;
+  ///
+  ///       case NyxStatus.cancel:
+  ///         print('Cancelled');
+  ///         break;
+  ///     }
+  ///   },
   /// );
   /// ```
-  ///
-  convertTo(
+  Future<void> convertTo(
     String filePath,
     String outputPath, {
     NyxContainer? container,
@@ -72,13 +74,7 @@ abstract class INyxConverter {
     // NyxChannelLayout? channelLayout
     bool debugMode = false,
     String? fileName,
-    Function(
-      NyxStatus status, {
-      String? errorMessage,
-      double? progress,
-      double? fps,
-      double? speed,
-    }) execution,
+    NyxConvertionCallback? execution,
   });
 
   /// ### Description:
@@ -88,5 +84,5 @@ abstract class INyxConverter {
   /// ```dart
   /// NyxConverter.kill();
   /// ```
-  kill();
+  void kill();
 }

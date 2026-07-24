@@ -18,7 +18,15 @@ enum NyxChannelLayout {
   mono
 }
 
+/// Provides a human-readable name for an audio channel layout.
+///
+/// Example:
+/// ```dart
+/// print(NyxChannelLayout.stereo.title);
+/// // Stereo
+/// ```
 extension NyxChannelLayoutNameExtension on NyxChannelLayout {
+  /// Display name of the channel layout.
   String get title {
     switch (this) {
       case NyxChannelLayout.stereo:

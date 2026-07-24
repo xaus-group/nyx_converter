@@ -31,7 +31,15 @@ enum NyxSize {
   w3840h2160
 }
 
+/// Provides FFmpeg-compatible resolution values.
+///
+/// Example:
+/// ```dart
+/// NyxSize.w1920h1080.command;
+/// // 1920x1080
+/// ```
 extension NyxSizeCommandExtension on NyxSize {
+  /// Returns the FFmpeg video scale value.
   String get command {
     switch (this) {
       case NyxSize.w640h360:
@@ -48,7 +56,9 @@ extension NyxSizeCommandExtension on NyxSize {
   }
 }
 
+/// Provides readable names for video resolutions.
 extension NyxSizeNameExtension on NyxSize {
+  /// Returns the display name of the resolution.
   String get name {
     switch (this) {
       case NyxSize.w640h360:

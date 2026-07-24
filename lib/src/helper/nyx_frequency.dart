@@ -28,7 +28,14 @@ enum NyxFrequency {
   hz22050,
 }
 
+/// Provides the FFmpeg audio frequency value.
+///
+/// Example:
+/// ```dart
+/// final frequency = NyxFrequency.hz44100.command;
+/// ```
 extension NyxFrequencyCommandExtension on NyxFrequency {
+  /// FFmpeg-compatible frequency value.
   String get command {
     switch (this) {
       case NyxFrequency.hz48000:
@@ -41,7 +48,9 @@ extension NyxFrequencyCommandExtension on NyxFrequency {
   }
 }
 
+/// Provides readable names for audio sample rates.
 extension NyxFrequencyNameExtension on NyxFrequency {
+  /// Returns the sample rate display value.
   String get title {
     switch (this) {
       case NyxFrequency.hz48000:

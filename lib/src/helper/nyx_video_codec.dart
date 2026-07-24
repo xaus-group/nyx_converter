@@ -7,7 +7,6 @@
 /// - **Quality vs. File Size:** H.264 offers a good balance. H.265 provides higher compression but may require more processing power and have limited playback compatibility.
 /// - **Compatibility:** H.264 is the most widely supported choice.
 /// - **Application:** For web video, VP8/VP9 might be suitable.
-
 /// Video codecs are constantly evolving, with newer ones offering better compression and features. However, compatibility across devices and platforms remains a factor to consider.
 ///
 /// ### Example:
@@ -43,7 +42,18 @@ enum NyxVideoCodec {
   mpeg2
 }
 
+/// Provides FFmpeg encoder names for each [NyxVideoCodec].
+///
+/// This extension converts a codec enum value into the corresponding
+/// FFmpeg encoder command used during media conversion.
+///
+/// Example:
+/// ```dart
+/// final codec = NyxVideoCodec.h264.command;
+/// // Returns: libx264
+/// ```
 extension NyxVideoCodecCommandExtension on NyxVideoCodec {
+  /// Returns the FFmpeg encoder name for this video codec.
   String get command {
     switch (this) {
       case NyxVideoCodec.h264:
@@ -66,7 +76,15 @@ extension NyxVideoCodecCommandExtension on NyxVideoCodec {
   }
 }
 
+/// Provides full readable names for [NyxVideoCodec] values.
+///
+/// Example:
+/// ```dart
+/// NyxVideoCodec.h264.title;
+/// // Advanced Video Coding (AVC)
+/// ```
 extension NyxVideoCodecTitleExtension on NyxVideoCodec {
+  /// Returns the full codec technology name.
   String get title {
     switch (this) {
       case NyxVideoCodec.h264:
@@ -89,7 +107,11 @@ extension NyxVideoCodecTitleExtension on NyxVideoCodec {
   }
 }
 
+/// Provides short display names for [NyxVideoCodec].
+///
+/// Useful when displaying codec names inside Flutter widgets.
 extension NyxVideoCodecNameExtension on NyxVideoCodec {
+  /// Returns a short human-readable codec name.
   String get name {
     switch (this) {
       case NyxVideoCodec.h264:

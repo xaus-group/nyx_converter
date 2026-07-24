@@ -53,7 +53,17 @@ enum NyxContainer {
   aac
 }
 
+/// Provides the FFmpeg format name used for this container.
+///
+/// The returned value is passed to FFmpeg as the output format.
+///
+/// Example:
+/// ```dart
+/// final format = NyxContainer.mp4.command;
+/// print(format); // mp4
+/// ```
 extension NyxContainerCommandExtension on NyxContainer {
+  /// FFmpeg output format identifier.
   String get command {
     switch (this) {
       case NyxContainer.avi:
@@ -80,7 +90,15 @@ extension NyxContainerCommandExtension on NyxContainer {
   }
 }
 
+/// Provides a human-readable display name for a media container.
+///
+/// Example:
+/// ```dart
+/// print(NyxContainer.mp4.name);
+/// // MP4
+/// ```
 extension NyxContainerNameExtension on NyxContainer {
+  /// Display name of the container.
   String get name {
     switch (this) {
       case NyxContainer.avi:

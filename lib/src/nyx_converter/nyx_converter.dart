@@ -2,100 +2,79 @@ import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
 import 'package:nyx_converter/nyx_converter.dart';
 import 'package:nyx_converter/src/nyx_converter/i_nyx_converter.dart';
 import 'package:nyx_converter/src/nyx_converter/nyx_ff_converter.dart';
-import 'package:nyx_converter/src/nyx_converter/nyx_helper.dart';
+
+import '../core/nyx_command_builder.dart';
+import '../core/nyx_path_helper.dart';
+import '../core/nyx_validator.dart';
 
 class _NyxConverter extends INyxConverter {
-  static _NyxConverter? _ins;
+  static final _NyxConverter _instance = _NyxConverter._internal();
 
-  _NyxConverter._internal() {
-    _ins = this;
-  }
+  _NyxConverter._internal();
 
-  factory _NyxConverter() => _ins ?? _NyxConverter._internal();
+  factory _NyxConverter() => _instance;
 
-  final List<int?> sessionIds = [];
+  final Set<int> _sessionIds = {};
 
   @override
   Future<void> convertTo(
-    filePath,
-    outputPath, {
+    String inputPath,
+    String outputDirectory, {
     bool debugMode = false,
     String? fileName,
     NyxContainer? container,
     NyxVideoCodec? videoCodec,
     NyxAudioCodec? audioCodec,
-    NyxSize? size,
     int? audioBitrate,
     int? videoBitrate,
-    NyxFrequency? frequency,
-    NyxChannelLayout? channelLayout,
-    Function(
-      NyxStatus status, {
-      double? progress,
-      double? fps,
-      double? speed,
-      String? errorMessage,
-    })? execution,
+    NyxConvertionCallback? execution,
   }) async {
-    final outputFilePath = NyxHelper().getOutPutFilePath(
-      outputPath,
-      fileName ?? NyxHelper().getFileBaseName(filePath),
-      container?.command ?? NyxHelper().getFileContainer(filePath),
+    final outputFilePath = NyxPathHelper.buildOutputPath(
+      inputPath: inputPath,
+      outputDirectory: outputDirectory,
+      fileName: fileName,
+      container: container,
     );
 
-    final verifyData = await NyxHelper().validate(
-      inputPath: filePath,
+    final result = await NyxValidator.validate(
+      inputPath: inputPath,
       outputFilePath: outputFilePath,
     );
 
-    if (!verifyData.isSuccess) {
+    if (!result.isSuccess) {
       execution?.call(
         NyxStatus.failed,
-        errorMessage: verifyData.message,
+        errorMessage: result.message,
       );
       return;
     }
 
-    NyxFFConverter().execute(
-      inputPath: filePath,
+    final command = NyxCommandBuilder.build(
+      inputPath: inputPath,
       outputFilePath: outputFilePath,
+      videoCodec: videoCodec,
+      audioCodec: audioCodec,
+      audioBitrate: audioBitrate,
+      videoBitrate: videoBitrate,
+    );
+
+    await NyxFFConverter.execute(
+      inputPath: inputPath,
+      command: command,
       debugMode: debugMode,
-      sessionId: (sessionId) {
-        if (!sessionIds.contains(sessionId)) {
-          sessionIds.add(sessionId);
-        }
-      },
-      command: NyxHelper().getCommand(
-        filePath,
-        outputFilePath,
-        videoCodec: videoCodec,
-        audioCodec: audioCodec,
-        audioBitrate: audioBitrate,
-        videoBitrate: videoBitrate,
-      ),
-      execution: (
-        NyxStatus status, {
-        errorMessage,
-        fps,
-        progress,
-        speed,
-      }) {
-        execution?.call(
-          status,
-          errorMessage: errorMessage,
-          progress: progress,
-          fps: fps,
-          speed: speed,
-        );
-      },
+      outputFilePath: outputFilePath,
+      sessionId: _sessionIds.add,
+      execution: execution,
     );
   }
 
   @override
-  kill() {
-    for (var sessionId in sessionIds) {
-      FFmpegKit.cancel(sessionId!);
+  void kill() {
+    for (final sessionId in _sessionIds) {
+      FFmpegKit.cancel(sessionId);
     }
+
+    _sessionIds.clear();
   }
 }
 

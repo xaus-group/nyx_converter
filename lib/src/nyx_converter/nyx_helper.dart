@@ -4,18 +4,18 @@ import 'dart:io';
 import 'package:ffmpeg_kit_flutter_new/ffprobe_kit.dart';
 import 'package:path/path.dart' as p;
 import 'package:nyx_converter/nyx_converter.dart';
-import 'package:nyx_converter/src/helper/verify_data.dart';
+import 'package:nyx_converter/src/models/verify_data.dart';
 
-import '../helper/nyx_verify_error.dart';
+import '../models/nyx_verify_error.dart';
 
-class NyxHelper {
-  static NyxHelper? _ins;
+class NyxHelpe {
+  static NyxHelpe? _ins;
 
-  NyxHelper._internal() {
+  NyxHelpe._internal() {
     _ins = this;
   }
 
-  factory NyxHelper() => _ins ?? NyxHelper._internal();
+  factory NyxHelpe() => _ins ?? NyxHelpe._internal();
 
   /// Forbidden characters across Windows, Linux, and macOS.
   static const String _forbiddenChars = r'[<>:"/\\|?*]';

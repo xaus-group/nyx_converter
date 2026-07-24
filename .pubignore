@@ -1,0 +1,8 @@
+# Tests
+test/
+
+# Example integration tests
+example/integration_test/
+
+# Development files
+.github/
