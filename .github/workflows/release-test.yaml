@@ -37,6 +37,8 @@ jobs:
           api-level: 34
           arch: x86_64
           profile: pixel_6
+          target: google_apis
           script: |
             cd example
-            flutter test integration_test
+            flutter devices
+            flutter test integration_test -d android --device-timeout 120
