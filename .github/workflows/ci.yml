@@ -1,18 +1,41 @@
+name: CI
+
 on:
   pull_request:
   push:
+    branches:
+      - main
+
 permissions:
   contents: read
   actions: read
   checks: write
+
 jobs:
-  main:
+  test:
+    name: Run Tests
     runs-on: ubuntu-latest
+
     steps:
-      - name: Test
+      - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Set up Flutter
+
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-      - run: flutter test
+          cache: true
+
+      - name: Get package dependencies
+        run: flutter pub get
+
+      - name: Run unit tests
+        run: flutter test
+
+      - name: Get example dependencies
+        working-directory: example
+        run: flutter pub get
+
+      - name: Run integration tests
+        working-directory: example
+        run: flutter test integration_test
