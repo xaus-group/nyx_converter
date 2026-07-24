@@ -39,4 +39,6 @@ jobs:
           target: google_apis
           script: |
             cd example
-            flutter test integration_test
+            flutter devices
+            flutter test integration_test \
+              -d $(flutter devices | grep emulator | awk '{print $2}' | head -1)
