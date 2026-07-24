@@ -11,24 +11,27 @@ class SelectFileBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-        onPressed: () async {
-          _getPermission();
+      onPressed: () async {
+        _getPermission();
 
-          FilePickerResult? result = await FilePicker.platform.pickFiles();
+        FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-          if (result != null) {
-            file(File(result.files.single.path!).path);
-          } else {
-            // User canceled the picker
-          }
-        },
-        style: TextButton.styleFrom(
-            backgroundColor: Colors.grey[200], foregroundColor: Colors.black),
-        icon: const Icon(Icons.file_download_outlined),
-        label: const Text('Select Media File'));
+        if (result != null) {
+          file(File(result.files.single.path!).path);
+        } else {
+          // User canceled the picker
+        }
+      },
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.grey[200],
+        foregroundColor: Colors.black,
+      ),
+      icon: const Icon(Icons.file_download_outlined),
+      label: const Text('Select Media File'),
+    );
   }
 
-  _getPermission() async {
+  Future<void> _getPermission() async {
     var status = await Permission.storage.status;
     if (status.isDenied) {
       await Permission.storage.request();

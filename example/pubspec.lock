@@ -187,7 +187,7 @@ packages:
     source: hosted
     version: "2.0.2"
   integration_test:
-    dependency: "direct main"
+    dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -277,7 +277,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.4.0"
+    version: "0.4.1"
   objective_c:
     dependency: transitive
     description:
