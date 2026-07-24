@@ -39,5 +39,4 @@ jobs:
           target: google_apis
           script: |
             cd example
-            flutter devices
-            flutter test integration_test -d android --device-timeout 120
+            flutter test integration_test
