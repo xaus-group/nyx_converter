@@ -1,30 +1,42 @@
-integration-tests:
-  name: Android Integration Tests
-  runs-on: ubuntu-latest
+name: Release Tests
 
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
 
-    - name: Setup Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        channel: stable
-        cache: true
+permissions:
+  contents: read
 
-    - name: Install package dependencies
-      run: flutter pub get
+jobs:
+  integration-tests:
+    name: Android Integration Tests
+    runs-on: ubuntu-latest
 
-    - name: Install example dependencies
-      working-directory: example
-      run: flutter pub get
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Run integration tests
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: 34
-        arch: x86_64
-        profile: pixel_6
-        script: |
-          cd example
-          flutter test integration_test
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install package dependencies
+        run: flutter pub get
+
+      - name: Install example dependencies
+        working-directory: example
+        run: flutter pub get
+
+      - name: Run Android integration tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          profile: pixel_6
+          script: |
+            cd example
+            flutter test integration_test
