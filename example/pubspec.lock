@@ -109,10 +109,10 @@ packages:
     dependency: transitive
     description:
       name: ffmpeg_kit_flutter_new
-      sha256: "74f169e1efc3d104b13964e060335c8f113ee0b34f43daa39d1facb2ecbbd177"
+      sha256: "96d649b36d032a5ded4accbb8912cc30d30659ec89ecc1be87261572120b36c6"
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.1"
+    version: "4.5.3"
   ffmpeg_kit_flutter_platform_interface:
     dependency: transitive
     description:
