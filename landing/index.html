@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Nyx Converter - Flutter FFmpeg Media Converter</title>
+
+    <style>
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+        max-width: 1000px;
+        margin: auto;
+        padding: 40px 20px;
+        line-height: 1.6;
+        color: #222;
+      }
+
+      header {
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 48px;
+        margin-bottom: 10px;
+      }
+
+      .subtitle {
+        font-size: 20px;
+        color: #666;
+      }
+
+      .buttons a {
+        display: inline-block;
+        margin: 10px;
+        padding: 12px 20px;
+        border-radius: 8px;
+        background: #222;
+        color: white;
+        text-decoration: none;
+      }
+
+      .buttons a:hover {
+        opacity: 0.8;
+      }
+
+      .card {
+        background: #f7f7f7;
+        padding: 25px;
+        margin: 25px 0;
+        border-radius: 12px;
+      }
+
+      code {
+        background: #eee;
+        padding: 3px 6px;
+        border-radius: 5px;
+      }
+
+      pre {
+        background: #111;
+        color: #eee;
+        padding: 20px;
+        border-radius: 10px;
+        overflow-x: auto;
+      }
+
+      ul {
+        columns: 2;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 50px;
+        color: #777;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <img src="img/logo.png" width="180" alt="Nyx Converter" />
+
+      <h1>Nyx Converter</h1>
+
+      <p class="subtitle">
+        Powerful Flutter media converter powered by FFmpeg.
+      </p>
+
+      <div class="buttons">
+        <a href="https://pub.dev/packages/nyx_converter"> Pub.dev </a>
+
+        <a href="https://github.com/xaus-group/nyx_converter"> GitHub </a>
+
+        <a href="https://github.com/xaus-group/nyx_converter/wiki"> Wiki </a>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>Overview</h2>
+
+      <p>
+        Nyx Converter is a Flutter package that provides a simple API for
+        converting audio and video files using FFmpeg.
+      </p>
+
+      <p>
+        No manual FFmpeg command writing is required. Nyx Converter handles
+        command generation, validation, progress tracking and conversion
+        management.
+      </p>
+    </section>
+
+    <section>
+      <h2>Features</h2>
+
+      <ul>
+        <li>Media container conversion</li>
+        <li>Video codec conversion</li>
+        <li>Audio codec conversion</li>
+        <li>Audio bitrate control</li>
+        <li>Video bitrate control</li>
+        <li>Real-time progress tracking</li>
+        <li>FPS monitoring</li>
+        <li>FFmpeg speed monitoring</li>
+        <li>Conversion cancellation</li>
+        <li>Input validation</li>
+        <li>Output validation</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Installation</h2>
+
+      <pre>
+dependencies:
+  nyx_converter: latest
+</pre
+      >
+    </section>
+
+    <section>
+      <h2>Quick Example</h2>
+
+      <pre>
+import 'package:nyx_converter/nyx_converter.dart';
+
+await NyxConverter.convertTo(
+  inputPath,
+  outputDirectory,
+
+  container: NyxContainer.mp4,
+
+  videoCodec: NyxVideoCodec.h264,
+
+  audioCodec: NyxAudioCodec.aac,
+
+  execution: (
+    status,
+    {
+      progress,
+      fps,
+      speed,
+      errorMessage,
+    }
+  ) {
+
+    print(status);
+    print(progress);
+
+  },
+);
+</pre
+      >
+    </section>
+
+    <section class="card">
+      <h2>Supported Platforms</h2>
+
+      <ul>
+        <li>Android</li>
+        <li>iOS</li>
+        <li>macOS</li>
+        <li>Windows</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Documentation</h2>
+
+      <p>Learn more about:</p>
+
+      <ul>
+        <li>Audio codecs</li>
+        <li>Video codecs</li>
+        <li>Containers</li>
+        <li>Bitrates</li>
+        <li>Conversion options</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>Nyx Converter is licensed under LGPL v3.0</p>
+
+      <p>Created by xaus-group</p>
+    </footer>
+  </body>
+</html>
