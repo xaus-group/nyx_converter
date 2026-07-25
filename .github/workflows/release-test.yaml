@@ -33,12 +33,13 @@ jobs:
       - name: Run integration tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 34
+          api-level: 30
           target: google_apis
           arch: x86_64
-          profile: pixel_6
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect
+          profile: pixel_4
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -no-audio -cores 4 -memory 2048
           disable-animations: true
+          emulator-boot-timeout: 1800
           script: |
             cd example
             flutter test integration_test/ -d emulator-5554
