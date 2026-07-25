@@ -319,28 +319,6 @@ https://github.com/xaus-group/nyx_converter/wiki
 
 ---
 
-# Testing
-
-Nyx Converter includes:
-
-- Unit tests
-- FFprobe validation tests
-- Android integration tests
-
-Run unit tests:
-
-```bash
-flutter test
-```
-
-Run integration tests:
-
-```bash
-flutter test integration_test
-```
-
----
-
 # Contributing
 
 Contributions, issues, and feature requests are welcome.
