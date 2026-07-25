@@ -1,8 +1,26 @@
-# Tests
+# Heavy example app (full platform projects)
+example/
+
+# Test files (not needed at runtime)
 test/
-
-# Example integration tests
 example/integration_test/
+example/test_driver/
 
-# Development files
+# Developer configs and build tools
 .github/
+.git/
+.gitignore
+.dart_tool/
+build/
+coverage/
+
+# IDE files
+.idea/
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Your GitHub Pages site (fixes the warning)
+docs/
