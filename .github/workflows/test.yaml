@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: # allows manual trigger
+
+jobs:
+  # ------------------------------------------------------------------
+  # JOB 1: Unit Tests (fast, runs on Linux, no emulator needed)
+  # ------------------------------------------------------------------
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: 📦 Get dependencies
+        run: flutter pub get
+
+      - name: 🧪 Run unit tests
+        run: flutter test
+
+  # ------------------------------------------------------------------
+  # JOB 2: Integration Tests (needs an Android emulator)
+  # ------------------------------------------------------------------
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: 📦 Get main package dependencies
+        run: flutter pub get
+
+      - name: 📦 Get example dependencies
+        working-directory: example
+        run: flutter pub get
+
+      - name: 🤖 Run integration tests on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          target: default
+          arch: x86
+          profile: Nexus 5
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -no-audio -cores 2 -memory 1024 -accel on
+          disable-animations: true
+          emulator-boot-timeout: 900
+          script: |
+            cd example
+            flutter test integration_test/ -d emulator-5554
