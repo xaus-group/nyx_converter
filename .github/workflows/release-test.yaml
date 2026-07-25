@@ -23,22 +23,22 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Install package dependencies
+      - name: Get package dependencies
         run: flutter pub get
 
-      - name: Install example dependencies
+      - name: Get example dependencies
         working-directory: example
         run: flutter pub get
 
-      - name: Run Android integration tests
+      - name: Run integration tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
+          target: google_apis
           arch: x86_64
           profile: pixel_6
-          target: google_apis
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect
+          disable-animations: true
           script: |
             cd example
-            flutter devices
-            flutter test integration_test \
-              -d $(flutter devices | grep emulator | awk '{print $2}' | head -1)
+            flutter test integration_test/ -d emulator-5554
