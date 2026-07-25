@@ -30,16 +30,28 @@ jobs:
         working-directory: example
         run: flutter pub get
 
+      - name: Cache AVD
+        uses: actions/cache@v3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/sdk/system-images
+          key: avd-${{ runner.os }}-api29-x86
+
+      - name: Create AVD (if not cached)
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        run: |
+          echo "y" | sdkmanager --install "system-images;android-29;default;x86"
+          echo "no" | avdmanager create avd -n test -k "system-images;android-29;default;x86" -d "Nexus 5"
+
       - name: Run integration tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
-          target: google_apis
-          arch: x86_64
-          profile: pixel_4
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -no-audio -cores 4 -memory 2048
+          avd-name: test
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -no-audio -cores 2 -memory 1024 -accel on
           disable-animations: true
-          emulator-boot-timeout: 1800
+          emulator-boot-timeout: 900
           script: |
             cd example
             flutter test integration_test/ -d emulator-5554
