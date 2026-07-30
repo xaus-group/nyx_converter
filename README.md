@@ -1,10 +1,16 @@
-# Nyx Converter
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!--                        NYX CONVERTER                            -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
 
-[![Github release](https://img.shields.io/github/v/release/xaus-group/nyx_converter)](https://github.com/xaus-group/nyx_converter)
-[![pub package](https://img.shields.io/pub/v/nyx_converter.svg)](https://pub.dev/packages/nyx_converter)
-[![License](https://img.shields.io/github/license/xaus-group/nyx_converter)](https://www.gnu.org/licenses/lgpl-3.0.en.html)
-[![Github Stars](https://img.shields.io/github/stars/xaus-group/nyx_converter)](https://github.com/xaus-group/nyx_converter)
-[![Issues](https://img.shields.io/github/issues/xaus-group/nyx_converter)](https://github.com/xaus-group/nyx_converter/issues)
+<h1 align="center">Nyx Converter</h1>
+
+<p align="center">
+  <a href="https://github.com/xaus-group/nyx_converter"><img src="https://img.shields.io/github/v/release/xaus-group/nyx_converter" alt="Github release"></a>
+  <a href="https://pub.dev/packages/nyx_converter"><img src="https://img.shields.io/pub/v/nyx_converter.svg" alt="pub package"></a>
+  <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html"><img src="https://img.shields.io/github/license/xaus-group/nyx_converter" alt="License"></a>
+  <a href="https://github.com/xaus-group/nyx_converter"><img src="https://img.shields.io/github/stars/xaus-group/nyx_converter" alt="Github Stars"></a>
+  <a href="https://github.com/xaus-group/nyx_converter/issues"><img src="https://img.shields.io/github/issues/xaus-group/nyx_converter" alt="Issues"></a>
+</p>
 
 <p align="center">
   <img src="screenshots/logo.png"
@@ -12,30 +18,36 @@
     width="240">
 </p>
 
-## Overview
+<p align="center">
+  <b>A Flutter package that provides a simple and powerful API for converting audio and video files.</b>
+</p>
+
+---
+
+## 📖 Overview
 
 `nyx_converter` is a Flutter package that provides a simple and powerful API
 for converting audio and video files.
 
 It allows Flutter applications to:
 
-- Convert media containers
-- Change video and audio codecs
-- Configure bitrates
-- Monitor conversion progress in real time
-- Receive FPS and conversion speed updates
-- Cancel running conversions
-- Validate media files before processing
+- 🔄 Convert media containers
+- 🎬 Change video and audio codecs
+- 🎚️ Configure bitrates
+- 📊 Monitor conversion progress in real time
+- 🖥️ Receive FPS and conversion speed updates
+- ❌ Cancel running conversions
+- ✅ Validate media files before processing
 
 Nyx Converter handles FFmpeg command generation internally, allowing developers
 to convert media files without manually writing FFmpeg commands.
 
 ---
 
-# Features
+## ✨ Features
 
 | Feature                     | Status |
-| --------------------------- | :----: |
+| :-------------------------- | :----: |
 | Media container conversion  |   ✅   |
 | Video codec conversion      |   ✅   |
 | Audio codec conversion      |   ✅   |
@@ -53,7 +65,7 @@ to convert media files without manually writing FFmpeg commands.
 
 ---
 
-# Installation
+## 📦 Installation
 
 Add the package to your `pubspec.yaml`.
 
@@ -70,43 +82,48 @@ flutter pub get
 
 ---
 
-# Platform Support
+## 📱 Platform Support
 
 | Platform | Minimum Requirement  |
-| -------- | -------------------- |
+| :------- | :------------------- |
 | Android  | API 24+              |
 | Kotlin   | 1.8.22+              |
 | iOS      | 14.0+                |
 | macOS    | 10.15+               |
 | Windows  | Windows 10+ (x86_64) |
 
-Supported architectures:
+<details>
+<summary><b>Supported architectures</b></summary>
 
-### Android
+<br>
 
-- arm-v7a
-- arm-v7a-neon
-- arm64-v8a
-- x86
-- x86_64
+#### 🤖 Android
 
-### iOS
+- `arm-v7a`
+- `arm-v7a-neon`
+- `arm64-v8a`
+- `x86`
+- `x86_64`
 
-- arm64 devices
-- arm64/x86_64 simulators
+#### 🍎 iOS
 
-### macOS
+- `arm64` devices
+- `arm64` / `x86_64` simulators
 
-- arm64
-- x86_64
+#### 🖥️ macOS
 
-### Windows
+- `arm64`
+- `x86_64`
 
-- x86_64
+#### 🪟 Windows
+
+- `x86_64`
+
+</details>
 
 ---
 
-# Quick Start
+## 🚀 Quick Start
 
 Import Nyx Converter:
 
@@ -155,9 +172,9 @@ await NyxConverter.convertTo(
 
 ---
 
-# Conversion Options
+## ⚙️ Conversion Options
 
-## Container
+### 📦 Container
 
 Define the output media container:
 
@@ -165,13 +182,11 @@ Define the output media container:
 container: NyxContainer.mp4,
 ```
 
-Available containers:
-
-https://github.com/xaus-group/nyx_converter/wiki/Container
+> 📚 Available containers: [Wiki → Container](https://github.com/xaus-group/nyx_converter/wiki/Container)
 
 ---
 
-## Video Codec
+### 🎬 Video Codec
 
 Change the video encoding codec:
 
@@ -179,13 +194,11 @@ Change the video encoding codec:
 videoCodec: NyxVideoCodec.h264,
 ```
 
-Available codecs:
-
-https://github.com/xaus-group/nyx_converter/wiki/Video-codec
+> 📚 Available codecs: [Wiki → Video codec](https://github.com/xaus-group/nyx_converter/wiki/Video-codec)
 
 ---
 
-## Audio Codec
+### 🔊 Audio Codec
 
 Change the audio encoding codec:
 
@@ -193,13 +206,11 @@ Change the audio encoding codec:
 audioCodec: NyxAudioCodec.aac,
 ```
 
-Available codecs:
-
-https://github.com/xaus-group/nyx_converter/wiki/Audio-codec
+> 📚 Available codecs: [Wiki → Audio codec](https://github.com/xaus-group/nyx_converter/wiki/Audio-codec)
 
 ---
 
-## Bitrate
+### 🎚️ Bitrate
 
 Configure output quality and file size:
 
@@ -208,13 +219,11 @@ audioBitrate: 192,
 videoBitrate: 5,
 ```
 
-More information:
-
-https://github.com/xaus-group/nyx_converter/wiki/Bitrate
+> 📚 More information: [Wiki → Bitrate](https://github.com/xaus-group/nyx_converter/wiki/Bitrate)
 
 ---
 
-## Output File Name
+### 📝 Output File Name
 
 By default, Nyx Converter keeps the original filename.
 
@@ -226,7 +235,7 @@ fileName: 'converted_video',
 
 ---
 
-## Debug Logs
+### 🐛 Debug Logs
 
 Enable detailed FFmpeg logs:
 
@@ -236,7 +245,7 @@ debugMode: true,
 
 ---
 
-# Execution Callback
+## 📡 Execution Callback
 
 The execution callback provides real-time conversion updates.
 
@@ -254,35 +263,35 @@ execution: (
 },
 ```
 
-## Status
+### Status
 
 | Status                | Description                      |
-| --------------------- | -------------------------------- |
+| :-------------------- | :------------------------------- |
 | `NyxStatus.running`   | Conversion is running            |
 | `NyxStatus.completed` | Conversion finished successfully |
 | `NyxStatus.failed`    | Conversion failed                |
 | `NyxStatus.cancel`    | Conversion cancelled             |
 
-## Callback Data
+### Callback Data
 
-| Property     | Description                          |
-| ------------ | ------------------------------------ |
-| progress     | Conversion percentage (0-100)        |
-| fps          | Current processing frames per second |
-| speed        | Current FFmpeg processing speed      |
-| errorMessage | Error details when conversion fails  |
+| Property       | Description                          |
+| :------------- | :----------------------------------- |
+| `progress`     | Conversion percentage (0–100)        |
+| `fps`          | Current processing frames per second |
+| `speed`        | Current FFmpeg processing speed      |
+| `errorMessage` | Error details when conversion fails  |
 
 ---
 
-# Automatic Validation
+## 🛡️ Automatic Validation
 
 Before starting conversion, Nyx Converter validates:
 
-- Input file exists
-- Media file is readable
-- Media contains valid streams
-- Output directory exists
-- Output file does not already exist
+- ✅ Input file exists
+- ✅ Media file is readable
+- ✅ Media contains valid streams
+- ✅ Output directory exists
+- ✅ Output file does not already exist
 
 If validation fails, conversion will not start and:
 
@@ -294,7 +303,7 @@ will be returned through the execution callback.
 
 ---
 
-# Cancel Conversion
+## 🛑 Cancel Conversion
 
 Cancel all active conversions:
 
@@ -304,7 +313,7 @@ NyxConverter.kill();
 
 ---
 
-# Documentation
+## 📚 Documentation
 
 Detailed documentation is available in the Wiki:
 
@@ -313,22 +322,18 @@ Detailed documentation is available in the Wiki:
 - Audio Codec
 - Bitrate
 
-Wiki:
-
-https://github.com/xaus-group/nyx_converter/wiki
+> 🔗 **Wiki:** <https://github.com/xaus-group/nyx_converter/wiki>
 
 ---
 
-# Contributing
+## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome.
 
-Please read the contribution guide:
-
-https://github.com/xaus-group/nyx_converter/blob/master/CONTRIBUTING.md
+> 📄 Please read the [contribution guide](https://github.com/xaus-group/nyx_converter/blob/master/CONTRIBUTING.md).
 
 ---
 
-# License
+## 📄 License
 
-Nyx Converter is licensed under the GNU LGPL v3.0 license.
+Nyx Converter is licensed under the **GNU LGPL v3.0** license.
