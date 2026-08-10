@@ -1,161 +1,803 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Nyx Converter - Flutter FFmpeg Media Converter</title>
+    <meta
+      name="description"
+      content="Nyx Converter — a Flutter media converter powered by FFmpeg."
+    />
+    <meta name="theme-color" content="#f6f7fb" />
+    <title>Nyx Converter — Flutter FFmpeg Media Converter</title>
 
     <style>
-      body {
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
-        max-width: 1000px;
-        margin: auto;
-        padding: 40px 20px;
-        line-height: 1.6;
-        color: #222;
+      :root {
+        color-scheme: light;
+        --bg: #f6f7fb;
+        --surface: rgba(255, 255, 255, 0.82);
+        --surface-solid: #ffffff;
+        --surface-soft: #f0f2f7;
+        --text: #111318;
+        --muted: #626a78;
+        --border: #e3e6ed;
+        --accent: #6d4aff;
+        --accent-2: #9a7cff;
+        --accent-soft: #eeeaff;
+        --code: #11131a;
+        --code-text: #e9eaf0;
+        --shadow: 0 18px 55px rgba(23, 27, 43, 0.08);
+        --radius: 22px;
       }
 
-      header {
+      [data-theme="dark"] {
+        color-scheme: dark;
+        --bg: #0a0b0f;
+        --surface: rgba(18, 20, 27, 0.78);
+        --surface-solid: #12141b;
+        --surface-soft: #191c25;
+        --text: #f4f5f7;
+        --muted: #9ba2b0;
+        --border: #292d38;
+        --accent: #a78bff;
+        --accent-2: #c0adff;
+        --accent-soft: #241d3f;
+        --code: #08090d;
+        --code-text: #eceef4;
+        --shadow: 0 22px 70px rgba(0, 0, 0, 0.28);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 92px;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+        background:
+          radial-gradient(
+            circle at 15% 0%,
+            color-mix(in srgb, var(--accent) 11%, transparent),
+            transparent 30rem
+          ),
+          radial-gradient(
+            circle at 90% 10%,
+            color-mix(in srgb, var(--accent-2) 10%, transparent),
+            transparent 26rem
+          ),
+          var(--bg);
+        color: var(--text);
+        line-height: 1.65;
+        transition:
+          background 0.25s ease,
+          color 0.25s ease;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .container {
+        width: min(1160px, calc(100% - 40px));
+        margin-inline: auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        background: color-mix(in srgb, var(--bg) 78%, transparent);
+        border-bottom: 1px solid
+          color-mix(in srgb, var(--border) 70%, transparent);
+      }
+
+      .nav {
+        min-height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        text-decoration: none;
+        letter-spacing: -0.02em;
+      }
+
+      .brand img {
+        width: 34px;
+        height: 34px;
+        object-fit: contain;
+        border-radius: 10px;
+      }
+
+      .navlinks {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .navlinks a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 8px 10px;
+        border-radius: 10px;
+      }
+
+      .navlinks a:hover {
+        color: var(--text);
+        background: var(--surface-soft);
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .icon-btn,
+      .button {
+        border: 1px solid var(--border);
+        background: var(--surface-solid);
+        color: var(--text);
+        min-height: 40px;
+        border-radius: 12px;
+        padding: 0 13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          transform 0.18s ease,
+          border-color 0.18s ease,
+          background 0.18s ease;
+      }
+
+      .icon-btn {
+        width: 40px;
+        padding: 0;
+      }
+
+      .button:hover,
+      .icon-btn:hover {
+        transform: translateY(-1px);
+        border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+      }
+
+      .button.primary {
+        border-color: transparent;
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 10px 25px
+          color-mix(in srgb, var(--accent) 25%, transparent);
+      }
+
+      .hero {
+        padding: 88px 0 66px;
         text-align: center;
       }
 
-      h1 {
-        font-size: 48px;
-        margin-bottom: 10px;
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border));
+        background: var(--accent-soft);
+        color: var(--accent);
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
       }
 
-      .subtitle {
-        font-size: 20px;
-        color: #666;
+      .hero h1 {
+        margin: 20px auto 14px;
+        max-width: 850px;
+        font-size: clamp(42px, 7vw, 76px);
+        line-height: 0.98;
+        letter-spacing: -0.055em;
       }
 
-      .buttons a {
-        display: inline-block;
-        margin: 10px;
-        padding: 12px 20px;
-        border-radius: 8px;
-        background: #222;
-        color: white;
-        text-decoration: none;
+      .hero h1 span {
+        color: var(--accent);
       }
 
-      .buttons a:hover {
-        opacity: 0.8;
+      .hero p {
+        max-width: 680px;
+        margin: 0 auto;
+        color: var(--muted);
+        font-size: clamp(17px, 2vw, 20px);
+      }
+
+      .hero-actions {
+        margin-top: 28px;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .install-chip {
+        margin: 30px auto 0;
+        width: fit-content;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 10px 10px 15px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+      }
+
+      .install-chip code {
+        color: var(--muted);
+        font-size: 13px;
+        overflow: auto;
+      }
+
+      .copy {
+        border: 0;
+        background: var(--surface-soft);
+        color: var(--text);
+        border-radius: 9px;
+        padding: 7px 10px;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .section {
+        padding: 56px 0;
+      }
+
+      .section-head {
+        max-width: 680px;
+        margin-bottom: 24px;
+      }
+
+      .section-head h2 {
+        margin: 0 0 7px;
+        font-size: clamp(28px, 4vw, 38px);
+        letter-spacing: -0.035em;
+      }
+
+      .section-head p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .grid.features {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .card {
-        background: #f7f7f7;
-        padding: 25px;
-        margin: 25px 0;
-        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px;
+        box-shadow: var(--shadow);
       }
 
-      code {
-        background: #eee;
-        padding: 3px 6px;
-        border-radius: 5px;
+      .feature-icon {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 13px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        margin-bottom: 16px;
+      }
+
+      .feature-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .card h3 {
+        margin: 0 0 6px;
+        font-size: 17px;
+        letter-spacing: -0.02em;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .list {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .list li {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .check {
+        flex: 0 0 auto;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--accent-soft);
+        color: var(--accent);
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        font-weight: 900;
+        margin-top: 2px;
+      }
+
+      .code-card {
+        overflow: hidden;
+        padding: 0;
+        background: var(--code);
+        border-color: #222631;
+      }
+
+      .code-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border-bottom: 1px solid #272b36;
+      }
+
+      .dots {
+        display: flex;
+        gap: 6px;
+      }
+      .dots i {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #555b68;
+        display: block;
+      }
+
+      .code-head span {
+        color: #9da4b2;
+        font-size: 12px;
+        font-weight: 700;
       }
 
       pre {
-        background: #111;
-        color: #eee;
-        padding: 20px;
-        border-radius: 10px;
+        margin: 0;
+        padding: 22px;
         overflow-x: auto;
+        color: var(--code-text);
+        font:
+          13px/1.75 "SFMono-Regular",
+          Consolas,
+          "Liberation Mono",
+          monospace;
       }
 
-      ul {
-        columns: 2;
+      .api-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .api-item {
+        padding: 16px;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--surface-soft);
+      }
+
+      .api-item code {
+        color: var(--accent);
+        font-weight: 800;
+      }
+
+      .api-item p {
+        margin-top: 5px;
+      }
+
+      .platforms {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+
+      .platform {
+        text-align: center;
+        padding: 22px 12px;
+        border: 1px solid var(--border);
+        border-radius: 17px;
+        background: var(--surface);
+      }
+
+      .platform strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 14px;
+      }
+
+      .platform span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .cta {
+        margin: 20px 0 70px;
+        padding: 34px;
+        border-radius: 26px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-soft),
+          color-mix(in srgb, var(--surface-solid) 82%, var(--accent-soft))
+        );
+        border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--border));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .cta h2 {
+        margin: 0 0 6px;
+        font-size: 27px;
+        letter-spacing: -0.03em;
+      }
+
+      .cta p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .cta-actions {
+        display: flex;
+        gap: 9px;
+        flex-wrap: wrap;
       }
 
       footer {
-        text-align: center;
-        margin-top: 50px;
-        color: #777;
+        border-top: 1px solid var(--border);
+        padding: 28px 0 38px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .footer-inner {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .footer-links a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+
+      .footer-links a:hover {
+        color: var(--text);
+      }
+
+      @media (max-width: 900px) {
+        .grid.features {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .container {
+          width: min(100% - 28px, 1160px);
+        }
+        .navlinks {
+          display: none;
+        }
+        .hero {
+          padding-top: 62px;
+        }
+        .grid.features,
+        .api-grid,
+        .platforms {
+          grid-template-columns: 1fr;
+        }
+        .cta,
+        .footer-inner {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .install-chip {
+          width: 100%;
+          justify-content: space-between;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+          transition: none !important;
+        }
       }
     </style>
   </head>
 
   <body>
-    <header>
-      <img src="img/logo.png" width="180" alt="Nyx Converter" />
+    <header class="topbar">
+      <div class="container nav">
+        <a class="brand" href="#">
+          <img src="img/logo.png" alt="Nyx Converter logo" />
+          <span>Nyx Converter</span>
+        </a>
 
-      <h1>Nyx Converter</h1>
+        <nav class="navlinks" aria-label="Main navigation">
+          <a href="#features">Features</a>
+          <a href="#quick-start">Quick start</a>
+          <a href="#platforms">Platforms</a>
+          <a href="#docs">Docs</a>
+        </nav>
 
-      <p class="subtitle">
-        Powerful Flutter media converter powered by FFmpeg.
-      </p>
-
-      <div class="buttons">
-        <a href="https://pub.dev/packages/nyx_converter"> Pub.dev </a>
-
-        <a href="https://github.com/xaus-group/nyx_converter"> GitHub </a>
-
-        <a href="https://github.com/xaus-group/nyx_converter/wiki"> Wiki </a>
+        <div class="actions">
+          <a
+            class="button"
+            href="https://github.com/xaus-group/nyx_converter"
+            target="_blank"
+            rel="noreferrer"
+            >GitHub</a
+          >
+          <button
+            class="icon-btn"
+            id="themeToggle"
+            type="button"
+            aria-label="Toggle theme"
+            title="Toggle theme"
+          >
+            <svg
+              id="themeIcon"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="4"></circle>
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+              ></path>
+            </svg>
+          </button>
+        </div>
       </div>
     </header>
 
-    <section class="card">
-      <h2>Overview</h2>
+    <main>
+      <section class="hero">
+        <div class="container">
+          <span class="eyebrow">Flutter • FFmpeg • Media</span>
 
-      <p>
-        Nyx Converter is a Flutter package that provides a simple API for
-        converting audio and video files using FFmpeg.
-      </p>
+          <h1>
+            Convert media in Flutter.<br /><span>Without the complexity.</span>
+          </h1>
 
-      <p>
-        No manual FFmpeg command writing is required. Nyx Converter handles
-        command generation, validation, progress tracking and conversion
-        management.
-      </p>
-    </section>
+          <p>
+            Nyx Converter provides a clean API for converting audio and video
+            files with FFmpeg, while handling command generation, validation,
+            progress and conversion management for you.
+          </p>
 
-    <section>
-      <h2>Features</h2>
+          <div class="hero-actions">
+            <a
+              class="button primary"
+              href="https://pub.dev/packages/nyx_converter"
+              target="_blank"
+              rel="noreferrer"
+            >
+              View on pub.dev ↗
+            </a>
+            <a
+              class="button"
+              href="https://github.com/xaus-group/nyx_converter/wiki"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Read documentation
+            </a>
+          </div>
 
-      <ul>
-        <li>Media container conversion</li>
-        <li>Video codec conversion</li>
-        <li>Audio codec conversion</li>
-        <li>Audio bitrate control</li>
-        <li>Video bitrate control</li>
-        <li>Real-time progress tracking</li>
-        <li>FPS monitoring</li>
-        <li>FFmpeg speed monitoring</li>
-        <li>Conversion cancellation</li>
-        <li>Input validation</li>
-        <li>Output validation</li>
-      </ul>
-    </section>
+          <div class="install-chip">
+            <code id="installCommand">nyx_converter: latest</code>
+            <button class="copy" data-copy="nyx_converter: latest">Copy</button>
+          </div>
+        </div>
+      </section>
 
-    <section class="card">
-      <h2>Installation</h2>
+      <section class="section" id="features">
+        <div class="container">
+          <div class="section-head">
+            <h2>Everything you need for conversion.</h2>
+            <p>
+              A focused set of media-conversion capabilities exposed through a
+              simple Flutter-friendly API.
+            </p>
+          </div>
 
-      <pre>
-dependencies:
-  nyx_converter: latest
-</pre
-      >
-    </section>
+          <div class="grid features">
+            <article class="card">
+              <div class="feature-icon">↔</div>
+              <h3>Container conversion</h3>
+              <p>
+                Convert media between supported audio and video container
+                formats.
+              </p>
+            </article>
 
-    <section>
-      <h2>Quick Example</h2>
+            <article class="card">
+              <div class="feature-icon">▣</div>
+              <h3>Video codecs</h3>
+              <p>Choose the video codec used for your output media.</p>
+            </article>
 
-      <pre>
-import 'package:nyx_converter/nyx_converter.dart';
+            <article class="card">
+              <div class="feature-icon">♫</div>
+              <h3>Audio codecs</h3>
+              <p>Select an audio codec for the resulting file.</p>
+            </article>
+
+            <article class="card">
+              <div class="feature-icon">V</div>
+              <h3>Video bitrate</h3>
+              <p>Control video bitrate as part of your conversion settings.</p>
+            </article>
+
+            <article class="card">
+              <div class="feature-icon">A</div>
+              <h3>Audio bitrate</h3>
+              <p>Control audio bitrate for the output media.</p>
+            </article>
+
+            <article class="card">
+              <div class="feature-icon">◔</div>
+              <h3>Live progress</h3>
+              <p>
+                Observe progress, FPS and FFmpeg conversion speed while running.
+              </p>
+            </article>
+
+            <article class="card">
+              <div class="feature-icon">×</div>
+              <h3>Cancellation</h3>
+              <p>Manage and cancel an active conversion when needed.</p>
+            </article>
+
+            <article class="card">
+              <div class="feature-icon">✓</div>
+              <h3>Input validation</h3>
+              <p>Validate input media before conversion starts.</p>
+            </article>
+
+            <article class="card">
+              <div class="feature-icon">□</div>
+              <h3>Output validation</h3>
+              <p>
+                Validate the generated output as part of conversion management.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="quick-start">
+        <div class="container">
+          <div class="section-head">
+            <h2>Quick start</h2>
+            <p>Install the package, import it, and start a conversion.</p>
+          </div>
+
+          <div class="two-col">
+            <div class="grid" style="gap: 16px">
+              <div class="card">
+                <h3>1. Add the dependency</h3>
+                <p>
+                  Add <code>nyx_converter</code> to your Flutter project's
+                  dependencies.
+                </p>
+              </div>
+
+              <div class="card">
+                <h3>2. Configure conversion</h3>
+                <p>
+                  Provide the input path, output directory, container and codec
+                  settings.
+                </p>
+              </div>
+
+              <div class="card">
+                <h3>3. Monitor execution</h3>
+                <p>
+                  Use the execution callback to receive status, progress, FPS,
+                  speed and errors.
+                </p>
+              </div>
+            </div>
+
+            <div class="card code-card">
+              <div class="code-head">
+                <div class="dots"><i></i><i></i><i></i></div>
+                <span>Dart</span>
+                <button class="copy" data-copy-id="exampleCode">Copy</button>
+              </div>
+              <pre
+                id="exampleCode"
+              ><code>import 'package:nyx_converter/nyx_converter.dart';
 
 await NyxConverter.convertTo(
   inputPath,
   outputDirectory,
-
   container: NyxContainer.mp4,
-
   videoCodec: NyxVideoCodec.h264,
-
   audioCodec: NyxAudioCodec.aac,
-
   execution: (
     status,
     {
@@ -165,45 +807,273 @@ await NyxConverter.convertTo(
       errorMessage,
     }
   ) {
-
     print(status);
     print(progress);
-
   },
-);
-</pre
-      >
-    </section>
+);</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <section class="card">
-      <h2>Supported Platforms</h2>
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>Conversion at a glance.</h2>
+            <p>
+              Keep your application code focused on media workflows instead of
+              FFmpeg command construction.
+            </p>
+          </div>
 
-      <ul>
-        <li>Android</li>
-        <li>iOS</li>
-        <li>macOS</li>
-        <li>Windows</li>
-      </ul>
-    </section>
+          <div class="two-col">
+            <div class="card">
+              <h3>What Nyx Converter handles</h3>
+              <ul class="list" style="margin-top: 16px">
+                <li>
+                  <span class="check">✓</span
+                  ><span>FFmpeg command generation</span>
+                </li>
+                <li>
+                  <span class="check">✓</span
+                  ><span>Input and output validation</span>
+                </li>
+                <li>
+                  <span class="check">✓</span
+                  ><span>Conversion execution management</span>
+                </li>
+                <li>
+                  <span class="check">✓</span
+                  ><span>Real-time conversion progress</span>
+                </li>
+                <li>
+                  <span class="check">✓</span
+                  ><span>FPS and FFmpeg speed monitoring</span>
+                </li>
+                <li>
+                  <span class="check">✓</span
+                  ><span>Conversion cancellation</span>
+                </li>
+              </ul>
+            </div>
 
-    <section>
-      <h2>Documentation</h2>
+            <div class="card">
+              <h3>Configuration surface</h3>
+              <div class="api-grid" style="margin-top: 16px">
+                <div class="api-item">
+                  <code>container</code>
+                  <p>Choose the target media container.</p>
+                </div>
+                <div class="api-item">
+                  <code>videoCodec</code>
+                  <p>Choose the target video codec.</p>
+                </div>
+                <div class="api-item">
+                  <code>audioCodec</code>
+                  <p>Choose the target audio codec.</p>
+                </div>
+                <div class="api-item">
+                  <code>execution</code>
+                  <p>Receive conversion status and runtime information.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <p>Learn more about:</p>
+      <section class="section" id="platforms">
+        <div class="container">
+          <div class="section-head">
+            <h2>Built for Flutter apps.</h2>
+            <p>Nyx Converter currently supports the following platforms.</p>
+          </div>
 
-      <ul>
-        <li>Audio codecs</li>
-        <li>Video codecs</li>
-        <li>Containers</li>
-        <li>Bitrates</li>
-        <li>Conversion options</li>
-      </ul>
-    </section>
+          <div class="platforms">
+            <div class="platform">
+              <div style="font-size: 26px">◆</div>
+              <strong>Android</strong><span>Supported</span>
+            </div>
+            <div class="platform">
+              <div style="font-size: 26px">●</div>
+              <strong>iOS</strong><span>Supported</span>
+            </div>
+            <div class="platform">
+              <div style="font-size: 26px">⌘</div>
+              <strong>macOS</strong><span>Supported</span>
+            </div>
+            <div class="platform">
+              <div style="font-size: 26px">⊞</div>
+              <strong>Windows</strong><span>Supported</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="docs">
+        <div class="container">
+          <div class="section-head">
+            <h2>Explore the documentation.</h2>
+            <p>
+              Go deeper into codecs, containers, bitrates and conversion
+              options.
+            </p>
+          </div>
+
+          <div class="card">
+            <ul class="list">
+              <li>
+                <span class="check">→</span
+                ><a
+                  href="https://github.com/xaus-group/nyx_converter/wiki"
+                  target="_blank"
+                  rel="noreferrer"
+                  >Audio codecs documentation</a
+                >
+              </li>
+              <li>
+                <span class="check">→</span
+                ><a
+                  href="https://github.com/xaus-group/nyx_converter/wiki"
+                  target="_blank"
+                  rel="noreferrer"
+                  >Video codecs documentation</a
+                >
+              </li>
+              <li>
+                <span class="check">→</span
+                ><a
+                  href="https://github.com/xaus-group/nyx_converter/wiki"
+                  target="_blank"
+                  rel="noreferrer"
+                  >Containers and formats</a
+                >
+              </li>
+              <li>
+                <span class="check">→</span
+                ><a
+                  href="https://github.com/xaus-group/nyx_converter/wiki"
+                  target="_blank"
+                  rel="noreferrer"
+                  >Bitrate configuration</a
+                >
+              </li>
+              <li>
+                <span class="check">→</span
+                ><a
+                  href="https://github.com/xaus-group/nyx_converter/wiki"
+                  target="_blank"
+                  rel="noreferrer"
+                  >Conversion options</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="container">
+        <section class="cta">
+          <div>
+            <h2>Ready to convert?</h2>
+            <p>
+              Start with Nyx Converter and keep FFmpeg complexity behind a clean
+              API.
+            </p>
+          </div>
+          <div class="cta-actions">
+            <a
+              class="button primary"
+              href="https://pub.dev/packages/nyx_converter"
+              target="_blank"
+              rel="noreferrer"
+              >Open pub.dev ↗</a
+            >
+            <a
+              class="button"
+              href="https://github.com/xaus-group/nyx_converter"
+              target="_blank"
+              rel="noreferrer"
+              >View source</a
+            >
+          </div>
+        </section>
+      </div>
+    </main>
 
     <footer>
-      <p>Nyx Converter is licensed under LGPL v3.0</p>
-
-      <p>Created by xaus-group</p>
+      <div class="container footer-inner">
+        <div>
+          © <span id="year"></span> Nyx Converter · LGPL v3.0 · Created by
+          xaus-group
+        </div>
+        <div class="footer-links">
+          <a
+            href="https://pub.dev/packages/nyx_converter"
+            target="_blank"
+            rel="noreferrer"
+            >pub.dev</a
+          >
+          <a
+            href="https://github.com/xaus-group/nyx_converter"
+            target="_blank"
+            rel="noreferrer"
+            >GitHub</a
+          >
+          <a
+            href="https://github.com/xaus-group/nyx_converter/wiki"
+            target="_blank"
+            rel="noreferrer"
+            >Wiki</a
+          >
+        </div>
+      </div>
     </footer>
+
+    <script>
+      const root = document.documentElement;
+      const themeToggle = document.getElementById("themeToggle");
+      const themeIcon = document.getElementById("themeIcon");
+      const savedTheme = localStorage.getItem("nyx-theme");
+      const systemDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
+
+      function setTheme(theme) {
+        root.dataset.theme = theme;
+        localStorage.setItem("nyx-theme", theme);
+        themeIcon.innerHTML =
+          theme === "dark"
+            ? '<path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.7 6.7 0 0 0 21 12.8Z"></path>'
+            : '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>';
+      }
+
+      setTheme(savedTheme || (systemDark ? "dark" : "light"));
+
+      themeToggle.addEventListener("click", () => {
+        setTheme(root.dataset.theme === "dark" ? "light" : "dark");
+      });
+
+      document.querySelectorAll("[data-copy]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          await navigator.clipboard.writeText(button.dataset.copy);
+          const original = button.textContent;
+          button.textContent = "Copied";
+          setTimeout(() => (button.textContent = original), 1200);
+        });
+      });
+
+      document.querySelectorAll("[data-copy-id]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const text = document.getElementById(button.dataset.copyId).innerText;
+          await navigator.clipboard.writeText(text);
+          const original = button.textContent;
+          button.textContent = "Copied";
+          setTimeout(() => (button.textContent = original), 1200);
+        });
+      });
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
   </body>
 </html>
