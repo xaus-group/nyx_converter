@@ -1,7 +1,3 @@
-<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-<!--                        NYX CONVERTER                            -->
-<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-
 <h1 align="center">Nyx Converter</h1>
 
 <p align="center">
@@ -71,7 +67,7 @@ Add the package to your `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  nyx_converter: ^latest-version
+  nyx_converter: ^{{VERSION}}
 ```
 
 Install dependencies.
