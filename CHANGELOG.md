@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.5.0
+
+Added:
+
+- Added getMediaInfo for retrieving media metadata and stream information
+- Added getThumbnail for generating video thumbnails as Uint8List
+- Added thumbnail position support
+- Added NyxMediaInfo, NyxVideoInfo, and NyxAudioInfo models
+
+Improved:
+
+- Updated example app with media information and thumbnail preview
+- Updated documentation and GitHub Wiki
+
 ## 0.4.1
 
 Added:
