@@ -4,7 +4,9 @@ import 'package:nyx_converter/src/nyx_converter/i_nyx_converter.dart';
 import 'package:nyx_converter/src/nyx_converter/nyx_ff_converter.dart';
 
 import '../core/nyx_command_builder.dart';
+import '../core/nyx_media_probe.dart';
 import '../core/nyx_path_helper.dart';
+import '../core/nyx_thumbnail.dart';
 import '../core/nyx_validator.dart';
 
 class _NyxConverter extends INyxConverter {
@@ -65,6 +67,22 @@ class _NyxConverter extends INyxConverter {
       outputFilePath: outputFilePath,
       sessionId: _sessionIds.add,
       execution: execution,
+    );
+  }
+
+  @override
+  Future<NyxMediaInfo> getMediaInfo(String inputPath) {
+    return NyxMediaProbe.getMediaInfo(inputPath);
+  }
+
+  @override
+  Future<String> getThumbnail(
+    String inputPath,
+    String outputPath,
+  ) {
+    return NyxThumbnail.generate(
+      inputPath: inputPath,
+      outputPath: outputPath,
     );
   }
 

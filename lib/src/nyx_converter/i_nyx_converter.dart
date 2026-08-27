@@ -77,6 +77,52 @@ abstract class INyxConverter {
     NyxConvertionCallback? execution,
   });
 
+  /// Retrieves information about a media file using FFprobe.
+  ///
+  /// The returned [NyxMediaInfo] contains general file information,
+  /// including:
+  ///
+  /// - file name
+  /// - container format
+  /// - duration
+  /// - file size
+  /// - video stream information
+  /// - audio stream information
+  ///
+  /// Throws an exception if the media information cannot be read.
+  ///
+  /// Example:
+  ///
+  /// ```dart
+  /// final info = await NyxConverter.getMediaInfo(
+  ///   '/storage/video.mp4',
+  /// );
+  ///
+  /// print(info.duration);
+  /// print(info.video?.codec);
+  /// print(info.audio?.codec);
+  /// ```
+  Future<NyxMediaInfo> getMediaInfo(String inputPath);
+
+  /// Generates a thumbnail image from a media file.
+  ///
+  /// The thumbnail is extracted from the first frame of the media.
+  ///
+  /// Returns the generated image path.
+  ///
+  /// Example:
+  ///
+  /// ```dart
+  /// final image = await NyxConverter.getThumbnail(
+  ///   '/storage/video.mp4',
+  ///   '/storage/thumb.jpg',
+  /// );
+  /// ```
+  Future<String> getThumbnail(
+    String inputPath,
+    String outputPath,
+  );
+
   /// ### Description:
   /// - The [kill] function terminates all `nyx_converter` process.
   ///
