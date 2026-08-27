@@ -118,27 +118,39 @@ abstract class INyxConverter {
 
   /// Generates a thumbnail from a media file.
   ///
-  /// The thumbnail is generated from the first video frame and returned
-  /// directly as JPEG bytes.
+  /// [position] specifies the position in the video where the thumbnail
+  /// should be extracted.
+  ///
+  /// When [position] is `null`, the thumbnail is generated from the first
+  /// video frame.
+  ///
+  /// The thumbnail is returned directly as JPEG bytes.
   ///
   /// The package creates and removes its own temporary file internally,
   /// so the caller does not need to provide an output path.
   ///
   /// Returns `null` when:
-  /// - the media cannot be read,
+  /// - the media file cannot be read,
   /// - the media does not contain a video stream,
+  /// - the requested position cannot be read,
   /// - or FFmpeg fails to generate the thumbnail.
   ///
   /// Example:
   ///
-  /// ```dart
-  /// final thumbnail = await NyxConverter.getThumbnail(filePath);
+  /// `dart
+  /// final thumbnail = await NyxConverter.getThumbnail(
+  ///   filePath,
+  ///   position: const Duration(seconds: 5),
+  /// );
   ///
   /// if (thumbnail != null) {
   ///   Image.memory(thumbnail);
   /// }
-  /// ```
-  Future<Uint8List?> getThumbnail(String inputPath);
+  /// `
+  Future<Uint8List?> getThumbnail(
+    String inputPath, {
+    Duration? position,
+  });
 
   /// ### Description:
   /// - The [kill] function terminates all `nyx_converter` process.

@@ -78,8 +78,14 @@ class _NyxConverter extends INyxConverter {
   }
 
   @override
-  Future<Uint8List?> getThumbnail(String inputPath) {
-    return NyxThumbnail.generate(inputPath);
+  Future<Uint8List?> getThumbnail(
+    String inputPath, {
+    Duration? position,
+  }) {
+    return NyxThumbnail.generate(
+      inputPath,
+      position: position,
+    );
   }
 
   @override

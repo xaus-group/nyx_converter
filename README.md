@@ -1,29 +1,43 @@
 <h1 align="center">Nyx Converter</h1>
 
 <p align="center">
-  <a href="https://github.com/xaus-group/nyx_converter"><img src="https://img.shields.io/github/v/release/xaus-group/nyx_converter" alt="Github release"></a>
-  <a href="https://pub.dev/packages/nyx_converter"><img src="https://img.shields.io/pub/v/nyx_converter.svg" alt="pub package"></a>
-  <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html"><img src="https://img.shields.io/github/license/xaus-group/nyx_converter" alt="License"></a>
-  <a href="https://github.com/xaus-group/nyx_converter"><img src="https://img.shields.io/github/stars/xaus-group/nyx_converter" alt="Github Stars"></a>
-  <a href="https://github.com/xaus-group/nyx_converter/issues"><img src="https://img.shields.io/github/issues/xaus-group/nyx_converter" alt="Issues"></a>
+  <a href="https://github.com/xaus-group/nyx_converter">
+    <img src="https://img.shields.io/github/v/release/xaus-group/nyx_converter" alt="GitHub release">
+  </a>
+  <a href="https://pub.dev/packages/nyx_converter">
+    <img src="https://img.shields.io/pub/v/nyx_converter.svg" alt="Pub package">
+  </a>
+  <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html">
+    <img src="https://img.shields.io/github/license/xaus-group/nyx_converter" alt="License">
+  </a>
+  <a href="https://github.com/xaus-group/nyx_converter">
+    <img src="https://img.shields.io/github/stars/xaus-group/nyx_converter" alt="GitHub Stars">
+  </a>
+  <a href="https://github.com/xaus-group/nyx_converter/issues">
+    <img src="https://img.shields.io/github/issues/xaus-group/nyx_converter" alt="Issues">
+  </a>
 </p>
 
 <p align="center">
-  <img src="screenshots/logo.png"
+  <img
+    src="screenshots/logo.png"
     alt="Nyx Converter"
-    width="240">
+    width="240"
+  >
 </p>
 
 <p align="center">
-  <b>A Flutter package that provides a simple and powerful API for converting audio and video files.</b>
+  <b>
+    A Flutter package that provides a simple and powerful API for converting,
+    inspecting, and processing audio and video files.
+  </b>
 </p>
 
 ---
 
 ## 📖 Overview
 
-`nyx_converter` is a Flutter package that provides a simple and powerful API
-for converting audio and video files.
+`nyx_converter` is a Flutter package that provides a simple and powerful API for working with media files.
 
 It allows Flutter applications to:
 
@@ -34,9 +48,10 @@ It allows Flutter applications to:
 - 🖥️ Receive FPS and conversion speed updates
 - ❌ Cancel running conversions
 - ✅ Validate media files before processing
+- 🔍 Read detailed media information
+- 🖼️ Generate media thumbnails
 
-Nyx Converter handles FFmpeg command generation internally, allowing developers
-to convert media files without manually writing FFmpeg commands.
+Nyx Converter handles FFmpeg command generation internally, allowing developers to work with media files without manually writing FFmpeg commands.
 
 ---
 
@@ -55,6 +70,8 @@ to convert media files without manually writing FFmpeg commands.
 | Cancel running conversions  |   ✅   |
 | Input media validation      |   ✅   |
 | Output validation           |   ✅   |
+| Media information           |   ✅   |
+| Media thumbnail generation  |   ✅   |
 | Video resize                |   🚧   |
 | Audio frequency control     |   🚧   |
 | Audio channel layout        |   🚧   |
@@ -70,7 +87,7 @@ dependencies:
   nyx_converter: ^{{VERSION}}
 ```
 
-Install dependencies.
+Install dependencies:
 
 ```bash
 flutter pub get
@@ -93,7 +110,7 @@ flutter pub get
 
 <br>
 
-#### 🤖 Android
+### 🤖 Android
 
 - `arm-v7a`
 - `arm-v7a-neon`
@@ -101,17 +118,17 @@ flutter pub get
 - `x86`
 - `x86_64`
 
-#### 🍎 iOS
+### 🍎 iOS
 
 - `arm64` devices
 - `arm64` / `x86_64` simulators
 
-#### 🖥️ macOS
+### 🖥️ macOS
 
 - `arm64`
 - `x86_64`
 
-#### 🪟 Windows
+### 🪟 Windows
 
 - `x86_64`
 
@@ -133,9 +150,7 @@ Convert a media file:
 await NyxConverter.convertTo(
   '/storage/emulated/0/DCIM/input.mp4',
   '/storage/emulated/0/Movies',
-
   container: NyxContainer.mp4,
-
   execution: (
     status, {
     progress,
@@ -143,9 +158,7 @@ await NyxConverter.convertTo(
     speed,
     errorMessage,
   }) {
-
     switch (status) {
-
       case NyxStatus.running:
         print('Progress: $progress%');
         break;
@@ -190,7 +203,7 @@ Change the video encoding codec:
 videoCodec: NyxVideoCodec.h264,
 ```
 
-> 📚 Available codecs: [Wiki → Video codec](https://github.com/xaus-group/nyx_converter/wiki/Video-codec)
+> 📚 Available codecs: [Wiki → Video Codec](https://github.com/xaus-group/nyx_converter/wiki/Video-codec)
 
 ---
 
@@ -202,7 +215,7 @@ Change the audio encoding codec:
 audioCodec: NyxAudioCodec.aac,
 ```
 
-> 📚 Available codecs: [Wiki → Audio codec](https://github.com/xaus-group/nyx_converter/wiki/Audio-codec)
+> 📚 Available codecs: [Wiki → Audio Codec](https://github.com/xaus-group/nyx_converter/wiki/Audio-codec)
 
 ---
 
@@ -239,7 +252,6 @@ Enable detailed FFmpeg logs:
 debugMode: true,
 ```
 
----
 
 ## 📡 Execution Callback
 
@@ -270,14 +282,13 @@ execution: (
 
 ### Callback Data
 
-| Property       | Description                          |
-| :------------- | :----------------------------------- |
-| `progress`     | Conversion percentage (0–100)        |
-| `fps`          | Current processing frames per second |
-| `speed`        | Current FFmpeg processing speed      |
-| `errorMessage` | Error details when conversion fails  |
+| Property       | Description                             |
+| :------------- | :-------------------------------------- |
+| `progress`     | Conversion percentage from `0` to `100` |
+| `fps`          | Current processing frames per second    |
+| `speed`        | Current FFmpeg processing speed         |
+| `errorMessage` | Error details when conversion fails     |
 
----
 
 ## 🛡️ Automatic Validation
 
@@ -297,7 +308,6 @@ NyxStatus.failed
 
 will be returned through the execution callback.
 
----
 
 ## 🛑 Cancel Conversion
 
@@ -307,18 +317,61 @@ Cancel all active conversions:
 NyxConverter.kill();
 ```
 
+## 🔍 Media Information
+
+Get detailed information about an audio or video file:
+
+```dart
+final NyxMediaInfo info = await NyxConverter.getMediaInfo(
+  '/storage/emulated/0/Movies/video.mp4',
+);
+
+print('File: ${info.fileName}');
+print('Format: ${info.format}');
+print('Duration: ${info.duration}');
+print('Has video: ${info.hasVideo}');
+print('Has audio: ${info.hasAudio}');
+```
+
+Video and audio information is available through `info.video` and `info.audio`.
+
+> 📚 Full documentation and examples: [Wiki → Media Info](https://github.com/xaus-group/nyx_converter/wiki/Media-Info)
+
+---
+
+## 🖼️ Media Thumbnail
+
+Generate a thumbnail from a media file:
+
+```dart
+final Uint8List thumbnail = await NyxConverter.getThumbnail(
+  '/storage/emulated/0/Movies/video.mp4',
+  time: const Duration(seconds: 5),
+);
+```
+
+Display it in Flutter:
+
+```dart
+Image.memory(thumbnail);
+```
+
+> 📚 Full documentation and examples: [Wiki → Thumbnail](https://github.com/xaus-group/nyx_converter/wiki/Thumbnail)
+
 ---
 
 ## 📚 Documentation
 
 Detailed documentation is available in the Wiki:
 
-- Container
-- Video Codec
-- Audio Codec
-- Bitrate
+- [Container](https://github.com/xaus-group/nyx_converter/wiki/Container)
+- [Video Codec](https://github.com/xaus-group/nyx_converter/wiki/Video-codec)
+- [Audio Codec](https://github.com/xaus-group/nyx_converter/wiki/Audio-codec)
+- [Bitrate](https://github.com/xaus-group/nyx_converter/wiki/Bitrate)
+- [Media Info](https://github.com/xaus-group/nyx_converter/wiki/Media-Info)
+- [Thumbnail](https://github.com/xaus-group/nyx_converter/wiki/Thumbnail)
 
-> 🔗 **Wiki:** <https://github.com/xaus-group/nyx_converter/wiki>
+> 🔗 **Wiki:** https://github.com/xaus-group/nyx_converter/wiki
 
 ---
 
