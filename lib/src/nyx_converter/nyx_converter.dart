@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
 import 'package:nyx_converter/nyx_converter.dart';
 import 'package:nyx_converter/src/nyx_converter/i_nyx_converter.dart';
@@ -71,19 +73,13 @@ class _NyxConverter extends INyxConverter {
   }
 
   @override
-  Future<NyxMediaInfo> getMediaInfo(String inputPath) {
+  Future<NyxMediaInfo?> getMediaInfo(String inputPath) {
     return NyxMediaProbe.getMediaInfo(inputPath);
   }
 
   @override
-  Future<String> getThumbnail(
-    String inputPath,
-    String outputPath,
-  ) {
-    return NyxThumbnail.generate(
-      inputPath: inputPath,
-      outputPath: outputPath,
-    );
+  Future<Uint8List?> getThumbnail(String inputPath) {
+    return NyxThumbnail.generate(inputPath);
   }
 
   @override

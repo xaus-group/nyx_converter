@@ -1,6 +1,6 @@
-import 'package:ffmpeg_kit_flutter_new/media_information.dart';
+import 'dart:io';
+
 import 'package:ffmpeg_kit_flutter_new/ffprobe_kit.dart';
-import 'package:ffmpeg_kit_flutter_new/stream_information.dart';
 import 'package:path/path.dart' as p;
 
 import '../models/nyx_media_info.dart';
@@ -42,147 +42,146 @@ abstract final class NyxMediaProbe {
     return double.tryParse(info.getDuration() ?? '');
   }
 
-  /// Extracts detailed information about a media file using FFprobe.
+  /// Returns detailed information about the media file.
   ///
-  /// Returns information including:
+  /// FFprobe is used to inspect the container and its streams.
   ///
-  /// - file name
-  /// - container format
-  /// - duration
-  /// - file size
-  /// - video codec
-  /// - video resolution
-  /// - video bitrate
-  /// - video FPS
-  /// - audio codec
-  /// - audio bitrate
-  /// - audio sample rate
-  /// - audio channels
+  /// The first video and first audio streams are used when multiple
+  /// streams are present.
   ///
-  /// Supports both video and audio-only files.
-  ///
-  /// Throws an exception if FFprobe cannot read the file.
-  static Future<NyxMediaInfo> getMediaInfo(
-    String inputPath,
-  ) async {
-    final session = await FFprobeKit.getMediaInformation(inputPath);
+  /// Returns `null` when FFprobe cannot read the file.
+  static Future<NyxMediaInfo?> getMediaInfo(String inputPath) async {
+    final file = File(inputPath);
 
-    final MediaInformation? info = session.getMediaInformation();
+    if (!file.existsSync()) {
+      return null;
+    }
+
+    final session = await FFprobeKit.getMediaInformation(inputPath);
+    final info = session.getMediaInformation();
 
     if (info == null) {
-      throw Exception(
-        'Unable to read media information.',
-      );
+      return null;
     }
 
     final streams = info.getStreams();
 
-    StreamInformation? videoStream;
-    StreamInformation? audioStream;
+    if (streams.isEmpty) {
+      return null;
+    }
+
+    dynamic videoStream;
+    dynamic audioStream;
 
     for (final stream in streams) {
-      final type = stream.getType();
-
-      if (type == 'video') {
+      if (stream.getType() == 'video' && videoStream == null) {
         videoStream = stream;
       }
 
-      if (type == 'audio') {
+      if (stream.getType() == 'audio' && audioStream == null) {
         audioStream = stream;
       }
     }
 
-    final videoProperties = videoStream?.getAllProperties();
+    NyxVideoInfo? video;
 
-    final audioProperties = audioStream?.getAllProperties();
+    if (videoStream != null) {
+      video = NyxVideoInfo(
+        codec: videoStream.getCodec(),
+        width: _parseInt(videoStream.getWidth()),
+        height: _parseInt(videoStream.getHeight()),
+        fps: _parseFrameRate(videoStream),
+        bitrate: _parseInt(videoStream.getBitrate()),
+      );
+    }
+
+    NyxAudioInfo? audio;
+
+    if (audioStream != null) {
+      audio = NyxAudioInfo(
+        codec: audioStream.getCodec(),
+        bitrate: _parseInt(audioStream.getBitrate()),
+        sampleRate: _parseInt(audioStream.getSampleRate()),
+        channels: _parseChannels(audioStream),
+      );
+    }
+
+    final duration = _parseDuration(info.getDuration());
+
+    final format = info.getFormat();
 
     return NyxMediaInfo(
       fileName: p.basename(inputPath),
-      format: info.getFormat(),
-      duration: _parseDuration(
-        info.getDuration(),
-      ),
-      size: int.tryParse(
-        info.getSize()?.toString() ?? '',
-      ),
+      format: format,
+      duration: duration,
+      size: file.lengthSync(),
       hasVideo: videoStream != null,
       hasAudio: audioStream != null,
-      video: videoStream == null
-          ? null
-          : NyxVideoInfo(
-              codec: videoProperties?['codec_name']?.toString(),
-              width: int.tryParse(
-                videoProperties?['width']?.toString() ?? '',
-              ),
-              height: int.tryParse(
-                videoProperties?['height']?.toString() ?? '',
-              ),
-              bitrate: int.tryParse(
-                videoProperties?['bit_rate']?.toString() ?? '',
-              ),
-              fps: _parseFps(
-                videoProperties?['r_frame_rate']?.toString(),
-              ),
-            ),
-      audio: audioStream == null
-          ? null
-          : NyxAudioInfo(
-              codec: audioProperties?['codec_name']?.toString(),
-              bitrate: int.tryParse(
-                audioProperties?['bit_rate']?.toString() ?? '',
-              ),
-              sampleRate: int.tryParse(
-                audioProperties?['sample_rate']?.toString() ?? '',
-              ),
-              channels: int.tryParse(
-                audioProperties?['channels']?.toString() ?? '',
-              ),
-            ),
+      video: video,
+      audio: audio,
     );
   }
 
-  /// Converts FFprobe duration seconds into Dart Duration.
-  static Duration? _parseDuration(
-    String? value,
-  ) {
-    final seconds = double.tryParse(value ?? '');
-
-    if (seconds == null) {
-      return null;
-    }
-
-    return Duration(
-      milliseconds: (seconds * 1000).round(),
-    );
-  }
-
-  /// Converts FFprobe frame rate values.
-  ///
-  /// Example:
-  ///
-  /// 30000/1001 -> 29.97
-  ///
-  static double? _parseFps(
-    String? value,
-  ) {
+  static int? _parseInt(dynamic value) {
     if (value == null) {
       return null;
     }
 
-    final parts = value.split('/');
+    return int.tryParse(value.toString());
+  }
 
-    if (parts.length != 2) {
-      return double.tryParse(value);
-    }
-
-    final numerator = double.tryParse(parts[0]);
-
-    final denominator = double.tryParse(parts[1]);
-
-    if (numerator == null || denominator == null || denominator == 0) {
+  static Duration? _parseDuration(dynamic value) {
+    if (value == null) {
       return null;
     }
 
-    return numerator / denominator;
+    final seconds = double.tryParse(value.toString());
+
+    if (seconds == null || seconds < 0) {
+      return null;
+    }
+
+    return Duration(
+      microseconds: (seconds * Duration.microsecondsPerSecond).round(),
+    );
+  }
+
+  static double? _parseFrameRate(dynamic stream) {
+    try {
+      final frameRate = stream.getRealFrameRate();
+
+      if (frameRate != null) {
+        final value = frameRate.toString();
+
+        if (value.contains('/')) {
+          final parts = value.split('/');
+
+          if (parts.length == 2) {
+            final numerator = double.tryParse(parts[0]);
+            final denominator = double.tryParse(parts[1]);
+
+            if (numerator != null && denominator != null && denominator != 0) {
+              return numerator / denominator;
+            }
+          }
+        }
+
+        return double.tryParse(value);
+      }
+    } catch (_) {
+      // Some FFprobe versions do not expose real frame rate.
+    }
+
+    return null;
+  }
+
+  static int? _parseChannels(dynamic stream) {
+    try {
+      final value = stream.getChannels();
+
+      return _parseInt(value);
+    } catch (_) {
+      return null;
+    }
   }
 }

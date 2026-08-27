@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:nyx_converter/nyx_converter.dart';
 
 abstract class INyxConverter {
@@ -77,51 +79,66 @@ abstract class INyxConverter {
     NyxConvertionCallback? execution,
   });
 
-  /// Retrieves information about a media file using FFprobe.
+  /// Returns detailed information about a media file.
   ///
-  /// The returned [NyxMediaInfo] contains general file information,
-  /// including:
+  /// Information is obtained using FFprobe.
   ///
+  /// The returned object contains:
   /// - file name
-  /// - container format
-  /// - duration
+  /// - media format/container
   /// - file size
-  /// - video stream information
-  /// - audio stream information
+  /// - duration
+  /// - whether the file contains video
+  /// - whether the file contains audio
+  /// - video codec
+  /// - video resolution
+  /// - video FPS
+  /// - video bitrate
+  /// - audio codec
+  /// - audio bitrate
+  /// - audio sample rate
+  /// - audio channel count
   ///
-  /// Throws an exception if the media information cannot be read.
+  /// Returns `null` when FFprobe cannot read the media file.
   ///
   /// Example:
   ///
   /// ```dart
-  /// final info = await NyxConverter.getMediaInfo(
-  ///   '/storage/video.mp4',
-  /// );
+  /// final info = await NyxConverter.getMediaInfo(filePath);
   ///
-  /// print(info.duration);
-  /// print(info.video?.codec);
-  /// print(info.audio?.codec);
+  /// if (info != null) {
+  ///   print(info.fileName);
+  ///   print(info.duration);
+  ///   print(info.video?.codec);
+  ///   print(info.video?.width);
+  ///   print(info.video?.height);
+  /// }
   /// ```
-  Future<NyxMediaInfo> getMediaInfo(String inputPath);
+  Future<NyxMediaInfo?> getMediaInfo(String inputPath);
 
-  /// Generates a thumbnail image from a media file.
+  /// Generates a thumbnail from a media file.
   ///
-  /// The thumbnail is extracted from the first frame of the media.
+  /// The thumbnail is generated from the first video frame and returned
+  /// directly as JPEG bytes.
   ///
-  /// Returns the generated image path.
+  /// The package creates and removes its own temporary file internally,
+  /// so the caller does not need to provide an output path.
+  ///
+  /// Returns `null` when:
+  /// - the media cannot be read,
+  /// - the media does not contain a video stream,
+  /// - or FFmpeg fails to generate the thumbnail.
   ///
   /// Example:
   ///
   /// ```dart
-  /// final image = await NyxConverter.getThumbnail(
-  ///   '/storage/video.mp4',
-  ///   '/storage/thumb.jpg',
-  /// );
+  /// final thumbnail = await NyxConverter.getThumbnail(filePath);
+  ///
+  /// if (thumbnail != null) {
+  ///   Image.memory(thumbnail);
+  /// }
   /// ```
-  Future<String> getThumbnail(
-    String inputPath,
-    String outputPath,
-  );
+  Future<Uint8List?> getThumbnail(String inputPath);
 
   /// ### Description:
   /// - The [kill] function terminates all `nyx_converter` process.

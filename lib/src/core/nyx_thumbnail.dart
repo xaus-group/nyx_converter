@@ -1,39 +1,61 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter_new/return_code.dart';
 
 abstract final class NyxThumbnail {
   NyxThumbnail._();
 
-  /// Generates a thumbnail image from a media file.
+  /// Generates a JPEG thumbnail from the first video frame.
   ///
-  /// Uses FFmpeg to extract a frame.
-  static Future<String> generate({
-    required String inputPath,
-    required String outputPath,
-  }) async {
-    final command = '-i "$inputPath" '
-        '-ss 00:00:01 '
-        '-frames:v 1 '
-        '-q:v 2 '
-        '"$outputPath"';
+  /// A temporary file is created internally and removed automatically.
+  ///
+  /// Returns the JPEG bytes, or `null` when the thumbnail cannot be created.
+  static Future<Uint8List?> generate(String inputPath) async {
+    final inputFile = File(inputPath);
 
-    final session = await FFmpegKit.execute(command);
-
-    final returnCode = await session.getReturnCode();
-
-    if (returnCode == null || !returnCode.isValueSuccess()) {
-      throw Exception(
-        'Failed to generate thumbnail.',
-      );
+    if (!inputFile.existsSync()) {
+      return null;
     }
 
-    if (!File(outputPath).existsSync()) {
-      throw Exception(
-        'Thumbnail file was not created.',
-      );
-    }
+    final tempDirectory = Directory.systemTemp;
 
-    return outputPath;
+    final thumbnailFile = File(
+      '${tempDirectory.path}/nyx_thumbnail_${DateTime.now().microsecondsSinceEpoch}.jpg',
+    );
+
+    try {
+      final outputPath = thumbnailFile.path;
+
+      final command = '-i "$inputPath" '
+          '-frames:v 1 '
+          '-q:v 2 '
+          '"$outputPath"';
+
+      final session = await FFmpegKit.execute(command);
+
+      final returnCode = await session.getReturnCode();
+
+      if (!ReturnCode.isSuccess(returnCode)) {
+        return null;
+      }
+
+      if (!thumbnailFile.existsSync()) {
+        return null;
+      }
+
+      return await thumbnailFile.readAsBytes();
+    } catch (_) {
+      return null;
+    } finally {
+      if (thumbnailFile.existsSync()) {
+        try {
+          await thumbnailFile.delete();
+        } catch (_) {
+          // Ignore cleanup errors.
+        }
+      }
+    }
   }
 }
