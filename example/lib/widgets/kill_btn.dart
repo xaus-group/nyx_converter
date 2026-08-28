@@ -7,10 +7,13 @@ class KillBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-        onPressed: () => onClick(),
-        style: TextButton.styleFrom(
-            backgroundColor: Colors.grey[200], foregroundColor: Colors.black),
-        icon: const Icon(Icons.cancel_outlined),
-        label: const Text('Cancel process'));
+      onPressed: () => onClick(),
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.grey[200],
+        foregroundColor: Colors.black,
+      ),
+      icon: const Icon(Icons.cancel_outlined),
+      label: const Text('Cancel process'),
+    );
   }
 }
