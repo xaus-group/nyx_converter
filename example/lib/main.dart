@@ -7,69 +7,66 @@ import 'package:nyx_converter/nyx_converter.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() {
-  runApp(
-    const MaterialApp(debugShowCheckedModeBanner: false, home: NyxExampleApp()),
-  );
+  runApp(const NyxExampleApp());
 }
 
-class NyxExampleApp extends StatefulWidget {
+class NyxExampleApp extends StatelessWidget {
   const NyxExampleApp({super.key});
 
   @override
-  State<NyxExampleApp> createState() => _NyxExampleAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Nyx Converter',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        useMaterial3: true,
+      ),
+      home: const NyxHomePage(),
+    );
+  }
 }
 
-class _NyxExampleAppState extends State<NyxExampleApp> {
-  // ---------------------------------------------------------------------------
-  // Selected file
-  // ---------------------------------------------------------------------------
+class NyxHomePage extends StatefulWidget {
+  const NyxHomePage({super.key});
 
-  String? inputPath;
+  @override
+  State<NyxHomePage> createState() => _NyxHomePageState();
+}
 
-  // ---------------------------------------------------------------------------
-  // Media information
-  // ---------------------------------------------------------------------------
+class _NyxHomePageState extends State<NyxHomePage> {
+  String? _inputPath;
+  Directory? _outputDirectory;
 
-  NyxMediaInfo? mediaInfo;
+  NyxMediaInfo? _mediaInfo;
+  Uint8List? _thumbnail;
 
-  // Thumbnail returned directly as bytes.
-  Uint8List? thumbnail;
+  NyxContainer _container = NyxContainer.mp4;
+  NyxVideoCodec _videoCodec = NyxVideoCodec.h264;
+  NyxAudioCodec _audioCodec = NyxAudioCodec.aac;
+  NyxSize _size = NyxSize.w1920h1080;
+  NyxSampleRate _sampleRate = NyxSampleRate.hz48000;
+  NyxChannelLayout _channelLayout = NyxChannelLayout.stereo;
 
-  bool loadingMediaInfo = false;
-  bool loadingThumbnail = false;
+  final _audioBitrateController = TextEditingController(text: '192');
+  final _videoBitrateController = TextEditingController(text: '5');
 
-  // ---------------------------------------------------------------------------
-  // Conversion
-  // ---------------------------------------------------------------------------
+  bool _loadingInfo = false;
+  bool _loadingThumbnail = false;
+  bool _converting = false;
 
-  Directory? outputDirectory;
-
-  NyxContainer container = NyxContainer.mp4;
-  NyxVideoCodec videoCodec = NyxVideoCodec.h264;
-  NyxAudioCodec audioCodec = NyxAudioCodec.aac;
-
-  final audioBitrateController = TextEditingController(text: '128');
-  final videoBitrateController = TextEditingController(text: '5');
-
-  double progress = 0;
-  double? fps;
-  double? speed;
-
-  bool converting = false;
-  bool completed = false;
+  double _progress = 0;
+  double? _fps;
+  double? _speed;
 
   @override
   void dispose() {
-    audioBitrateController.dispose();
-    videoBitrateController.dispose();
+    _audioBitrateController.dispose();
+    _videoBitrateController.dispose();
     super.dispose();
   }
 
-  // ---------------------------------------------------------------------------
-  // Pick media
-  // ---------------------------------------------------------------------------
-
-  Future<void> pickInput() async {
+  Future<void> _pickFile() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.any);
 
     if (result == null) {
@@ -84,29 +81,18 @@ class _NyxExampleAppState extends State<NyxExampleApp> {
     }
 
     setState(() {
-      inputPath = path;
-
-      // Clear previous information.
-      mediaInfo = null;
-      thumbnail = null;
-
-      loadingMediaInfo = true;
-      loadingThumbnail = true;
-
-      // Reset conversion state.
-      completed = false;
-      progress = 0;
-      fps = null;
-      speed = null;
+      _inputPath = path;
+      _mediaInfo = null;
+      _thumbnail = null;
+      _loadingInfo = true;
+      _loadingThumbnail = true;
+      _progress = 0;
+      _fps = null;
+      _speed = null;
     });
 
-    // Get media information and thumbnail independently.
     await Future.wait([_loadMediaInfo(path), _loadThumbnail(path)]);
   }
-
-  // ---------------------------------------------------------------------------
-  // Get Media Info
-  // ---------------------------------------------------------------------------
 
   Future<void> _loadMediaInfo(String path) async {
     try {
@@ -117,8 +103,8 @@ class _NyxExampleAppState extends State<NyxExampleApp> {
       }
 
       setState(() {
-        mediaInfo = info;
-        loadingMediaInfo = false;
+        _mediaInfo = info;
+        _loadingInfo = false;
       });
     } catch (e) {
       if (!mounted) {
@@ -126,16 +112,12 @@ class _NyxExampleAppState extends State<NyxExampleApp> {
       }
 
       setState(() {
-        loadingMediaInfo = false;
+        _loadingInfo = false;
       });
 
       _showError('Unable to read media information.\n\n$e');
     }
   }
-
-  // ---------------------------------------------------------------------------
-  // Get Thumbnail
-  // ---------------------------------------------------------------------------
 
   Future<void> _loadThumbnail(String path) async {
     try {
@@ -146,8 +128,8 @@ class _NyxExampleAppState extends State<NyxExampleApp> {
       }
 
       setState(() {
-        thumbnail = bytes;
-        loadingThumbnail = false;
+        _thumbnail = bytes;
+        _loadingThumbnail = false;
       });
     } catch (e) {
       if (!mounted) {
@@ -155,108 +137,109 @@ class _NyxExampleAppState extends State<NyxExampleApp> {
       }
 
       setState(() {
-        loadingThumbnail = false;
-        thumbnail = null;
+        _thumbnail = null;
+        _loadingThumbnail = false;
       });
 
-      // Thumbnail failure should not prevent displaying media information.
-      debugPrint('Nyx thumbnail error: $e');
+      debugPrint('Thumbnail error: $e');
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // Output directory
-  // ---------------------------------------------------------------------------
-
-  Future<void> selectOutput() async {
+  Future<void> _selectOutputDirectory() async {
     final directory = await getDownloadsDirectory();
 
     if (!mounted) {
       return;
     }
 
+    if (directory == null) {
+      _showError('Downloads directory is not available.');
+      return;
+    }
+
     setState(() {
-      outputDirectory = directory;
+      _outputDirectory = directory;
     });
   }
 
-  // ---------------------------------------------------------------------------
-  // Convert
-  // ---------------------------------------------------------------------------
+  Future<void> _convert() async {
+    final inputPath = _inputPath;
 
-  Future<void> convert() async {
     if (inputPath == null) {
-      _showError('Please select a media file.');
+      _showError('Please select a media file first.');
       return;
     }
 
-    final directory = outputDirectory ?? await getDownloadsDirectory();
+    final directory = _outputDirectory ?? await getDownloadsDirectory();
 
     if (directory == null) {
-      _showError('Output directory not found.');
+      _showError('Output directory is not available.');
       return;
     }
 
-    setState(() {
-      converting = true;
-      completed = false;
+    final audioBitrate = int.tryParse(_audioBitrateController.text);
 
-      progress = 0;
-      fps = null;
-      speed = null;
+    final videoBitrate = int.tryParse(_videoBitrateController.text);
+
+    setState(() {
+      _converting = true;
+      _progress = 0;
+      _fps = null;
+      _speed = null;
     });
 
     try {
       await NyxConverter.convertTo(
-        inputPath!,
+        inputPath,
         directory.path,
-        container: container,
-        videoCodec: videoCodec,
-        audioCodec: audioCodec,
-        audioBitrate: int.tryParse(audioBitrateController.text),
-        videoBitrate: int.tryParse(videoBitrateController.text),
+        container: _container,
+        videoCodec: _videoCodec,
+        audioCodec: _audioCodec,
+        size: _size,
+        sampleRate: _sampleRate,
+        channelLayout: _channelLayout,
+        audioBitrate: audioBitrate,
+        videoBitrate: videoBitrate,
         fileName: 'nyx_output',
-        debugMode: true,
         execution:
             (
               NyxStatus status, {
-              String? errorMessage,
               double? progress,
               double? fps,
               double? speed,
+              String? errorMessage,
             }) {
               if (!mounted) {
                 return;
               }
 
-              if (status == NyxStatus.running) {
-                setState(() {
-                  this.progress = progress ?? 0;
-                  this.fps = fps;
-                  this.speed = speed;
-                });
-              }
+              switch (status) {
+                case NyxStatus.running:
+                  setState(() {
+                    _progress = progress ?? 0;
+                    _fps = fps;
+                    _speed = speed;
+                  });
 
-              if (status == NyxStatus.completed) {
-                setState(() {
-                  converting = false;
-                  completed = true;
-                  this.progress = 100;
-                });
-              }
+                case NyxStatus.completed:
+                  setState(() {
+                    _converting = false;
+                    _progress = 100;
+                  });
 
-              if (status == NyxStatus.failed) {
-                setState(() {
-                  converting = false;
-                });
+                  _showMessage('Conversion completed.');
 
-                _showError(errorMessage ?? 'Conversion failed.');
-              }
+                case NyxStatus.failed:
+                  setState(() {
+                    _converting = false;
+                  });
 
-              if (status == NyxStatus.cancel) {
-                setState(() {
-                  converting = false;
-                });
+                  _showError(errorMessage ?? 'Conversion failed.');
+
+                case NyxStatus.cancel:
+                  setState(() {
+                    _converting = false;
+                  });
               }
             },
       );
@@ -266,151 +249,142 @@ class _NyxExampleAppState extends State<NyxExampleApp> {
       }
 
       setState(() {
-        converting = false;
+        _converting = false;
       });
 
       _showError(e.toString());
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // Cancel
-  // ---------------------------------------------------------------------------
-
-  void cancel() {
+  void _cancel() {
     NyxConverter.kill();
 
     setState(() {
-      converting = false;
+      _converting = false;
     });
   }
 
-  // ---------------------------------------------------------------------------
-  // Error dialog
-  // ---------------------------------------------------------------------------
+  void _showMessage(String message) {
+    if (!mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
+  }
 
   void _showError(String message) {
     if (!mounted) {
       return;
     }
 
-    showDialog(
+    showDialog<void>(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Error'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('OK'),
-          ),
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Nyx Converter')),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          _buildFileSection(),
+          if (_inputPath != null) ...[
+            const SizedBox(height: 16),
+            _buildPreview(),
+            const SizedBox(height: 16),
+            _buildMediaInfo(),
+            const SizedBox(height: 24),
+            _buildConversionSection(),
+          ],
         ],
       ),
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // Format duration
-  // ---------------------------------------------------------------------------
-
-  String _formatDuration(Duration? duration) {
-    if (duration == null) {
-      return '--';
-    }
-
-    final hours = duration.inHours;
-    final minutes = duration.inMinutes.remainder(60);
-    final seconds = duration.inSeconds.remainder(60);
-
-    if (hours > 0) {
-      return '${hours.toString().padLeft(2, '0')}:'
-          '${minutes.toString().padLeft(2, '0')}:'
-          '${seconds.toString().padLeft(2, '0')}';
-    }
-
-    return '${minutes.toString().padLeft(2, '0')}:'
-        '${seconds.toString().padLeft(2, '0')}';
+  Widget _buildFileSection() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Media File',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                onPressed: _converting ? null : _pickFile,
+                icon: const Icon(Icons.folder_open),
+                label: const Text('Select Media File'),
+              ),
+            ),
+            if (_inputPath != null) ...[
+              const SizedBox(height: 12),
+              Text(_inputPath!, style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ],
+        ),
+      ),
+    );
   }
 
-  // ---------------------------------------------------------------------------
-  // Format file size
-  // ---------------------------------------------------------------------------
-
-  String _formatFileSize(int? bytes) {
-    if (bytes == null) {
-      return '--';
-    }
-
-    if (bytes < 1024) {
-      return '$bytes B';
-    }
-
-    if (bytes < 1024 * 1024) {
-      return '${(bytes / 1024).toStringAsFixed(2)} KB';
-    }
-
-    if (bytes < 1024 * 1024 * 1024) {
-      return '${(bytes / (1024 * 1024)).toStringAsFixed(2)} MB';
-    }
-
-    return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(2)} GB';
-  }
-
-  // ---------------------------------------------------------------------------
-  // Format bitrate
-  // ---------------------------------------------------------------------------
-
-  String _formatBitrate(int? bitrate) {
-    if (bitrate == null) {
-      return '--';
-    }
-
-    if (bitrate >= 1000000) {
-      return '${(bitrate / 1000000).toStringAsFixed(2)} Mbps';
-    }
-
-    if (bitrate >= 1000) {
-      return '${(bitrate / 1000).toStringAsFixed(0)} kbps';
-    }
-
-    return '$bitrate bps';
-  }
-
-  // ---------------------------------------------------------------------------
-  // Format FPS
-  // ---------------------------------------------------------------------------
-
-  String _formatFps(double? fps) {
-    if (fps == null) {
-      return '--';
-    }
-
-    return '${fps.toStringAsFixed(2)} fps';
-  }
-
-  // ---------------------------------------------------------------------------
-  // Media information UI
-  // ---------------------------------------------------------------------------
-
-  Widget _buildMediaInfo() {
-    if (loadingMediaInfo) {
+  Widget _buildPreview() {
+    if (_loadingThumbnail) {
       return const Card(
-        child: Padding(
-          padding: EdgeInsets.all(20),
+        child: SizedBox(
+          height: 220,
           child: Center(child: CircularProgressIndicator()),
         ),
       );
     }
 
-    if (mediaInfo == null) {
+    if (_thumbnail == null) {
       return const SizedBox.shrink();
     }
 
-    final info = mediaInfo!;
-    final video = info.video;
-    final audio = info.audio;
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Image.memory(_thumbnail!, fit: BoxFit.contain),
+      ),
+    );
+  }
+
+  Widget _buildMediaInfo() {
+    if (_loadingInfo) {
+      return const Card(
+        child: Padding(
+          padding: EdgeInsets.all(24),
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
+    final info = _mediaInfo;
+
+    if (info == null) {
+      return const SizedBox.shrink();
+    }
 
     return Card(
       child: Padding(
@@ -422,79 +396,222 @@ class _NyxExampleAppState extends State<NyxExampleApp> {
               'Media Information',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 16),
-
-            // General information
-            const Text(
-              'General',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-
-            const SizedBox(height: 8),
-
-            _infoRow('File name', info.fileName),
-
+            _infoRow('File', info.fileName),
             _infoRow('Format', info.format ?? '--'),
-
-            _infoRow('File size', _formatFileSize(info.size)),
-
             _infoRow('Duration', _formatDuration(info.duration)),
-
+            _infoRow('Size', _formatFileSize(info.size)),
             _infoRow('Type', _mediaType(info)),
-
-            _infoRow('Has video', info.hasVideo ? 'Yes' : 'No'),
-
-            _infoRow('Has audio', info.hasAudio ? 'Yes' : 'No'),
-
-            // Video
-            if (info.hasVideo && video != null) ...[
-              const SizedBox(height: 20),
-
+            if (info.video != null) ...[
+              const Divider(height: 24),
               const Text(
                 'Video',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-
-              const SizedBox(height: 8),
-
-              _infoRow('Codec', video.codec ?? '--'),
-
-              _infoRow('Resolution', _resolution(video.width, video.height)),
-
-              _infoRow('Width', video.width?.toString() ?? '--'),
-
-              _infoRow('Height', video.height?.toString() ?? '--'),
-
-              _infoRow('FPS', _formatFps(video.fps)),
-
-              _infoRow('Bitrate', _formatBitrate(video.bitrate)),
+              _infoRow('Codec', info.video!.codec ?? '--'),
+              _infoRow(
+                'Resolution',
+                _resolution(info.video!.width, info.video!.height),
+              ),
+              _infoRow('FPS', info.video!.fps?.toStringAsFixed(2) ?? '--'),
+              _infoRow('Bitrate', _formatBitrate(info.video!.bitrate)),
             ],
-
-            // Audio
-            if (info.hasAudio && audio != null) ...[
-              const SizedBox(height: 20),
-
+            if (info.audio != null) ...[
+              const Divider(height: 24),
               const Text(
                 'Audio',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-
-              const SizedBox(height: 8),
-
-              _infoRow('Codec', audio.codec ?? '--'),
-
-              _infoRow('Bitrate', _formatBitrate(audio.bitrate)),
-
+              _infoRow('Codec', info.audio!.codec ?? '--'),
+              _infoRow('Bitrate', _formatBitrate(info.audio!.bitrate)),
               _infoRow(
                 'Sample rate',
-                audio.sampleRate != null ? '${audio.sampleRate} Hz' : '--',
+                info.audio!.sampleRate != null
+                    ? '${info.audio!.sampleRate} Hz'
+                    : '--',
               ),
-
-              _infoRow('Channels', audio.channels?.toString() ?? '--'),
+              _infoRow('Channels', info.audio!.channels?.toString() ?? '--'),
             ],
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildConversionSection() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Conversion',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            _dropdown(
+              label: 'Container',
+              value: _container,
+              values: NyxContainer.values,
+              title: (value) => value.title,
+              onChanged: (value) {
+                setState(() => _container = value);
+              },
+            ),
+            _dropdown(
+              label: 'Video Codec',
+              value: _videoCodec,
+              values: NyxVideoCodec.values,
+              title: (value) => value.title,
+              onChanged: (value) {
+                setState(() => _videoCodec = value);
+              },
+            ),
+            _dropdown(
+              label: 'Audio Codec',
+              value: _audioCodec,
+              values: NyxAudioCodec.values,
+              title: (value) => value.title,
+              onChanged: (value) {
+                setState(() => _audioCodec = value);
+              },
+            ),
+            _dropdown(
+              label: 'Video Size',
+              value: _size,
+              values: NyxSize.values,
+              title: (value) => value.title,
+              onChanged: (value) {
+                setState(() => _size = value);
+              },
+            ),
+            _dropdown(
+              label: 'Sample Rate',
+              value: _sampleRate,
+              values: NyxSampleRate.values,
+              title: (value) => value.title,
+              onChanged: (value) {
+                setState(() => _sampleRate = value);
+              },
+            ),
+            _dropdown(
+              label: 'Channels',
+              value: _channelLayout,
+              values: NyxChannelLayout.values,
+              title: (value) => value.title,
+              onChanged: (value) {
+                setState(() => _channelLayout = value);
+              },
+            ),
+            TextField(
+              controller: _videoBitrateController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Video bitrate',
+                suffixText: 'Mbps',
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _audioBitrateController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Audio bitrate',
+                suffixText: 'kbps',
+              ),
+            ),
+            const SizedBox(height: 16),
+            OutlinedButton.icon(
+              onPressed: _converting ? null : _selectOutputDirectory,
+              icon: const Icon(Icons.folder),
+              label: const Text('Select Output Directory'),
+            ),
+            if (_outputDirectory != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                _outputDirectory!.path,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+            const SizedBox(height: 20),
+            if (_converting) _buildProgress(),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                onPressed: _converting ? _cancel : _convert,
+                icon: Icon(_converting ? Icons.cancel_outlined : Icons.sync),
+                label: Text(_converting ? 'Cancel' : 'Convert'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProgress() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          LinearProgressIndicator(value: _progress / 100),
+          const SizedBox(height: 8),
+          Text('${_progress.toStringAsFixed(1)}%'),
+          if (_fps != null) Text('FPS: ${_fps!.toStringAsFixed(2)}'),
+          if (_speed != null) Text('Speed: ${_speed!.toStringAsFixed(2)}x'),
+          const SizedBox(height: 12),
+        ],
+      ),
+    );
+  }
+
+  Widget _dropdown<T>({
+    required String label,
+    required T value,
+    required List<T> values,
+    required String Function(T value) title,
+    required ValueChanged<T> onChanged,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: DropdownButtonFormField<T>(
+        initialValue: value,
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
+        ),
+        items: values
+            .map(
+              (item) =>
+                  DropdownMenuItem<T>(value: item, child: Text(title(item))),
+            )
+            .toList(),
+        onChanged: (value) {
+          if (value != null) {
+            onChanged(value);
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _infoRow(String label, String? value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 100,
+            child: Text(
+              label,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ),
+          Expanded(child: Text(value ?? '--')),
+        ],
       ),
     );
   }
@@ -523,234 +640,58 @@ class _NyxExampleAppState extends State<NyxExampleApp> {
     return '$width × $height';
   }
 
-  Widget _infoRow(String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 110,
-            child: Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-          ),
-          Expanded(child: Text(value)),
-        ],
-      ),
-    );
-  }
-
-  // ---------------------------------------------------------------------------
-  // Thumbnail UI
-  // ---------------------------------------------------------------------------
-
-  Widget _buildThumbnail() {
-    if (loadingThumbnail) {
-      return const Card(
-        child: SizedBox(
-          height: 220,
-          child: Center(child: CircularProgressIndicator()),
-        ),
-      );
+  String _formatDuration(Duration? duration) {
+    if (duration == null) {
+      return '--';
     }
 
-    if (thumbnail == null) {
-      return const SizedBox.shrink();
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    final seconds = duration.inSeconds.remainder(60);
+
+    if (hours > 0) {
+      return '${hours.toString().padLeft(2, '0')}:'
+          '${minutes.toString().padLeft(2, '0')}:'
+          '${seconds.toString().padLeft(2, '0')}';
     }
 
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(12),
-            child: Text(
-              'Thumbnail',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: Image.memory(thumbnail!, fit: BoxFit.contain),
-          ),
-        ],
-      ),
-    );
+    return '${minutes.toString().padLeft(2, '0')}:'
+        '${seconds.toString().padLeft(2, '0')}';
   }
 
-  // ---------------------------------------------------------------------------
-  // Dropdown
-  // ---------------------------------------------------------------------------
+  String _formatFileSize(int? bytes) {
+    if (bytes == null) {
+      return '--';
+    }
 
-  Widget _dropdown<T>(
-    String title,
-    T value,
-    List<T> items,
-    ValueChanged<T> onChanged,
-  ) {
-    return DropdownButton<T>(
-      value: value,
-      isExpanded: true,
-      items: items
-          .map(
-            (item) => DropdownMenuItem<T>(
-              value: item,
-              child: Text(item.toString().split('.').last.toUpperCase()),
-            ),
-          )
-          .toList(),
-      onChanged: (value) {
-        if (value != null) {
-          onChanged(value);
-        }
-      },
-    );
+    if (bytes < 1024) {
+      return '$bytes B';
+    }
+
+    if (bytes < 1024 * 1024) {
+      return '${(bytes / 1024).toStringAsFixed(2)} KB';
+    }
+
+    if (bytes < 1024 * 1024 * 1024) {
+      return '${(bytes / (1024 * 1024)).toStringAsFixed(2)} MB';
+    }
+
+    return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(2)} GB';
   }
 
-  // ---------------------------------------------------------------------------
-  // Build
-  // ---------------------------------------------------------------------------
+  String _formatBitrate(int? bitrate) {
+    if (bitrate == null) {
+      return '--';
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Nyx Converter')),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          // -------------------------------------------------------------------
-          // Select file
-          // -------------------------------------------------------------------
-          ElevatedButton.icon(
-            onPressed: loadingMediaInfo || loadingThumbnail ? null : pickInput,
-            icon: const Icon(Icons.video_file),
-            label: const Text('Select Media File'),
-          ),
+    if (bitrate >= 1000000) {
+      return '${(bitrate / 1000000).toStringAsFixed(2)} Mbps';
+    }
 
-          if (inputPath != null) ...[
-            const SizedBox(height: 8),
+    if (bitrate >= 1000) {
+      return '${(bitrate / 1000).toStringAsFixed(0)} kbps';
+    }
 
-            Text(inputPath!, style: const TextStyle(fontSize: 12)),
-          ],
-
-          const SizedBox(height: 16),
-
-          // -------------------------------------------------------------------
-          // Thumbnail
-          // -------------------------------------------------------------------
-          _buildThumbnail(),
-
-          const SizedBox(height: 16),
-
-          // -------------------------------------------------------------------
-          // Media information
-          // -------------------------------------------------------------------
-          _buildMediaInfo(),
-
-          const SizedBox(height: 24),
-
-          const Divider(),
-
-          const SizedBox(height: 16),
-
-          // -------------------------------------------------------------------
-          // Conversion
-          // -------------------------------------------------------------------
-          const Text(
-            'Conversion',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-
-          const SizedBox(height: 12),
-
-          ElevatedButton(
-            onPressed: selectOutput,
-            child: const Text('Select Output'),
-          ),
-
-          if (outputDirectory != null)
-            Text(outputDirectory!.path, style: const TextStyle(fontSize: 12)),
-
-          const SizedBox(height: 8),
-
-          _dropdown('Container', container, NyxContainer.values, (value) {
-            setState(() {
-              container = value;
-            });
-          }),
-
-          _dropdown('Video Codec', videoCodec, NyxVideoCodec.values, (value) {
-            setState(() {
-              videoCodec = value;
-            });
-          }),
-
-          _dropdown('Audio Codec', audioCodec, NyxAudioCodec.values, (value) {
-            setState(() {
-              audioCodec = value;
-            });
-          }),
-
-          TextField(
-            controller: audioBitrateController,
-            decoration: const InputDecoration(
-              labelText: 'Audio bitrate (kbps)',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-
-          TextField(
-            controller: videoBitrateController,
-            decoration: const InputDecoration(
-              labelText: 'Video bitrate (Mbps)',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-
-          const SizedBox(height: 20),
-
-          if (converting) ...[
-            LinearProgressIndicator(value: progress / 100),
-
-            const SizedBox(height: 8),
-
-            Text('${progress.toStringAsFixed(1)}%'),
-
-            Text('FPS: ${fps?.toStringAsFixed(2) ?? "--"}'),
-
-            Text('Speed: ${speed?.toStringAsFixed(2) ?? "--"}x'),
-
-            const SizedBox(height: 8),
-
-            ElevatedButton.icon(
-              onPressed: cancel,
-              icon: const Icon(Icons.cancel),
-              label: const Text('Cancel'),
-            ),
-          ] else ...[
-            ElevatedButton.icon(
-              onPressed: inputPath == null ? null : convert,
-              icon: const Icon(Icons.sync),
-              label: const Text('Convert'),
-            ),
-          ],
-
-          if (completed) ...[
-            const SizedBox(height: 12),
-
-            const Text(
-              'Conversion completed',
-              style: TextStyle(color: Colors.green, fontSize: 18),
-            ),
-          ],
-
-          const SizedBox(height: 40),
-        ],
-      ),
-    );
+    return '$bitrate bps';
   }
 }
