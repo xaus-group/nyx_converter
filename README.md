@@ -152,8 +152,6 @@ See the Wiki for complete API usage, supported codecs and containers, configurat
 
 The Wiki contains the complete documentation:
 
-- Getting Started
-- Conversion
 - Audio Codecs
 - Video Codecs
 - Containers
@@ -163,8 +161,6 @@ The Wiki contains the complete documentation:
 - Thumbnails
 - Conversion Lifecycle
 - Execution Callback
-- Validation
-- Troubleshooting
 
 ---
 
