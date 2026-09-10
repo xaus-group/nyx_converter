@@ -8,9 +8,6 @@
 /// - [cancel] conversion was cancelled.
 ///
 enum NyxStatus {
-  /// Operation completed successfully.
-  success(title: 'Success'),
-
   /// Conversion is currently running.
   running(title: 'Running'),
 

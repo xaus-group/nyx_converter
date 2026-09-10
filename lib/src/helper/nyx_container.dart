@@ -1,126 +1,202 @@
+/// Represents a media container or audio media format used during conversion.
 ///
-/// ### Description:
-/// Media file containers, sometimes called wrappers, are the digital equivalent of filing cabinets for your audio and video. They don't determine the content itself, but rather how it's organized and stored. Here's a quick breakdown:
+/// A container determines how video, audio, subtitles, metadata, and
+/// other media streams are organized inside a file.
 ///
-/// - **Structure:** They define the overall layout of the file, including headers that identify the container format, data chunks for video, audio, subtitles, and other elements, and information on how these elements work together.
-/// - **Flexibility:** Some containers, like MKV (Matroska Multimedia Container), are like spacious cabinets that can hold various types of encoded data (video codecs, audio codecs, subtitles). Others, like MOV (Apple QuickTime Movie), might be more specific, designed for a particular ecosystem.
-///
-/// Key Points:
-/// - The container format doesn't affect the quality of the media itself. That's determined by the codecs used for encoding the video and audio.
-/// - Choosing the right container format depends on your needs. If compatibility is crucial, MP4 is a safe bet. For maximum flexibility and features, MKV might be better.
-///
-/// ### Example:
-/// ```dart
-/// final filePath = 'path/to/my.mp4';
-/// final outputPath = 'path/to/';
-///
-/// NyxConverter.convertTo(filePath, outputPath, container: NyxContainer.mp4);
-/// ```
-///
+/// The container does not determine media quality. Quality is primarily
+/// determined by the codecs and encoding settings used for the media streams.
 enum NyxContainer {
-  // ****video****
-
-  ///  An older format that stores video and audio together, like a classic filing cabinet for multimedia. Less common now, but still usable with many programs.
+  /// AVI (Audio Video Interleave).
+  ///
+  /// An older multimedia container with broad legacy support.
   avi,
 
-  /// The current champ, super versatile and compatible with most devices. It's like a universal box that can hold different video and audio formats (codecs) within itself.
+  /// MP4 (MPEG-4 Part 14).
+  ///
+  /// A widely supported container suitable for most video applications.
   mp4,
 
-  /// he super-flexible option. It's like a feature-rich file cabinet that can hold multiple video tracks, subtitles, chapters, and more, all in one place.
+  /// Matroska Multimedia Container.
+  ///
+  /// A flexible container supporting multiple video/audio tracks,
+  /// subtitles, chapters, and metadata.
   mkv,
 
-  /// Primarily used by Apple for their devices and software. Similar to MP4 in terms of holding different codecs, but might not play as smoothly on non-Apple products.
+  /// QuickTime Movie.
+  ///
+  /// Apple's multimedia container format.
   mov,
 
-  // Open and royalty-free optimized for web use, efficient compression.
+  /// WebM.
+  ///
+  /// A web-oriented container commonly used for modern web video.
   webM,
 
-  // ****audio****
+  /// MPEG program stream.
+  ///
+  /// A container format commonly associated with MPEG-1 and MPEG-2
+  /// video workflows.
+  mpeg,
 
-  /// Often linked to the Vorbis audio codec, but OGG itself is the container. Think of it as a box designed for open-source software, sometimes used for web applications.
+  /// Windows Media / ASF.
+  ///
+  /// Commonly used for Windows Media files such as `.wmv`.
+  wmv,
+
+  /// Ogg container.
+  ///
+  /// An open container commonly used with Vorbis and Opus audio.
   ogg,
 
-  /// Stores audio with the highest quality, like an exact replica, but results in large file sizes.
+  /// WAV (Waveform Audio File Format).
+  ///
+  /// Commonly used for uncompressed PCM audio.
   wav,
 
-  /// FLAC is a popular open-source container format designed specifically for lossless audio compression. It efficiently reduces file size without any loss of audio quality
+  /// FLAC audio format.
+  ///
+  /// A lossless audio format that preserves the original audio data.
   flac,
 
-  /// High compatibility, efficient compression, widely supported across devices and platforms.
+  /// MP3 audio format.
+  ///
+  /// A widely supported compressed audio format.
   mp3,
 
-  /// Better compression and quality than mp3 at similar bit rates, widely supported.
-  aac
+  /// AAC audio format.
+  ///
+  /// Typically used for AAC audio in an ADTS stream.
+  aac,
 }
 
-/// Provides the FFmpeg format name used for this container.
+/// Provides the FFmpeg output format identifier.
 ///
-/// The returned value is passed to FFmpeg as the output format.
-///
-/// Example:
-/// ```dart
-/// final format = NyxContainer.mp4.command;
-/// print(format); // mp4
-/// ```
+/// The returned value is passed to FFmpeg using the `-f` option
+/// when an explicit output format is required.
 extension NyxContainerCommandExtension on NyxContainer {
   /// FFmpeg output format identifier.
   String get command {
     switch (this) {
       case NyxContainer.avi:
         return 'avi';
+
       case NyxContainer.mp4:
         return 'mp4';
+
       case NyxContainer.mkv:
-        return 'mkv';
+        return 'matroska';
+
       case NyxContainer.mov:
         return 'mov';
+
       case NyxContainer.webM:
         return 'webm';
+
+      case NyxContainer.mpeg:
+        return 'mpeg';
+
+      case NyxContainer.wmv:
+        return 'asf';
+
       case NyxContainer.ogg:
         return 'ogg';
+
       case NyxContainer.wav:
         return 'wav';
+
       case NyxContainer.flac:
         return 'flac';
+
       case NyxContainer.mp3:
         return 'mp3';
+
       case NyxContainer.aac:
-        return 'aac';
+        return 'adts';
     }
   }
 }
 
-/// Provides a human-readable display name for a media container.
-///
-/// Example:
-/// ```dart
-/// print(NyxContainer.mp4.name);
-/// // MP4
-/// ```
+/// Provides a human-readable display name for a media container
+/// or audio format.
 extension NyxContainerNameExtension on NyxContainer {
-  /// Display name of the container.
+  /// Display name of the container or format.
   String get name {
     switch (this) {
       case NyxContainer.avi:
-        return 'AVI (Audio Video Interleaved)';
+        return 'AVI (Audio Video Interleave)';
+
       case NyxContainer.mp4:
         return 'MP4 (MPEG-4 Part 14)';
+
       case NyxContainer.mkv:
-        return 'MKV (Matroska Video)';
+        return 'MKV (Matroska)';
+
       case NyxContainer.mov:
-        return 'QuickTime / MOV';
+        return 'MOV (QuickTime)';
+
       case NyxContainer.webM:
         return 'WebM';
+
+      case NyxContainer.mpeg:
+        return 'MPEG';
+
+      case NyxContainer.wmv:
+        return 'WMV (Windows Media / ASF)';
+
+      case NyxContainer.ogg:
+        return 'Ogg';
+
+      case NyxContainer.wav:
+        return 'WAV (Waveform Audio)';
+
+      case NyxContainer.flac:
+        return 'FLAC';
+
+      case NyxContainer.mp3:
+        return 'MP3 (MPEG Audio Layer III)';
+
+      case NyxContainer.aac:
+        return 'AAC (ADTS)';
+    }
+  }
+}
+
+/// Provides short display titles for [NyxContainer].
+extension NyxContainerTitleExtension on NyxContainer {
+  /// Returns a concise title for the container.
+  ///
+  /// Example:
+  ///
+  /// ```dart
+  /// NyxContainer.mp4.title;
+  /// // MP4
+  /// ```
+  String get title {
+    switch (this) {
+      case NyxContainer.avi:
+        return 'AVI';
+      case NyxContainer.mp4:
+        return 'MP4';
+      case NyxContainer.mkv:
+        return 'MKV';
+      case NyxContainer.mov:
+        return 'MOV';
+      case NyxContainer.webM:
+        return 'WebM';
+      case NyxContainer.mpeg:
+        return 'MPEG';
+      case NyxContainer.wmv:
+        return 'WMV';
       case NyxContainer.ogg:
         return 'Ogg';
       case NyxContainer.wav:
-        return 'WAV / WAVE (Waveform Audio)';
+        return 'WAV';
       case NyxContainer.flac:
-        return 'raw FLAC';
+        return 'FLAC';
       case NyxContainer.mp3:
-        return 'MP3 (MPEG-1 Audio Layer III)';
+        return 'MP3';
       case NyxContainer.aac:
-        return 'AAC (Advanced Audio Coding)';
+        return 'AAC';
     }
   }
 }

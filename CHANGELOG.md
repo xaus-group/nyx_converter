@@ -1,79 +1,127 @@
 # Changelog
 
+## 1.0.0
+
+The first stable release of Nyx Converter.
+
+### Added
+
+* Added media information retrieval with `getMediaInfo`.
+* Added `NyxMediaInfo`, `NyxVideoInfo`, and `NyxAudioInfo` models.
+* Added video thumbnail generation with `getThumbnail`.
+* Added thumbnail position support.
+* Added video size selection with `NyxSize`.
+* Added audio sample rate selection with `NyxSampleRate`.
+* Added audio channel layout selection with `NyxChannelLayout`.
+* Added audio codec support with `NyxAudioCodec`.
+* Added video codec support with `NyxVideoCodec`.
+* Added media container support with `NyxContainer`.
+* Added audio bitrate support.
+* Added video bitrate support.
+* Added real-time conversion progress tracking.
+* Added FPS and processing speed tracking.
+* Added structured conversion execution callbacks.
+* Added FFprobe-based media validation.
+* Added Windows platform support.
+
+### Improved
+
+* Improved FFmpeg execution and conversion lifecycle handling.
+* Improved conversion callback reliability.
+* Improved error reporting.
+* Improved FFmpeg session management and cleanup.
+* Improved media inspection and validation.
+* Improved integration test stability.
+* Updated example application with media information and thumbnail previews.
+* Updated documentation and GitHub Wiki.
+* Expanded public API documentation and examples.
+
+### Fixed
+
+* Fixed conversion completion timing issues.
+* Fixed progress callback handling during FFmpeg execution.
+* Fixed FFmpeg session cleanup after cancellation.
+* Fixed various conversion and integration issues.
+
 ## 0.5.0
 
-Added:
+### Added
 
-- Added getMediaInfo for retrieving media metadata and stream information
-- Added getThumbnail for generating video thumbnails as Uint8List
-- Added thumbnail position support
-- Added NyxMediaInfo, NyxVideoInfo, and NyxAudioInfo models
+* Added `getMediaInfo` for retrieving media metadata and stream information.
+* Added `getThumbnail` for generating video thumbnails as `Uint8List`.
+* Added thumbnail position support.
+* Added `NyxMediaInfo`, `NyxVideoInfo`, and `NyxAudioInfo` models.
 
-Improved:
+### Improved
 
-- Updated example app with media information and thumbnail preview
-- Updated documentation and GitHub Wiki
+* Updated the example app with media information and thumbnail preview.
+* Updated documentation and GitHub Wiki.
 
 ## 0.4.1
 
-Added:
+### Added
 
-- Added `Future` completion support for `convertTo`
-- Added improved conversion lifecycle handling
-- Added FFprobe based media validation before conversion
-- Added Windows platform support
+* Added `Future` completion support for `convertTo`.
+* Added improved conversion lifecycle handling.
+* Added FFprobe-based media validation before conversion.
+* Added Windows platform support.
 
-Improved:
+### Improved
 
-- Refactored FFmpeg execution flow into a cleaner internal architecture
-- Improved conversion callback reliability
-- Improved error reporting during failed conversions
-- Improved session management for running conversions
-- Improved integration test stability
-- Updated documentation and examples
+* Refactored FFmpeg execution into a cleaner internal architecture.
+* Improved conversion callback reliability.
+* Improved error reporting during failed conversions.
+* Improved session management for running conversions.
+* Improved integration test stability.
+* Updated documentation and examples.
 
-Fixed:
+### Fixed
 
-- Fixed conversion completion timing issues
-- Fixed progress callback handling during FFmpeg execution
-- Fixed FFmpeg session cleanup after cancellation
+* Fixed conversion completion timing issues.
+* Fixed progress callback handling during FFmpeg execution.
+* Fixed FFmpeg session cleanup after cancellation.
 
 ## 0.4.0
 
-Added:
+### Added
 
-- Real FFmpeg progress tracking (0–100%) using parsed time= logs
-- Real-time FPS extraction (fps=)
-- Real-time processing speed extraction (speed=1.2x)
-- New structured execution callback:
-  - status
-  - progress
-  - fps
-  - speed
-  - errorMessage
+* Added real FFmpeg progress tracking from 0–100%.
+* Added real-time FPS extraction.
+* Added real-time processing speed extraction.
+* Added structured execution callbacks.
 
-Improved
+### Improved
 
-- Cleaner FFmpeg logging
-- More accurate progress calculation using FFprobe duration
+* Improved FFmpeg logging.
+* Improved progress calculation using FFprobe duration.
 
 ## 0.3.0
 
-- Added audio bitrate
-- Added video bitrate
+### Added
+
+* Added audio bitrate support.
+* Added video bitrate support.
 
 ## 0.2.0
 
-- Added video codecs
-- Added audio codecs
-- bug fix
+### Added
+
+* Added video codec support.
+* Added audio codec support.
+
+### Fixed
+
+* Fixed various conversion issues.
 
 ## 0.1.1
 
-- kill all process method
+### Added
+
+* Added support for terminating all running FFmpeg processes.
 
 ## 0.1.0
 
-The basic code has been written and the simple conversion of containers is the first possibility of this package
+### Added
 
-- media file container conversion
+* Added the initial FFmpeg conversion implementation.
+* Added media container conversion support.

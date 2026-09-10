@@ -1,12 +1,22 @@
 name: nyx_converter
-version: 0.5.0
+version: 1.0.0
 description: >-
-  A Flutter package that makes it easier to convert formats, codecs, etc. of media files.
+  A Flutter package for converting, inspecting, and previewing audio and video
+  files with FFmpeg. Supports media conversion, containers, audio and video
+  codecs, bitrates, media information, thumbnail generation, and real-time
+  progress tracking.
+
 repository: https://github.com/xaus-group/nyx_converter
 issue_tracker: https://github.com/xaus-group/nyx_converter/issues
-# homepage:
+homepage: https://xaus-group.github.io/nyx_converter/
 documentation: https://pub.dev/documentation/nyx_converter/latest
-topics: [video, audio, converter, ffmpeg]
+
+topics:
+  - video
+  - audio
+  - converter
+  - ffmpeg
+  - media
 
 environment:
   sdk: ">=3.4.1 <4.0.0"
@@ -15,7 +25,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  ffmpeg_kit_flutter_new: ^4.5.1
+  ffmpeg_kit_flutter_new: ^4.6.2
   path: ^1.9.1
 
 dev_dependencies:

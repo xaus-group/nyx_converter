@@ -1,59 +1,77 @@
+/// Represents a video codec used during conversion.
 ///
-/// ### Description:
-/// Video codecs, short for coder-decoders, are the unsung heroes that enable us to store and share videos efficiently. They act like **compression wizards**, shrinking massive video files by cleverly discarding redundant information while maintaining an acceptable level of visual quality.
+/// A video codec determines how video frames are encoded and compressed.
+/// Different codecs provide different trade-offs between visual quality,
+/// compression efficiency, encoding speed, and compatibility.
 ///
-/// Here's a quick breakdown:
-///
-/// - **Quality vs. File Size:** H.264 offers a good balance. H.265 provides higher compression but may require more processing power and have limited playback compatibility.
-/// - **Compatibility:** H.264 is the most widely supported choice.
-/// - **Application:** For web video, VP8/VP9 might be suitable.
-/// Video codecs are constantly evolving, with newer ones offering better compression and features. However, compatibility across devices and platforms remains a factor to consider.
-///
-/// ### Example:
-/// ```dart
-/// final filePath = 'path/to/my.mp4';
-/// final outputPath = 'path/to/';
-///
-/// NyxConverter.convertTo(filePath, outputPath, videoCodec: NyxVideoCodec.h264);
-/// ```
+/// Codec availability depends on the FFmpeg build used by the application.
 enum NyxVideoCodec {
-  /// The current king of video codecs, offering a great balance between high quality and efficient compression. Widely supported by devices and platforms, making it a versatile choice.
+  /// H.264 / AVC (Advanced Video Coding).
+  ///
+  /// Provides a good balance between video quality, compression efficiency,
+  /// encoding speed, and compatibility. It is one of the most widely
+  /// supported video codecs.
   h264,
 
-  /// The successor to H.264, boasting even better compression for smaller file sizes with similar quality. However, it requires more processing power for encoding and decoding, and playback compatibility is still catching up.
+  /// H.265 / HEVC (High Efficiency Video Coding).
+  ///
+  /// Generally provides better compression efficiency than H.264 at
+  /// similar visual quality, but encoding can require more processing
+  /// power and device compatibility may be more limited.
   h265,
 
-  /// An open-source implementation of the MPEG-4 standard, known for its efficiency and compatibility with older devices. Not as widely used now as H.264 and H.265.
+  /// Xvid MPEG-4 Part 2 video codec.
+  ///
+  /// An older MPEG-4 Part 2 implementation commonly used for legacy
+  /// video content and older media players.
   xvid,
 
-  /// Open-source codec developed by Google, often used for web video streaming like YouTube. They prioritize good compression for efficient delivery over the internet.
+  /// VP8 video codec.
+  ///
+  /// An open video codec commonly used for web-oriented video.
+  /// It provides reasonable compression and broad support in
+  /// web-related workflows.
   vp8,
 
-  /// Open-source codecs developed by Google, often used for web video streaming like YouTube. They prioritize good compression for efficient delivery over the internet.
+  /// VP9 video codec.
+  ///
+  /// A successor to VP8 that generally provides better compression
+  /// efficiency and is commonly used for web and streaming video.
   vp9,
 
-  /// A newer royalty-free alternative to H.265, aiming for similar compression efficiency with lower processing demands. Still gaining adoption and may not be universally supported yet.
+  /// AV1 (AOMedia Video 1).
+  ///
+  /// A modern, royalty-free video codec designed for high compression
+  /// efficiency. It can provide smaller files at similar visual quality,
+  /// but encoding can be computationally demanding.
   av1,
 
-  /// A broad term encompassing various standards, including H.264 (AVC). It can also refer to the MPEG-4 Part 2 video codec, a predecessor to H.264 but less efficient and not as widely used.
+  /// MPEG-4 Part 2 video codec.
+  ///
+  /// An older video codec that can be useful for compatibility with
+  /// legacy media and devices.
   mpeg4,
 
-  /// An older video codec standard, commonly used for DVDs and broadcast television. It's not as efficient as newer codecs like H.264, resulting in larger file sizes for similar quality.
-  mpeg2
+  /// MPEG-2 video codec.
+  ///
+  /// An older video codec commonly associated with DVD, broadcast,
+  /// and legacy video workflows.
+  mpeg2,
 }
 
-/// Provides FFmpeg encoder names for each [NyxVideoCodec].
+/// Provides FFmpeg encoder names for [NyxVideoCodec].
 ///
-/// This extension converts a codec enum value into the corresponding
-/// FFmpeg encoder command used during media conversion.
+/// The returned value is intended to be used with FFmpeg's `-c:v`
+/// option.
 ///
 /// Example:
+///
 /// ```dart
-/// final codec = NyxVideoCodec.h264.command;
-/// // Returns: libx264
+/// NyxVideoCodec.h264.command;
+/// // libx264
 /// ```
 extension NyxVideoCodecCommandExtension on NyxVideoCodec {
-  /// Returns the FFmpeg encoder name for this video codec.
+  /// Returns the FFmpeg encoder name for this codec.
   String get command {
     switch (this) {
       case NyxVideoCodec.h264:
@@ -76,15 +94,16 @@ extension NyxVideoCodecCommandExtension on NyxVideoCodec {
   }
 }
 
-/// Provides full readable names for [NyxVideoCodec] values.
-///
-/// Example:
-/// ```dart
-/// NyxVideoCodec.h264.title;
-/// // Advanced Video Coding (AVC)
-/// ```
+/// Provides full technology names for [NyxVideoCodec].
 extension NyxVideoCodecTitleExtension on NyxVideoCodec {
   /// Returns the full codec technology name.
+  ///
+  /// Example:
+  ///
+  /// ```dart
+  /// NyxVideoCodec.h264.title;
+  /// // Advanced Video Coding (AVC)
+  /// ```
   String get title {
     switch (this) {
       case NyxVideoCodec.h264:
@@ -109,9 +128,16 @@ extension NyxVideoCodecTitleExtension on NyxVideoCodec {
 
 /// Provides short display names for [NyxVideoCodec].
 ///
-/// Useful when displaying codec names inside Flutter widgets.
+/// Useful when displaying codec names in Flutter widgets.
 extension NyxVideoCodecNameExtension on NyxVideoCodec {
   /// Returns a short human-readable codec name.
+  ///
+  /// Example:
+  ///
+  /// ```dart
+  /// NyxVideoCodec.h264.name;
+  /// // H.264
+  /// ```
   String get name {
     switch (this) {
       case NyxVideoCodec.h264:

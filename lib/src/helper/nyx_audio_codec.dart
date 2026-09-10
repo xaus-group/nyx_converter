@@ -1,111 +1,148 @@
+/// Represents an audio codec supported by Nyx Converter.
 ///
-/// ### Description:
-/// An audio codec, short for coder-decoder, is like a **miniaturization machine for sound**. It shrinks digital audio files by removing unnecessary information, allowing you to store and share music and audio more efficiently. This compression comes with a trade-off, though. While some codecs (like MP3) prioritize smaller file sizes, they might sacrifice some sound quality. Others (like FLAC) preserve the original quality but result in larger files.
+/// Audio codecs determine how audio is encoded during conversion.
 ///
-/// Here's a quick breakdown:
+/// Lossy codecs such as AAC, MP3, Opus, and Vorbis reduce file size
+/// by discarding some audio information.
 ///
-/// - **Compresses audio:** Reduces file size for easier storage and transfer.
-/// - **Quality vs. Size:** Lossy codecs (MP3, AAC) prioritize size with some quality loss. Lossless codecs (FLAC) maintain quality but have larger files.
-/// - **Widely Used:** AAC is a popular choice for its balance of size and quality, found in MP4s, YouTube videos, and most devices.
-/// Choosing the right audio codec depends on your needs. If you prioritize pristine sound, go lossless. For smaller files and broader compatibility, consider a lossy codec with adjustable quality settings.
+/// Lossless codecs such as FLAC and ALAC preserve the original audio
+/// information while generally producing larger files.
 ///
-/// ### Example:
-/// ```dart
-/// final filePath = 'path/to/my.mp4';
-/// final outputPath = 'path/to/';
-///
-/// NyxConverter.convertTo(filePath, outputPath, audioCodec: NyxAudioCodec.mp3);
-/// ```
-///
+/// The actual availability of a codec depends on the FFmpeg build
+/// used by the application.
 enum NyxAudioCodec {
-  /// The most widely used audio codec, known for its good balance between file size and sound quality. It's a lossy codec, meaning it discards some audio information during compression.A widely used lossy codec known for its good balance of quality and file size. However, some audio information is sacrificed during compression.
-  mp3,
-
-  /// Predecessor to MP3, offering lower quality but slightly smaller file sizes. Less common nowadays.
-  mp2,
-
-  /// Developed by Microsoft, WMA offers similar quality to MP3 at comparable bitrates. However, its compatibility is not as universal as MP3.
-  wma,
-
-  /// A modern and efficient lossy codec, generally considered to provide better audio quality than MP3 at similar bitrates. Widely used in MP4 files, YouTube videos, and most devices.
+  /// Advanced Audio Coding (AAC).
+  ///
+  /// A widely supported lossy codec offering a good balance between
+  /// audio quality, file size, and compatibility.
   aac,
 
-  /// A free and open-source lossy codec known for its good quality and efficient compression. Often used in web applications and free software.
-  ogg,
+  /// MPEG-1/2 Audio Layer III (MP3).
+  ///
+  /// A highly compatible lossy codec supported by most devices,
+  /// applications, and media players.
+  mp3,
 
-  /// A popular lossless compression format that preserves the original audio quality without any information loss. FLAC files are typically larger than their lossy counterparts but ideal for archiving or high-fidelity audio.
+  /// Opus.
+  ///
+  /// A modern lossy codec designed for efficient audio compression.
+  /// Particularly suitable for web, streaming, voice, and general
+  /// purpose audio.
+  opus,
+
+  /// Ogg Vorbis.
+  ///
+  /// An open and patent-free lossy audio codec commonly used
+  /// with the Ogg container.
+  vorbis,
+
+  /// MPEG-1/2 Audio Layer II (MP2).
+  ///
+  /// An older MPEG audio codec still used in some broadcast
+  /// and legacy media workflows.
+  mp2,
+
+  /// Windows Media Audio (WMA).
+  ///
+  /// Microsoft's lossy audio codec.
+  wma,
+
+  /// Free Lossless Audio Codec (FLAC).
+  ///
+  /// A lossless codec that preserves the original audio information
+  /// while reducing file size compared with uncompressed PCM.
   flac,
 
-  /// Similar to FLAC, ALAC offers lossless compression but is primarily used by Apple devices and iTunes.
+  /// Apple Lossless Audio Codec (ALAC).
+  ///
+  /// Apple's lossless audio codec, commonly used within the
+  /// Apple ecosystem.
   alac,
 
-  /// A high-resolution audio format that uses a different approach than traditional PCM (Pulse Code Modulation) codecs. DSD captures audio data in a more analog-like way, potentially offering very high fidelity, but requires specialized equipment for playback.
-  dsd
+  /// AC-3 (Dolby Digital).
+  ///
+  /// A lossy codec commonly used for DVD, broadcast, television,
+  /// and home-theater audio.
+  ac3,
 }
 
-/// Provides the FFmpeg encoder name for this audio codec.
-///
-/// Example:
-/// ```dart
-/// final encoder = NyxAudioCodec.aac.command;
-/// // returns "aac"
-/// ```
+/// Provides the FFmpeg encoder name for an audio codec.
 extension NyxAudioCodecCommandExtension on NyxAudioCodec {
-  /// FFmpeg encoder name used internally during conversion.
+  /// FFmpeg encoder name used during conversion.
+  ///
+  /// Example:
+  /// ```dart
+  /// final encoder = NyxAudioCodec.aac.command;
+  /// // aac
+  /// ```
   String get command {
     switch (this) {
-      case NyxAudioCodec.mp3:
-        return 'libmp3lame';
-      case NyxAudioCodec.mp2:
-        return 'mp2';
-      case NyxAudioCodec.wma:
-        return 'wmav2';
       case NyxAudioCodec.aac:
         return 'aac';
-      case NyxAudioCodec.ogg:
+
+      case NyxAudioCodec.mp3:
+        return 'libmp3lame';
+
+      case NyxAudioCodec.opus:
+        return 'libopus';
+
+      case NyxAudioCodec.vorbis:
         return 'libvorbis';
+
+      case NyxAudioCodec.mp2:
+        return 'mp2';
+
+      case NyxAudioCodec.wma:
+        return 'wmav2';
+
       case NyxAudioCodec.flac:
         return 'flac';
+
       case NyxAudioCodec.alac:
-        return 'alas';
-      case NyxAudioCodec.dsd:
-        return 'dsd';
+        return 'alac';
+
+      case NyxAudioCodec.ac3:
+        return 'ac3';
     }
   }
 }
 
 /// Provides the full technical name of an audio codec.
-///
-/// Example:
-/// ```dart
-/// final title = NyxAudioCodec.aac.title;
-/// // Advanced Audio Coding
-/// ```
 extension NyxAudioCodecTitleExtension on NyxAudioCodec {
   /// Full technical codec name.
   String get title {
     switch (this) {
-      case NyxAudioCodec.mp3:
-        return 'MPEG-1 Audio Layer III or MPEG-2 Audio Layer III';
-      case NyxAudioCodec.mp2:
-        return 'MPEG-1 Audio Layer II';
-      case NyxAudioCodec.wma:
-        return 'Windows Media Audio';
       case NyxAudioCodec.aac:
         return 'Advanced Audio Coding';
-      case NyxAudioCodec.ogg:
+
+      case NyxAudioCodec.mp3:
+        return 'MPEG-1/2 Audio Layer III';
+
+      case NyxAudioCodec.opus:
+        return 'Opus';
+
+      case NyxAudioCodec.vorbis:
         return 'Ogg Vorbis';
+
+      case NyxAudioCodec.mp2:
+        return 'MPEG-1/2 Audio Layer II';
+
+      case NyxAudioCodec.wma:
+        return 'Windows Media Audio';
+
       case NyxAudioCodec.flac:
         return 'Free Lossless Audio Codec';
+
       case NyxAudioCodec.alac:
         return 'Apple Lossless Audio Codec';
-      case NyxAudioCodec.dsd:
-        return 'Direct Stream Digital';
+
+      case NyxAudioCodec.ac3:
+        return 'Dolby Digital (AC-3)';
     }
   }
 }
 
-/// Provides a human-readable display name for the codec.
+/// Provides a short human-readable name for an audio codec.
 extension NyxAudioCodecNameExtension on NyxAudioCodec {
   /// Short codec name.
   ///
@@ -116,22 +153,32 @@ extension NyxAudioCodecNameExtension on NyxAudioCodec {
   /// ```
   String get name {
     switch (this) {
-      case NyxAudioCodec.mp3:
-        return 'MP3';
-      case NyxAudioCodec.mp2:
-        return 'MP2';
-      case NyxAudioCodec.wma:
-        return 'WMA';
       case NyxAudioCodec.aac:
         return 'AAC';
-      case NyxAudioCodec.ogg:
-        return 'OGG';
+
+      case NyxAudioCodec.mp3:
+        return 'MP3';
+
+      case NyxAudioCodec.opus:
+        return 'Opus';
+
+      case NyxAudioCodec.vorbis:
+        return 'Vorbis';
+
+      case NyxAudioCodec.mp2:
+        return 'MP2';
+
+      case NyxAudioCodec.wma:
+        return 'WMA';
+
       case NyxAudioCodec.flac:
         return 'FLAC';
+
       case NyxAudioCodec.alac:
         return 'ALAC';
-      case NyxAudioCodec.dsd:
-        return 'DSD';
+
+      case NyxAudioCodec.ac3:
+        return 'AC-3';
     }
   }
 }
