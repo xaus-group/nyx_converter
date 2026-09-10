@@ -53,7 +53,7 @@ abstract final class NyxFFConverter {
 
       sessionId(session.getSessionId() ?? 0);
 
-      return completer.future;
+      return await completer.future;
     } catch (e) {
       if (!completer.isCompleted) {
         completer.completeError(e);

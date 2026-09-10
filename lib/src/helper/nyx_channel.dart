@@ -1,21 +1,21 @@
+/// Represents the audio channel layout used during conversion.
 ///
-/// ### Description:
-/// Channel layout refers to the specific arrangement and number of channels used for audio or video in a media file. It essentially tells you how many independent streams of audio or video information are present and how they are organized.
+/// A channel layout determines the number of audio channels in the
+/// output media.
 ///
-/// ### Example:
-/// ```dart
-/// final filePath = 'path/to/my.mp4';
-/// final outputPath = 'path/to/';
-///
-/// NyxConverter.convertTo(filePath, outputPath, channelLayout: NyxChannelLayout.stereo);
-/// ```
-///
+/// Nyx Converter currently supports mono and stereo audio.
 enum NyxChannelLayout {
-  /// Utilizes two separate channels (left and right). Audio information is split between these channels, creating a wider and more immersive listening experience. Stereo allows for panning and positioning of sounds within the "stereo field," making the listening experience more natural and engaging.
+  /// Two audio channels: left and right.
+  ///
+  /// Stereo audio allows sounds to be positioned between the left
+  /// and right channels.
   stereo,
 
-  /// All audio information is combined into a single channel. This results in a flat, one-dimensional soundscape, like listening through one speaker. Common in older recordings, phone calls, and voice messages.
-  mono
+  /// A single audio channel.
+  ///
+  /// Mono combines the audio into one channel and is commonly used
+  /// for speech, voice recordings, and other single-channel audio.
+  mono,
 }
 
 /// Provides a human-readable name for an audio channel layout.
@@ -25,14 +25,59 @@ enum NyxChannelLayout {
 /// print(NyxChannelLayout.stereo.title);
 /// // Stereo
 /// ```
-extension NyxChannelLayoutNameExtension on NyxChannelLayout {
+extension NyxChannelLayoutTitleExtension on NyxChannelLayout {
   /// Display name of the channel layout.
   String get title {
     switch (this) {
       case NyxChannelLayout.stereo:
         return 'Stereo';
+
       case NyxChannelLayout.mono:
         return 'Mono';
+    }
+  }
+}
+
+/// Provides the number of audio channels used by FFmpeg.
+///
+/// This value is intended to be used with FFmpeg's `-ac` option.
+///
+/// Example:
+/// ```dart
+/// final channels = NyxChannelLayout.stereo.command;
+/// // 2
+/// ```
+extension NyxChannelLayoutCommandExtension on NyxChannelLayout {
+  /// Number of audio channels passed to FFmpeg.
+  ///
+  /// Stereo uses 2 channels and mono uses 1 channel.
+  String get command {
+    switch (this) {
+      case NyxChannelLayout.stereo:
+        return '2';
+
+      case NyxChannelLayout.mono:
+        return '1';
+    }
+  }
+}
+
+/// Provides descriptive names for [NyxChannelLayout].
+extension NyxChannelLayoutNameExtension on NyxChannelLayout {
+  /// Returns the full human-readable name of the channel layout.
+  ///
+  /// Example:
+  ///
+  /// ```dart
+  /// NyxChannelLayout.stereo.name;
+  /// // Stereo (2 channels)
+  /// ```
+  String get name {
+    switch (this) {
+      case NyxChannelLayout.stereo:
+        return 'Stereo (2 channels)';
+      case NyxChannelLayout.mono:
+        return 'Mono (1 channel)';
     }
   }
 }

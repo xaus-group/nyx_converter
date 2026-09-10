@@ -1,45 +1,52 @@
+/// Represents a target video resolution used during conversion.
 ///
-/// ### Description:
-/// Video sizes are like footprints for your videos. This refers to the number of pixels that make up the video frame. More pixels generally mean sharper images and better quality, but also larger file sizes. The best size depends on what you're using the video for:
+/// Video size defines the width and height of the output video in pixels.
 ///
-/// - **Online Sharing:** Consider platform recommendations and bandwidth limitations.
-/// - **Video Quality:** Higher resolution offers better detail, but also larger file sizes.
-/// - Target Audience: If viewers are mostly on mobile, a lower resolution with a vertical aspect ratio might be suitable. By understanding these basics, you can choose the video size that best balances quality and practicality for your project.
-///
-///
-/// ### Example:
-/// ```dart
-/// final filePath = 'path/to/my.mp4';
-/// final outputPath = 'path/to/';
-///
-/// NyxConverter.convertTo(filePath, outputPath, size: NyxSize.w1280h720);
-/// ```
+/// Higher resolutions can provide more detail, but usually require more
+/// storage space and higher bitrate. The appropriate resolution depends
+/// on the target device, platform, and desired video quality.
 enum NyxSize {
-  /// A lower resolution option, often used for video calls or applications where bandwidth is limited.
+  /// 640x360 resolution (360p).
+  ///
+  /// A lower-resolution option suitable for small screens, previews,
+  /// video calls, and situations where bandwidth or file size is limited.
   w640h360,
 
-  /// This was once the standard for DVDs and broadcast television. Still used for some web videos or legacy content.
+  /// 640x480 resolution (SD).
+  ///
+  /// A standard-definition 4:3 resolution commonly found in older
+  /// video content and legacy media.
   w640h480,
 
-  /// A popular choice for online videos and Blu-ray discs. Offers a noticeable improvement over SD.
+  /// 1280x720 resolution (720p).
+  ///
+  /// A common HD resolution suitable for online video, streaming,
+  /// and general-purpose video content.
   w1280h720,
 
-  /// The current "Full HD" standard, widely used for high-quality videos on streaming services, Blu-ray discs, and many devices.
+  /// 1920x1080 resolution (1080p).
+  ///
+  /// Full HD resolution widely used for high-quality video,
+  /// streaming, Blu-ray, and modern devices.
   w1920h1080,
 
-  /// Offers four times the resolution of 1080p, providing sharper images and better viewing experiences on large screens. Gaining popularity for high-end content creation and playback.
-  w3840h2160
+  /// 3840x2160 resolution (4K UHD).
+  ///
+  /// Ultra-high-definition resolution suitable for high-detail
+  /// content and large displays.
+  w3840h2160,
 }
 
 /// Provides FFmpeg-compatible resolution values.
-///
-/// Example:
-/// ```dart
-/// NyxSize.w1920h1080.command;
-/// // 1920x1080
-/// ```
 extension NyxSizeCommandExtension on NyxSize {
-  /// Returns the FFmpeg video scale value.
+  /// Returns the video resolution in `WIDTHxHEIGHT` format.
+  ///
+  /// Example:
+  ///
+  /// ```dart
+  /// NyxSize.w1920h1080.command;
+  /// // 1920x1080
+  /// ```
   String get command {
     switch (this) {
       case NyxSize.w640h360:
@@ -56,9 +63,16 @@ extension NyxSizeCommandExtension on NyxSize {
   }
 }
 
-/// Provides readable names for video resolutions.
+/// Provides human-readable names for video resolutions.
 extension NyxSizeNameExtension on NyxSize {
   /// Returns the display name of the resolution.
+  ///
+  /// Example:
+  ///
+  /// ```dart
+  /// NyxSize.w1920h1080.name;
+  /// // Full HD
+  /// ```
   String get name {
     switch (this) {
       case NyxSize.w640h360:
@@ -71,6 +85,32 @@ extension NyxSizeNameExtension on NyxSize {
         return 'Full HD';
       case NyxSize.w3840h2160:
         return 'Ultra High Definition (UHD) / 4K';
+    }
+  }
+}
+
+/// Provides short titles for video resolutions.
+extension NyxSizeTitleExtension on NyxSize {
+  /// Returns a concise title for the resolution.
+  ///
+  /// Example:
+  ///
+  /// ```dart
+  /// NyxSize.w1920h1080.title;
+  /// // 1080p
+  /// ```
+  String get title {
+    switch (this) {
+      case NyxSize.w640h360:
+        return '360p';
+      case NyxSize.w640h480:
+        return '480p';
+      case NyxSize.w1280h720:
+        return '720p';
+      case NyxSize.w1920h1080:
+        return '1080p';
+      case NyxSize.w3840h2160:
+        return '4K';
     }
   }
 }

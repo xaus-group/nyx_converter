@@ -29,8 +29,11 @@ class _NyxConverter extends INyxConverter {
     NyxContainer? container,
     NyxVideoCodec? videoCodec,
     NyxAudioCodec? audioCodec,
+    NyxSize? size,
     int? audioBitrate,
     int? videoBitrate,
+    NyxSampleRate? sampleRate,
+    NyxChannelLayout? channelLayout,
     NyxConvertionCallback? execution,
   }) async {
     final outputFilePath = NyxPathHelper.buildOutputPath(
@@ -58,8 +61,11 @@ class _NyxConverter extends INyxConverter {
       outputFilePath: outputFilePath,
       videoCodec: videoCodec,
       audioCodec: audioCodec,
+      size: size,
       audioBitrate: audioBitrate,
       videoBitrate: videoBitrate,
+      sampleRate: sampleRate,
+      channelLayout: channelLayout,
     );
 
     await NyxFFConverter.execute(

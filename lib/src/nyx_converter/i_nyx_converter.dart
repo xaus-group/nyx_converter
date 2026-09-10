@@ -20,6 +20,9 @@ abstract class INyxConverter {
   /// - [videoCodec]: Target video codec.
   /// - [audioCodec]: Target audio codec.
   /// - [fileName]: Output file name without the extension.
+  /// - [size]: Target video resolution.
+  /// - [sampleRate]: Target audio sample rate.
+  /// - [channelLayout]: Target audio channel layout.
   /// - [audioBitrate]: Audio bitrate in kbps.
   /// - [videoBitrate]: Video bitrate in Mbps.
   /// - [debugMode]: Enables FFmpeg log output.
@@ -30,9 +33,12 @@ abstract class INyxConverter {
   /// await NyxConverter.convertTo(
   ///   '/storage/input.mp4',
   ///   '/storage/output',
-  ///   container: NyxContainer.mkv,
+  ///   container: NyxContainer.mp4,
   ///   videoCodec: NyxVideoCodec.h264,
   ///   audioCodec: NyxAudioCodec.aac,
+  ///   size: NyxSize.w1920h1080,
+  ///   sampleRate: NyxSampleRate.hz48000,
+  ///   channelLayout: NyxChannelLayout.stereo,
   ///   videoBitrate: 5,
   ///   audioBitrate: 320,
   ///   fileName: 'holiday',
@@ -69,11 +75,11 @@ abstract class INyxConverter {
     NyxContainer? container,
     NyxVideoCodec? videoCodec,
     NyxAudioCodec? audioCodec,
-    // NyxSize? size,
+    NyxSize? size,
     int? audioBitrate,
     int? videoBitrate,
-    // NyxFrequency? frequency,
-    // NyxChannelLayout? channelLayout
+    NyxSampleRate? sampleRate,
+    NyxChannelLayout? channelLayout,
     bool debugMode = false,
     String? fileName,
     NyxConvertionCallback? execution,
