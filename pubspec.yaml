@@ -1,5 +1,5 @@
 name: nyx_converter
-version: 1.0.0
+version: 1.0.1
 description: >-
   Flutter package for audio and video conversion, media info, thumbnails, and
   real-time FFmpeg progress tracking.
