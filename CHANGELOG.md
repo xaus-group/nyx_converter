@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.1
+
+### Added
+
+* Added new video resolutions to NyxSize: 854x480, 2560x1440, 1080x608, 1080x1350, 1080x1080, and 1080x1920.
+* Added name and title mappings for all new sizes.
+
+### Improved
+
+* Improved NyxSize titles (720p HD, 1080p Full HD, 4K UHD, 480p SD).
+* Updated wiki and documentation with the new supported video sizes.
+
 ## 1.0.0
 
 The first stable release of Nyx Converter.

@@ -18,6 +18,12 @@ enum NyxSize {
   /// video content and legacy media.
   w640h480,
 
+  /// 854x480 resolution (480p SD).
+  ///
+  /// A widescreen standard-definition resolution, often used for
+  /// online video with a 16:9 aspect ratio.
+  w854h480,
+
   /// 1280x720 resolution (720p).
   ///
   /// A common HD resolution suitable for online video, streaming,
@@ -30,11 +36,36 @@ enum NyxSize {
   /// streaming, Blu-ray, and modern devices.
   w1920h1080,
 
+  /// 2560x1440 resolution (1440p).
+  ///
+  /// Quad HD resolution, offering a balance between Full HD and 4K.
+  w2560h1440,
+
   /// 3840x2160 resolution (4K UHD).
   ///
   /// Ultra-high-definition resolution suitable for high-detail
   /// content and large displays.
   w3840h2160,
+
+  /// 1080x608 resolution.
+  ///
+  /// A custom cinematic widescreen resolution.
+  w1080h608,
+
+  /// 1080x1350 resolution.
+  ///
+  /// A vertical resolution often used for social media stories.
+  w1080h1350,
+
+  /// 1080x1080 resolution.
+  ///
+  /// A square resolution commonly used for social media posts.
+  w1080h1080,
+
+  /// 1080x1920 resolution.
+  ///
+  /// A vertical Full HD resolution for mobile-first content.
+  w1080h1920,
 }
 
 /// Provides FFmpeg-compatible resolution values.
@@ -53,12 +84,24 @@ extension NyxSizeCommandExtension on NyxSize {
         return '640x360';
       case NyxSize.w640h480:
         return '640x480';
+      case NyxSize.w854h480:
+        return '854x480';
       case NyxSize.w1280h720:
         return '1280x720';
       case NyxSize.w1920h1080:
         return '1920x1080';
+      case NyxSize.w2560h1440:
+        return '2560x1440';
       case NyxSize.w3840h2160:
         return '3840x2160';
+      case NyxSize.w1080h608:
+        return '1080x608';
+      case NyxSize.w1080h1350:
+        return '1080x1350';
+      case NyxSize.w1080h1080:
+        return '1080x1080';
+      case NyxSize.w1080h1920:
+        return '1080x1920';
     }
   }
 }
@@ -79,12 +122,24 @@ extension NyxSizeNameExtension on NyxSize {
         return '360p';
       case NyxSize.w640h480:
         return 'Standard Definition (SD)';
+      case NyxSize.w854h480:
+        return '480p SD';
       case NyxSize.w1280h720:
         return 'High Definition (HD)';
       case NyxSize.w1920h1080:
         return 'Full HD';
+      case NyxSize.w2560h1440:
+        return 'Quad HD (QHD) / 1440p';
       case NyxSize.w3840h2160:
         return 'Ultra High Definition (UHD) / 4K';
+      case NyxSize.w1080h608:
+        return '1080 × 608';
+      case NyxSize.w1080h1350:
+        return '1080 × 1350';
+      case NyxSize.w1080h1080:
+        return '1080 × 1080';
+      case NyxSize.w1080h1920:
+        return '1080 × 1920';
     }
   }
 }
@@ -97,7 +152,7 @@ extension NyxSizeTitleExtension on NyxSize {
   ///
   /// ```dart
   /// NyxSize.w1920h1080.title;
-  /// // 1080p
+  /// // 1080p Full HD
   /// ```
   String get title {
     switch (this) {
@@ -105,12 +160,24 @@ extension NyxSizeTitleExtension on NyxSize {
         return '360p';
       case NyxSize.w640h480:
         return '480p';
+      case NyxSize.w854h480:
+        return '480p SD';
       case NyxSize.w1280h720:
-        return '720p';
+        return '720p HD';
       case NyxSize.w1920h1080:
-        return '1080p';
+        return '1080p Full HD';
+      case NyxSize.w2560h1440:
+        return '1440p';
       case NyxSize.w3840h2160:
-        return '4K';
+        return '4K UHD';
+      case NyxSize.w1080h608:
+        return '1080 × 608';
+      case NyxSize.w1080h1350:
+        return '1080 × 1350';
+      case NyxSize.w1080h1080:
+        return '1080 × 1080';
+      case NyxSize.w1080h1920:
+        return '1080 × 1920';
     }
   }
 }
