@@ -3,21 +3,19 @@ import 'dart:io';
 import 'package:ffmpeg_kit_flutter_new/ffprobe_kit.dart';
 import 'package:path/path.dart' as p;
 
+import '../helper/nyx_container.dart';
 import '../models/nyx_media_info.dart';
+import '../models/nyx_media_type.dart';
 
 abstract final class NyxMediaProbe {
   NyxMediaProbe._();
 
   /// Returns `true` when FFprobe can read the media file.
   ///
-  /// This verifies that the file:
-  /// - exists
-  /// - is a supported media format
-  /// - is not corrupted
-  /// - contains at least one media stream
+  /// The file must exist, be readable by FFprobe, and contain
+  /// at least one media stream.
   static Future<bool> isValidMedia(String inputPath) async {
     final session = await FFprobeKit.getMediaInformation(inputPath);
-
     final info = session.getMediaInformation();
 
     if (info == null) {
@@ -29,10 +27,9 @@ abstract final class NyxMediaProbe {
 
   /// Returns the media duration in seconds.
   ///
-  /// Returns `null` if the duration cannot be determined.
+  /// Returns `null` when the duration cannot be determined.
   static Future<double?> getDuration(String inputPath) async {
     final session = await FFprobeKit.getMediaInformation(inputPath);
-
     final info = session.getMediaInformation();
 
     if (info == null) {
@@ -48,6 +45,14 @@ abstract final class NyxMediaProbe {
   ///
   /// The first video and first audio streams are used when multiple
   /// streams are present.
+  ///
+  /// The media type is determined dynamically from the available streams:
+  ///
+  /// - A video stream means [NyxMediaType.video].
+  /// - An audio-only file means [NyxMediaType.audio].
+  ///
+  /// The MIME type is then generated from the detected container and
+  /// media type.
   ///
   /// Returns `null` when FFprobe cannot read the file.
   static Future<NyxMediaInfo?> getMediaInfo(String inputPath) async {
@@ -83,6 +88,27 @@ abstract final class NyxMediaProbe {
       }
     }
 
+    final hasVideo = videoStream != null;
+    final hasAudio = audioStream != null;
+
+    // A video stream takes priority.
+    //
+    // Therefore:
+    // video + audio -> video
+    // video only    -> video
+    // audio only    -> audio
+    final NyxMediaType mediaType;
+
+    if (hasVideo) {
+      mediaType = NyxMediaType.video;
+    } else if (hasAudio) {
+      mediaType = NyxMediaType.audio;
+    } else {
+      // FFprobe returned streams, but none are audio/video.
+      // NyxMediaInfo currently represents audio/video media only.
+      return null;
+    }
+
     NyxVideoInfo? video;
 
     if (videoStream != null) {
@@ -110,16 +136,40 @@ abstract final class NyxMediaProbe {
 
     final format = info.getFormat();
 
+    final extension =
+        p.extension(inputPath).replaceFirst('.', '').toLowerCase();
+
+    final container = _containerFromExtension(extension);
+
+    if (container == null) {
+      return null;
+    }
+
+    final mimeType = container.mimeType(mediaType);
+
     return NyxMediaInfo(
       fileName: p.basename(inputPath),
+      extension: extension,
       format: format,
+      mediaType: mediaType,
+      mimeType: mimeType,
       duration: duration,
       size: file.lengthSync(),
-      hasVideo: videoStream != null,
-      hasAudio: audioStream != null,
+      hasVideo: hasVideo,
+      hasAudio: hasAudio,
       video: video,
       audio: audio,
     );
+  }
+
+  static NyxContainer? _containerFromExtension(String extension) {
+    for (final container in NyxContainer.values) {
+      if (container.extension == extension) {
+        return container;
+      }
+    }
+
+    return null;
   }
 
   static int? _parseInt(dynamic value) {
@@ -178,7 +228,6 @@ abstract final class NyxMediaProbe {
   static int? _parseChannels(dynamic stream) {
     try {
       final value = stream.getChannels();
-
       return _parseInt(value);
     } catch (_) {
       return null;

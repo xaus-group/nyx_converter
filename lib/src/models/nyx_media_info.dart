@@ -1,3 +1,5 @@
+import 'nyx_media_type.dart';
+
 /// Contains technical information about a media file.
 ///
 /// The information is obtained from FFprobe and may contain video,
@@ -28,6 +30,11 @@ class NyxMediaInfo {
   /// Name of the media file including its extension.
   final String fileName;
 
+  /// File extension without the dot.
+  ///
+  /// This is obtained from the input file path.
+  final String extension;
+
   /// Container/format reported by FFprobe.
   ///
   /// Examples:
@@ -36,6 +43,24 @@ class NyxMediaInfo {
   /// - `mov`
   /// - `mp3`
   final String? format;
+
+  /// Media type determined from the available media streams.
+  ///
+  /// A file is considered [NyxMediaType.video] when it contains
+  /// a video stream, even when it also contains an audio stream.
+  ///
+  /// A file is considered [NyxMediaType.audio] when it contains
+  /// an audio stream but no video stream.
+  final NyxMediaType mediaType;
+
+  /// MIME type generated from the media type and detected container.
+  ///
+  /// Examples:
+  /// - `video/mp4`
+  /// - `video/x-matroska`
+  /// - `audio/ogg`
+  /// - `video/ogg`
+  final String mimeType;
 
   /// Total media duration.
   final Duration? duration;
@@ -61,7 +86,10 @@ class NyxMediaInfo {
 
   const NyxMediaInfo({
     required this.fileName,
+    required this.extension,
     this.format,
+    required this.mediaType,
+    required this.mimeType,
     this.duration,
     this.size,
     required this.hasVideo,

@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.0.2
+
+### Added
+
+* Added `NyxMediaType` for representing audio and video media types.
+* Added dynamic media type detection based on FFprobe stream information.
+* Added MIME type support to `NyxContainer`.
+* Added dynamic MIME type generation for containers that can contain either audio or video streams.
+* Added media type and MIME type information to `NyxMediaInfo`.
+* Added file extension information to media inspection results.
+
+### Improved
+
+* Improved media format detection using FFprobe.
+* Improved support for containers such as Ogg and Matroska that can contain different types of media streams.
+* Updated media information documentation and examples.
+* Updated `NyxContainer` extensions to provide container commands, file extensions, media types, and MIME types.
+
+
 ## 1.0.1
 
 ### Added
